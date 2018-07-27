@@ -1,7 +1,7 @@
 package tests.draw;
 
 import calc.contouringControl.Path;
-import com.robotcontrol.calc.contouringControl.GCode.entities.Point;
+import com.robotcontrol.calc.contouringControl.entities.Point;
 import exc.BoundsViolation;
 import exc.ImpossibleToImplement;
 import exc.WrongExtension;
@@ -25,7 +25,7 @@ public class BasicOpsTest extends Application {
         Path path = null;
 
         try {
-            path = new Path(new File("D:\\GCodes\\cartman.ngc"));
+            path = new Path(new File("D:\\GCode\\cartman.ngc"));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (WrongExtension wrongExtension) {

@@ -1,17 +1,17 @@
-package com.robotcontrol.calc.contouringControl.GCode.controllers;
+package com.robotcontrol.calc.contouringControl.controllers.GCode;
 
 import calc.data.Constants;
 import calc.util.MathCalc;
 import calc.util.Utility;
-import com.robotcontrol.calc.contouringControl.GCode.entities.GCodes.AngularGCode;
-import com.robotcontrol.calc.contouringControl.GCode.entities.Point;
+import com.robotcontrol.calc.contouringControl.entities.GCode.AngularGCode;
+import com.robotcontrol.calc.contouringControl.entities.Point;
 import exc.BoundsViolation;
 import exc.ImpossibleToImplement;
 
 import java.util.Arrays;
 
-public class G03Handler {
-    public static void calcPath(AngularGCode gCode, double startTime) throws BoundsViolation, ImpossibleToImplement {
+class G03Handler {
+    static void calcPath(AngularGCode gCode, double startTime) throws BoundsViolation, ImpossibleToImplement {
         initialize(gCode);
         calculate(gCode, startTime);
     }
@@ -21,6 +21,8 @@ public class G03Handler {
      *
      */
     public static void initialize(AngularGCode gCode) {
+
+        gCode.init();
 
         gCode.setCenterPosition(MathCalc.findCenterG03(gCode.getStartPosition(),
                 gCode.getFinalPosition(), gCode.getRadius()));

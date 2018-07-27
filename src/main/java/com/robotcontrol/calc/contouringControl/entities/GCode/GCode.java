@@ -1,4 +1,4 @@
-package com.robotcontrol.calc.contouringControl.GCode.entities.GCodes;
+package com.robotcontrol.calc.contouringControl.entities.GCode;
 
 public class GCode {
 

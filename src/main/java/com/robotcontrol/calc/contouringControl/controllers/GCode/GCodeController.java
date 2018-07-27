@@ -1,10 +1,10 @@
-package com.robotcontrol.calc.contouringControl.GCode.controllers;
+package com.robotcontrol.calc.contouringControl.controllers.GCode;
 
 import calc.util.MathCalc;
-import com.robotcontrol.calc.contouringControl.GCode.entities.GCodes.AngularGCode;
-import com.robotcontrol.calc.contouringControl.GCode.entities.GCodes.LinearGCode;
-import com.robotcontrol.calc.contouringControl.GCode.entities.GCodes.MotionGCode;
-import com.robotcontrol.calc.contouringControl.GCode.entities.Point;
+import com.robotcontrol.calc.contouringControl.entities.GCode.AngularGCode;
+import com.robotcontrol.calc.contouringControl.entities.GCode.LinearGCode;
+import com.robotcontrol.calc.contouringControl.entities.GCode.MotionGCode;
+import com.robotcontrol.calc.contouringControl.entities.Point;
 import exc.BoundsViolation;
 import exc.ImpossibleToImplement;
 

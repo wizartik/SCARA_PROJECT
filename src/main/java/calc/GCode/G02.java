@@ -1,6 +1,6 @@
 package calc.GCode;
 
-import com.robotcontrol.calc.contouringControl.GCode.entities.Point;
+import com.robotcontrol.calc.contouringControl.entities.Point;
 import calc.data.Constants;
 import calc.util.MathCalc;
 import calc.util.Utility;

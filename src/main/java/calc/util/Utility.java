@@ -3,7 +3,7 @@ package calc.util;
 import com.robotcontrol.calc.DHParameters.SCARADH;
 import calc.GCode.GCodeType;
 import calc.data.Constants;
-import com.robotcontrol.calc.contouringControl.GCode.entities.Point;
+import com.robotcontrol.calc.contouringControl.entities.Point;
 import exc.BoundsViolation;
 import exc.WrongExtension;
 
@@ -126,10 +126,21 @@ public class Utility {
      */
     public static boolean isNumeric(String str)
     {
-        try {
-            Double.parseDouble(str);
-        } catch(NumberFormatException nfe) {
+        if (str == null || str.isEmpty()) {
             return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (str.length() > 1) {
+                i++;
+            } else {
+                return false;
+            }
+        }
+        for (; i < str.length(); i++) {
+            if (!Character.isDigit(str.charAt(i)) && str.charAt(i) != '.') {
+                return false;
+            }
         }
         return true;
     }
@@ -236,5 +247,14 @@ public class Utility {
             a[i] = array[i];
         }
         return a;
+    }
+
+    public static boolean containsNaN(double[] arr){
+        for (double anArr : arr) {
+            if (Double.isNaN(anArr)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

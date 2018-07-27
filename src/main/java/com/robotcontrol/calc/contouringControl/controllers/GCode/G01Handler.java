@@ -1,17 +1,17 @@
-package com.robotcontrol.calc.contouringControl.GCode.controllers;
+package com.robotcontrol.calc.contouringControl.controllers.GCode;
 
 import calc.data.Constants;
 import calc.util.MathCalc;
 import calc.util.Utility;
-import com.robotcontrol.calc.contouringControl.GCode.entities.GCodes.LinearGCode;
+import com.robotcontrol.calc.contouringControl.entities.GCode.LinearGCode;
 import exc.BoundsViolation;
 import exc.ImpossibleToImplement;
 
 import static java.lang.Math.abs;
 
-public class G01Handler {
+class G01Handler {
 
-    public static void calcPath(LinearGCode gCode, double startTime)
+    static void calcPath(LinearGCode gCode, double startTime)
             throws BoundsViolation, ImpossibleToImplement {
         initialize(gCode);
         calculate(gCode, startTime);
@@ -21,6 +21,8 @@ public class G01Handler {
      * Initializes data needed to calculate path.
      */
     private static void initialize(LinearGCode gCode) {
+
+        gCode.init();
 
         gCode.setStartVelocity(MathCalc.makeUtmostVelocity(gCode.getStaticVelocity(), gCode.getPreviousVelocity()));
 

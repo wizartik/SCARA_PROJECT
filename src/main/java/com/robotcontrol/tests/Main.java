@@ -1,41 +1,39 @@
 package com.robotcontrol.tests;
 
-import calc.GCode.G03;
-import calc.data.Constants;
-import com.robotcontrol.calc.contouringControl.GCode.controllers.GCodeController;
-import com.robotcontrol.calc.contouringControl.GCode.entities.GCodes.AngularGCode;
-import com.robotcontrol.calc.contouringControl.GCode.entities.GCodes.GCodeType;
+import com.robotcontrol.calc.contouringControl.controllers.data.LineHandler;
+import com.robotcontrol.calc.contouringControl.entities.GCode.AngularGCode;
+import com.robotcontrol.calc.contouringControl.entities.GCode.GCode;
+import com.robotcontrol.calc.contouringControl.entities.GCode.GCodeType;
+import com.robotcontrol.calc.contouringControl.entities.GCode.MotionGCode;
 import exc.BoundsViolation;
 import exc.ImpossibleToImplement;
+import exc.WrongInputData;
+
+import java.util.Arrays;
 
 public class Main {
-    public static void main(String[] args) throws BoundsViolation, ImpossibleToImplement, exc.BoundsViolation, exc.ImpossibleToImplement {
-        double[] startPosition = {15, 15, 15};
-        double[] finalPosition = {10, 10, 10};
-        double radius = 5;
-        double staticVelocity = Constants.NORMAL_VELOCITY;
-        double acceleration = Constants.NORMAL_ACCELERATION;
-        String gCode = "gCode";
-        GCodeType gCodeType = GCodeType.G03;
+    public static void main(String[] args) throws BoundsViolation, ImpossibleToImplement, exc.BoundsViolation, exc.ImpossibleToImplement, WrongInputData {
 
-        G03 g03 = new G03(startPosition, finalPosition, radius,
-                staticVelocity, acceleration, gCode);
+        MotionGCode motionGCode = new MotionGCode(new double[]{1,2,3}, new
+                double[]{5,6,7}, 10, 10, "helllllo", GCodeType.G01);
 
-        g03.initialize(0,0);
-        g03.calculate(0);
+        GCode gCode = (LineHandler.makeGCode(motionGCode, "G03 X40 Y50 Z60.5 " +
+                "R3"));
 
-        AngularGCode angularGCode = new AngularGCode(startPosition,
-                finalPosition, staticVelocity, acceleration, gCode,
-                gCodeType, radius);
-        GCodeController.calcPath(angularGCode, 0);
+        System.out.println(gCode.getGCode());
+        System.out.println(Arrays.toString(gCode.getStartPosition()));
+        System.out.println(gCode.getGCodeType());
 
+        MotionGCode motionGCode1 = (MotionGCode) gCode;
 
-        System.out.println(angularGCode.getgCodePath().size());
-        System.out.println(g03.getGCodePath().size());
-        System.out.println(angularGCode.getDistance());
-        for (int i = 0; i < angularGCode.getgCodePath().size(); i++) {
-            System.out.println(angularGCode.getgCodePath().get(i).equals
-                    (g03.getGCodePath().get(i)));
-        }
+        System.out.println(Arrays.toString(motionGCode1.getFinalPosition()));
+        System.out.println(motionGCode1.getStaticVelocity());
+        System.out.println(motionGCode1.getAcceleration());
+
+        AngularGCode angularGCode = (AngularGCode) gCode;
+
+        System.out.println("radius " + angularGCode.getRadius());
+        System.out.println("center " + Arrays.toString(angularGCode.getCenterPosition()));
+
     }
 }

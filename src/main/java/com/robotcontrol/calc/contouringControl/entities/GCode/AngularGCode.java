@@ -1,4 +1,4 @@
-package com.robotcontrol.calc.contouringControl.GCode.entities.GCodes;
+package com.robotcontrol.calc.contouringControl.entities.GCode;
 
 import calc.util.MathCalc;
 
@@ -7,8 +7,6 @@ public class AngularGCode extends MotionGCode {
     private double radius;
 
     private double[] centerPosition;
-
-
 
     public AngularGCode() {
     }
@@ -38,5 +36,7 @@ public class AngularGCode extends MotionGCode {
         this.centerPosition = centerPosition;
     }
 
-
+    public void init(){
+        setDistance(MathCalc.angularLength(getStartPosition(), getFinalPosition(), radius));
+    }
 }

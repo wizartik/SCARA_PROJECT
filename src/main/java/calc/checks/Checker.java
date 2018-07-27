@@ -1,7 +1,7 @@
 package calc.checks;
 
 import calc.GCode.GCodeType;
-import com.robotcontrol.calc.contouringControl.GCode.entities.Point;
+import com.robotcontrol.calc.contouringControl.entities.Point;
 import calc.data.Constants;
 import calc.data.Dynamic;
 import calc.util.MathCalc;

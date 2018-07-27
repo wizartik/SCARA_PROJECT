@@ -6,7 +6,7 @@ import calc.data.Constants;
 import calc.data.Dynamic;
 import calc.util.MathCalc;
 import calc.util.Utility;
-import com.robotcontrol.calc.contouringControl.GCode.entities.Point;
+import com.robotcontrol.calc.contouringControl.entities.Point;
 import exc.BoundsViolation;
 import exc.ImpossibleToImplement;
 import exc.WrongExtension;

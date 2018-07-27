@@ -1,4 +1,4 @@
-package com.robotcontrol.calc.contouringControl.GCode.entities.GCodes;
+package com.robotcontrol.calc.contouringControl.entities.GCode;
 
 import calc.util.MathCalc;
 
@@ -12,11 +12,10 @@ public class LinearGCode extends MotionGCode {
                        double staticVelocity, double acceleration,
                        String gCode, GCodeType gCodeType) {
         super(startPosition, finalPosition, staticVelocity, acceleration, gCode, gCodeType);
-        setDistance(MathCalc.linearLength(startPosition, finalPosition));
-        makeAxisVelocities();
+        init();
     }
 
-    private void makeAxisVelocities(){
+    public void makeAxisVelocities(){
         this.axisDirections = new double[]
                 {getFinalPosition()[0] - getStartPosition()[0],
                         getFinalPosition()[1] - getStartPosition()[1],
@@ -31,5 +30,26 @@ public class LinearGCode extends MotionGCode {
 
     public void setAxisDirections(double[] axisDirections) {
         this.axisDirections = axisDirections;
+    }
+
+    @Override
+    public void setFinalPosition(double[] finalPosition) {
+        super.setFinalPosition(finalPosition);
+        if (getFinalPosition() != null && getStartPosition() != null){
+            init();
+        }
+    }
+
+    @Override
+    public void setStartPosition(double[] startPosition) {
+        super.setStartPosition(startPosition);
+        if (getFinalPosition() != null && getStartPosition() != null){
+            init();
+        }
+    }
+
+    public void init(){
+        setDistance(MathCalc.linearLength(getStartPosition(), getFinalPosition()));
+        makeAxisVelocities();
     }
 }

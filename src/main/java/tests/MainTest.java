@@ -13,7 +13,7 @@ import java.util.Date;
 public class MainTest {
     public static void main(String[] args) throws ImpossibleToImplement, WrongInputData, IOException, WrongExtension, BoundsViolation, InterruptedException {
         Date date = new Date();
-        Path path = new Path(new File("D:\\GCodes\\cartman.ngc"));
+        Path path = new Path(new File("D:\\GCode\\cartman.ngc"));
         long time  = new Date().getTime() - date.getTime();
         long[][] a = path.getSteppersPath();
         Thread.sleep(5000);

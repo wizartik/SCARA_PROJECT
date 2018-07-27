@@ -1,6 +1,6 @@
-package com.robotcontrol.calc.contouringControl.GCode.entities.GCodes;
+package com.robotcontrol.calc.contouringControl.entities.GCode;
 
-import com.robotcontrol.calc.contouringControl.GCode.entities.Point;
+import com.robotcontrol.calc.contouringControl.entities.Point;
 
 import java.util.ArrayList;
 

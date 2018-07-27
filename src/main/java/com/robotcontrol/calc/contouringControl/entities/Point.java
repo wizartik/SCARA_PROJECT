@@ -1,4 +1,4 @@
-package com.robotcontrol.calc.contouringControl.GCode.entities;
+package com.robotcontrol.calc.contouringControl.entities;
 
 import java.util.Arrays;
 import java.util.Objects;
