@@ -1,6 +1,6 @@
 package calc.util;
 
-import calc.DHParameters.SCARADH;
+import com.robotcontrol.calc.DHParameters.SCARADH;
 import calc.data.Constants;
 
 import java.util.ArrayList;
@@ -407,6 +407,7 @@ public class MathCalc {
      */
     public static double[] makeG02AxisDirections(double[] center,
                                                  double[] coords) {
+
         double angle = atan2(coords[1] - center[1], coords[0] - center[0]);
 
         double vx = -sin(angle);

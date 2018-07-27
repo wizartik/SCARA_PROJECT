@@ -1,6 +1,6 @@
 package calc.util;
 
-import calc.DHParameters.SCARADH;
+import com.robotcontrol.calc.DHParameters.SCARADH;
 import calc.GCode.GCodeType;
 import calc.data.Constants;
 import com.robotcontrol.calc.contouringControl.GCode.entities.Point;

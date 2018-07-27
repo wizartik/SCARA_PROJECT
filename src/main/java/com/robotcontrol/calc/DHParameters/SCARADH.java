@@ -1,4 +1,4 @@
-package calc.DHParameters;
+package com.robotcontrol.calc.DHParameters;
 
 import calc.data.Dynamic;
 

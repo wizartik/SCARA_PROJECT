@@ -12,10 +12,8 @@ import java.util.Arrays;
 
 public class G02Handler {
     static void calcPath(AngularGCode gCode, double startTime) throws BoundsViolation, ImpossibleToImplement {
-
         initialize(gCode);
         calculate(gCode, startTime);
-
     }
 
     /**
