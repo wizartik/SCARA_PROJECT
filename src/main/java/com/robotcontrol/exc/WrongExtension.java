@@ -1,4 +1,4 @@
-package exc;
+package com.robotcontrol.exc;
 
 import calc.data.Constants;
 

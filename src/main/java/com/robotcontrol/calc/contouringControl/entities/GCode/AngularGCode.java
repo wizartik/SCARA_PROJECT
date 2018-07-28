@@ -2,6 +2,9 @@ package com.robotcontrol.calc.contouringControl.entities.GCode;
 
 import calc.util.MathCalc;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class AngularGCode extends MotionGCode {
 
     private double radius;
@@ -38,5 +41,31 @@ public class AngularGCode extends MotionGCode {
 
     public void init(){
         setDistance(MathCalc.angularLength(getStartPosition(), getFinalPosition(), radius));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AngularGCode)) return false;
+        if (!super.equals(o)) return false;
+        AngularGCode that = (AngularGCode) o;
+        return Double.compare(that.getRadius(), getRadius()) == 0 &&
+                Arrays.equals(getCenterPosition(), that.getCenterPosition());
+    }
+
+    @Override
+    public int hashCode() {
+
+        int result = Objects.hash(super.hashCode(), getRadius());
+        result = 31 * result + Arrays.hashCode(getCenterPosition());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AngularGCode{" +
+                "radius=" + radius +
+                ", centerPosition=" + Arrays.toString(centerPosition) +
+                "} " + super.toString();
     }
 }

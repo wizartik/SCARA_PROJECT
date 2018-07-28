@@ -1,10 +1,10 @@
 package tests;
 
 import calc.contouringControl.Path;
-import exc.BoundsViolation;
-import exc.ImpossibleToImplement;
-import exc.WrongExtension;
-import exc.WrongInputData;
+import com.robotcontrol.exc.BoundsViolation;
+import com.robotcontrol.exc.ImpossibleToImplement;
+import com.robotcontrol.exc.WrongExtension;
+import com.robotcontrol.exc.WrongInputData;
 
 import java.io.File;
 import java.io.IOException;

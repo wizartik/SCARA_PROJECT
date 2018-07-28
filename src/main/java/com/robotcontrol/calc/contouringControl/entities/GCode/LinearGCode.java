@@ -2,6 +2,8 @@ package com.robotcontrol.calc.contouringControl.entities.GCode;
 
 import calc.util.MathCalc;
 
+import java.util.Arrays;
+
 public class LinearGCode extends MotionGCode {
     private double[] axisDirections;
 
@@ -51,5 +53,29 @@ public class LinearGCode extends MotionGCode {
     public void init(){
         setDistance(MathCalc.linearLength(getStartPosition(), getFinalPosition()));
         makeAxisVelocities();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LinearGCode)) return false;
+        if (!super.equals(o)) return false;
+        LinearGCode that = (LinearGCode) o;
+        return Arrays.equals(getAxisDirections(), that.getAxisDirections());
+    }
+
+    @Override
+    public int hashCode() {
+
+        int result = super.hashCode();
+        result = 31 * result + Arrays.hashCode(getAxisDirections());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LinearGCode{" +
+                "axisDirections=" + Arrays.toString(axisDirections) +
+                "} " + super.toString();
     }
 }

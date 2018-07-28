@@ -6,15 +6,15 @@ import calc.util.MathCalc;
 import calc.util.Utility;
 import com.robotcontrol.calc.contouringControl.entities.GCode.*;
 import com.robotcontrol.calc.contouringControl.entities.data.Container;
-import exc.WrongInputData;
+import com.robotcontrol.exc.WrongInputData;
 
 import java.util.Arrays;
 
 import static com.robotcontrol.calc.contouringControl.entities.GCode.GCodeType.GARBAGE;
 
-public class LineHandler {
+class LineHandler {
 
-    public static GCode makeGCode(GCode previousGCode, String line) throws
+    static GCode makeGCode(GCode previousGCode, String line) throws
             WrongInputData {
         line = line.toUpperCase();
         Container container = new Container();

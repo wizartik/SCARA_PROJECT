@@ -3,8 +3,8 @@ package calc.GCode;
 import com.robotcontrol.calc.contouringControl.entities.Point;
 import calc.data.Constants;
 import calc.util.MathCalc;
-import exc.BoundsViolation;
-import exc.ImpossibleToImplement;
+import com.robotcontrol.exc.BoundsViolation;
+import com.robotcontrol.exc.ImpossibleToImplement;
 
 import java.util.ArrayList;
 

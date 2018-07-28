@@ -7,10 +7,10 @@ import calc.data.Dynamic;
 import calc.util.MathCalc;
 import calc.util.Utility;
 import com.robotcontrol.calc.contouringControl.entities.Point;
-import exc.BoundsViolation;
-import exc.ImpossibleToImplement;
-import exc.WrongExtension;
-import exc.WrongInputData;
+import com.robotcontrol.exc.BoundsViolation;
+import com.robotcontrol.exc.ImpossibleToImplement;
+import com.robotcontrol.exc.WrongExtension;
+import com.robotcontrol.exc.WrongInputData;
 
 import java.io.File;
 import java.io.IOException;
@@ -146,7 +146,6 @@ public class Path {
             gCode = chooseGCode(dataFromList.get(i));
             if (gCode != null) {
                 gCodes.add(gCode);
-                System.out.println("createGcodes " + i + " " + dataFromList.size());
             }
         }
         return gCodes;
@@ -435,7 +434,6 @@ public class Path {
         for (int i = 0; i < gCodes.size(); i++) {
             gCodes.get(i).calculate(startTime);
             if (gCodes.get(i).getGCodePath() != null) {
-                System.out.println("calculate " + i + " " + gCodes.size());
                 fullPath.addAll(gCodes.get(i).getGCodePath());
             }
             startTime = gCodes.get(i).getFinalTime();
@@ -462,7 +460,7 @@ public class Path {
         gCodes = initializeGCodePath(gCodes);
         this.fullPath = calculateGCodes(gCodes, fullPath);
         this.gCodes = gCodes;
-        this.steppersPath = makeStepperPath(this.fullPath);
+//        this.steppersPath = makeStepperPath(this.fullPath);
         this.fullTime = fullPath.get(fullPath.size() - 1).getTime();
     }
 

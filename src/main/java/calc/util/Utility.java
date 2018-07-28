@@ -4,8 +4,8 @@ import com.robotcontrol.calc.DHParameters.SCARADH;
 import calc.GCode.GCodeType;
 import calc.data.Constants;
 import com.robotcontrol.calc.contouringControl.entities.Point;
-import exc.BoundsViolation;
-import exc.WrongExtension;
+import com.robotcontrol.exc.BoundsViolation;
+import com.robotcontrol.exc.WrongExtension;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -170,32 +170,29 @@ public class Utility {
     }
 
     public static String makeG01String(double[] finalCoords, double velocity) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("G01 X");
-        stringBuilder.append(finalCoords[0]);
-        stringBuilder.append(" Y");
-        stringBuilder.append(finalCoords[1]);
-        stringBuilder.append(" Z");
-        stringBuilder.append(finalCoords[2]);
-        stringBuilder.append(" F");
-        stringBuilder.append(velocity * 60);
-        return stringBuilder.toString();
+        return "G01 X" +
+                finalCoords[0] +
+                " Y" +
+                finalCoords[1] +
+                " Z" +
+                finalCoords[2] +
+                " F" +
+                velocity;
     }
 
     public static String makeG02String(double[] finalCoords, double radius,
                                        double velocity){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("G02 X");
-        stringBuilder.append(finalCoords[0]);
-        stringBuilder.append(" Y");
-        stringBuilder.append(finalCoords[1]);
-        stringBuilder.append(" Z");
-        stringBuilder.append(finalCoords[2]);
-        stringBuilder.append(" R");
-        stringBuilder.append(radius);
-        stringBuilder.append(" F");
-        stringBuilder.append(velocity * 60);
-        return stringBuilder.toString();
+        String stringBuilder = "G02 X" +
+                finalCoords[0] +
+                " Y" +
+                finalCoords[1] +
+                " Z" +
+                finalCoords[2] +
+                " R" +
+                radius +
+                " F" +
+                velocity;
+        return stringBuilder;
     }
 
     public static String makeG03String(double[] finalCoords, double radius,

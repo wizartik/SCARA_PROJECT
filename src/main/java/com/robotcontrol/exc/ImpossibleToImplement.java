@@ -1,4 +1,4 @@
-package exc;
+package com.robotcontrol.exc;
 
 /**
  * This exception describes situation when specified process cant be

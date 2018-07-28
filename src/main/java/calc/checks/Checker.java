@@ -5,7 +5,7 @@ import com.robotcontrol.calc.contouringControl.entities.Point;
 import calc.data.Constants;
 import calc.data.Dynamic;
 import calc.util.MathCalc;
-import exc.BoundsViolation;
+import com.robotcontrol.exc.BoundsViolation;
 
 public class Checker {
 

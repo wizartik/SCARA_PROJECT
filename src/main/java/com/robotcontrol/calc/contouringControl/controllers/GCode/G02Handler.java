@@ -5,8 +5,8 @@ import calc.util.MathCalc;
 import calc.util.Utility;
 import com.robotcontrol.calc.contouringControl.entities.GCode.AngularGCode;
 import com.robotcontrol.calc.contouringControl.entities.Point;
-import exc.BoundsViolation;
-import exc.ImpossibleToImplement;
+import com.robotcontrol.exc.BoundsViolation;
+import com.robotcontrol.exc.ImpossibleToImplement;
 
 import java.util.Arrays;
 
@@ -19,7 +19,7 @@ class G02Handler {
     /**
      * Initializes data needed to calculate path.
      */
-    private static void initialize(AngularGCode gCode) {
+    static void initialize(AngularGCode gCode) {
 
         gCode.init();
 

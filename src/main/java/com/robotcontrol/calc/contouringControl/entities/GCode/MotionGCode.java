@@ -3,6 +3,8 @@ package com.robotcontrol.calc.contouringControl.entities.GCode;
 import com.robotcontrol.calc.contouringControl.entities.Point;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class MotionGCode extends GCode{
 
@@ -149,5 +151,47 @@ public class MotionGCode extends GCode{
 
     public void setFinalAngVelocities(double[] finalAngVelocities) {
         this.finalAngVelocities = finalAngVelocities;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MotionGCode)) return false;
+        if (!super.equals(o)) return false;
+        MotionGCode that = (MotionGCode) o;
+        return Double.compare(that.getStaticVelocity(), getStaticVelocity()) == 0 &&
+                Double.compare(that.getAcceleration(), getAcceleration()) == 0 &&
+                Double.compare(that.getDistance(), getDistance()) == 0 &&
+                Double.compare(that.getStartVelocity(), getStartVelocity()) == 0 &&
+                Double.compare(that.getFinalVelocity(), getFinalVelocity()) == 0 &&
+                Arrays.equals(getFinalPosition(), that.getFinalPosition()) &&
+                Arrays.equals(getStartAngVelocities(), that.getStartAngVelocities()) &&
+                Arrays.equals(getFinalAngVelocities(), that.getFinalAngVelocities()) &&
+                Objects.equals(getgCodePath(), that.getgCodePath());
+    }
+
+    @Override
+    public int hashCode() {
+
+        int result = Objects.hash(super.hashCode(), getStaticVelocity(), getAcceleration(), getDistance(), getStartVelocity(), getFinalVelocity(), getgCodePath());
+        result = 31 * result + Arrays.hashCode(getFinalPosition());
+        result = 31 * result + Arrays.hashCode(getStartAngVelocities());
+        result = 31 * result + Arrays.hashCode(getFinalAngVelocities());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MotionGCode{" +
+                "finalPosition=" + Arrays.toString(finalPosition) +
+                ", startAngVelocities=" + Arrays.toString(startAngVelocities) +
+                ", finalAngVelocities=" + Arrays.toString(finalAngVelocities) +
+                ", staticVelocity=" + staticVelocity +
+                ", acceleration=" + acceleration +
+                ", distance=" + distance +
+                ", startVelocity=" + startVelocity +
+                ", finalVelocity=" + finalVelocity +
+                ", gCodePath=" + gCodePath +
+                "} " + super.toString();
     }
 }

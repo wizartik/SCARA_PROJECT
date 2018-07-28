@@ -1,22 +1,20 @@
 package com.robotcontrol.calc.contouringControl.controllers.GCode;
 
 import calc.util.MathCalc;
-import com.robotcontrol.calc.contouringControl.entities.GCode.AngularGCode;
-import com.robotcontrol.calc.contouringControl.entities.GCode.LinearGCode;
-import com.robotcontrol.calc.contouringControl.entities.GCode.MotionGCode;
+import com.robotcontrol.calc.contouringControl.entities.GCode.*;
 import com.robotcontrol.calc.contouringControl.entities.Point;
-import exc.BoundsViolation;
-import exc.ImpossibleToImplement;
+import com.robotcontrol.exc.BoundsViolation;
+import com.robotcontrol.exc.ImpossibleToImplement;
 
 import java.util.ArrayList;
 
 public class GCodeController {
 
-    public static void calcPath(MotionGCode gCode, double startTime) throws
+    public static void calcPath(GCode gCode, double startTime) throws
             BoundsViolation, ImpossibleToImplement {
 
-        if (gCode.getGCodeType() != null){
-            makeEmptyPath(gCode);
+        if (gCode.getGCodeType() != null && gCode instanceof MotionGCode){
+            makeEmptyPath((MotionGCode) gCode);
             switch (gCode.getGCodeType()){
                 case G00:
                     G00Handler.calcPath((LinearGCode) gCode, startTime);
@@ -39,5 +37,17 @@ public class GCodeController {
                 gCode.getVelocity()) * 1.2);
         ArrayList<Point> path = new ArrayList<>(pointsNumber);
         gCode.setgCodePath(path);
+    }
+
+    public static void initialize(GCode gCode){
+        if (gCode instanceof LinearGCode){
+            G01Handler.initialize((LinearGCode) gCode);
+        } else if (gCode instanceof AngularGCode){
+            if (gCode.getGCodeType() == GCodeType.G02){
+                G02Handler.initialize((AngularGCode) gCode);
+            } else if (gCode.getGCodeType() == GCodeType.G03){
+                G03Handler.initialize((AngularGCode) gCode);
+            }
+        }
     }
 }

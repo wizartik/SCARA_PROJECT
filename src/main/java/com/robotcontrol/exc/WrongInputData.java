@@ -1,10 +1,11 @@
-package exc;
+package com.robotcontrol.exc;
 
 /**
- * This exception is thrown if the point is out of the allowed bounds.
+ * This exception is thrown when line in G code has wrong data.
  */
-public class BoundsViolation extends Exception{
-    String gCode;
+public class WrongInputData extends Exception {
+
+    private String gCode;
 
     /**
      * Constructs a new exception with the specified detail message.  The
@@ -14,7 +15,7 @@ public class BoundsViolation extends Exception{
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public BoundsViolation(String message, String gCode) {
+    public WrongInputData(String message, String gCode) {
         super(message);
         this.gCode = gCode;
     }

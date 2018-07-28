@@ -1,5 +1,8 @@
 package com.robotcontrol.calc.contouringControl.entities.GCode;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class GCode {
 
     private double startTime;
@@ -106,5 +109,40 @@ public class GCode {
 
     public void setgCodeType(GCodeType gCodeType) {
         this.gCodeType = gCodeType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GCode)) return false;
+        GCode gCode1 = (GCode) o;
+        return Double.compare(gCode1.getStartTime(), getStartTime()) == 0 &&
+                Double.compare(gCode1.getFinalTime(), getFinalTime()) == 0 &&
+                Double.compare(gCode1.getPreviousVelocity(), getPreviousVelocity()) == 0 &&
+                Double.compare(gCode1.getNextVelocity(), getNextVelocity()) == 0 &&
+                Arrays.equals(getStartPosition(), gCode1.getStartPosition()) &&
+                Objects.equals(gCode, gCode1.gCode) &&
+                gCodeType == gCode1.gCodeType;
+    }
+
+    @Override
+    public int hashCode() {
+
+        int result = Objects.hash(getStartTime(), getFinalTime(), getPreviousVelocity(), getNextVelocity(), gCode, gCodeType);
+        result = 31 * result + Arrays.hashCode(getStartPosition());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GCode{" +
+                "startTime=" + startTime +
+                ", finalTime=" + finalTime +
+                ", startPosition=" + Arrays.toString(startPosition) +
+                ", previousVelocity=" + previousVelocity +
+                ", nextVelocity=" + nextVelocity +
+                ", gCode='" + gCode + '\'' +
+                ", gCodeType=" + gCodeType +
+                '}';
     }
 }

@@ -2,8 +2,8 @@ package com.robotcontrol.calc.contouringControl.controllers.GCode;
 
 import calc.data.Constants;
 import com.robotcontrol.calc.contouringControl.entities.GCode.LinearGCode;
-import exc.BoundsViolation;
-import exc.ImpossibleToImplement;
+import com.robotcontrol.exc.BoundsViolation;
+import com.robotcontrol.exc.ImpossibleToImplement;
 
 class G00Handler {
     static void calcPath(LinearGCode gCode, double startTime) throws

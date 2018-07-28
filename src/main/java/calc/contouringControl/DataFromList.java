@@ -2,7 +2,7 @@ package calc.contouringControl;
 
 import calc.GCode.GCodeType;
 import calc.data.Dynamic;
-import exc.WrongInputData;
+import com.robotcontrol.exc.WrongInputData;
 
 import java.util.ArrayList;
 import java.util.Arrays;

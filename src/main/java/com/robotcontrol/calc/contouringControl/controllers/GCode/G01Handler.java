@@ -4,8 +4,8 @@ import calc.data.Constants;
 import calc.util.MathCalc;
 import calc.util.Utility;
 import com.robotcontrol.calc.contouringControl.entities.GCode.LinearGCode;
-import exc.BoundsViolation;
-import exc.ImpossibleToImplement;
+import com.robotcontrol.exc.BoundsViolation;
+import com.robotcontrol.exc.ImpossibleToImplement;
 
 import static java.lang.Math.abs;
 
@@ -20,7 +20,7 @@ class G01Handler {
     /**
      * Initializes data needed to calculate path.
      */
-    private static void initialize(LinearGCode gCode) {
+    static void initialize(LinearGCode gCode) {
 
         gCode.init();
 

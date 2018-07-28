@@ -5,7 +5,7 @@ import calc.checks.Checker;
 import calc.data.Constants;
 import calc.util.MathCalc;
 import calc.util.Utility;
-import exc.WrongInputData;
+import com.robotcontrol.exc.WrongInputData;
 
 import java.util.Arrays;
 

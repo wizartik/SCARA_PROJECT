@@ -1,7 +1,7 @@
 package com.robotcontrol.util;
 
 import calc.data.Constants;
-import exc.WrongExtension;
+import com.robotcontrol.exc.WrongExtension;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class FilesHandler {
      */
     public static ArrayList<String> gCodeFileToList(File file) throws
             WrongExtension, IOException {
-        ArrayList<String> GCode;
+        ArrayList<String> gCode;
 
         String fileName = file.getName();
 
@@ -33,12 +33,13 @@ public class FilesHandler {
         }
 
         if (checkExtension(extension)) {
-            GCode = fileToList(file);
+            gCode = fileToList(file);
         } else {
             throw new WrongExtension(extension);
         }
 
-        return GCode;
+        gCode.trimToSize();
+        return gCode;
     }
 
     /**
