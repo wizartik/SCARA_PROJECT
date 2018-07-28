@@ -2,8 +2,8 @@ package com.robotcontrol.calc.contouringControl.entities.GCode;
 
 import com.robotcontrol.calc.contouringControl.entities.Point;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class MotionGCode extends GCode{
@@ -27,7 +27,7 @@ public class MotionGCode extends GCode{
     //end with this velocity
     private double finalVelocity;
 
-    private ArrayList<Point> gCodePath = new ArrayList<>();
+    private List<Point> gCodePath;
 
     public MotionGCode() {
     }
@@ -79,14 +79,6 @@ public class MotionGCode extends GCode{
         return distance;
     }
 
-    /**
-     * Should be initialized first by initialize().
-     *
-     * @return full path of the current GCode in Points.
-     */
-    public ArrayList<Point> getgCodePath() {
-        return gCodePath;
-    }
 
     public double getStaticVelocity() {
         return staticVelocity;
@@ -127,10 +119,6 @@ public class MotionGCode extends GCode{
         this.finalVelocity = finalVelocity;
     }
 
-    public void setgCodePath(ArrayList<Point> gCodePath) {
-        this.gCodePath = gCodePath;
-    }
-
     /**
      * @return start angular velocities of the current G code.
      */
@@ -151,6 +139,14 @@ public class MotionGCode extends GCode{
 
     public void setFinalAngVelocities(double[] finalAngVelocities) {
         this.finalAngVelocities = finalAngVelocities;
+    }
+
+    public List<Point> getgCodePath() {
+        return gCodePath;
+    }
+
+    public void setgCodePath(List<Point> gCodePath) {
+        this.gCodePath = gCodePath;
     }
 
     @Override

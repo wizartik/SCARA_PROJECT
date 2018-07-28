@@ -1,17 +1,20 @@
 package com.robotcontrol.calc.contouringControl.controllers.GCode;
 
-import calc.data.Constants;
-import calc.util.MathCalc;
-import calc.util.Utility;
 import com.robotcontrol.calc.contouringControl.entities.GCode.LinearGCode;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.exc.ImpossibleToImplement;
+import com.robotcontrol.util.Utility;
+import com.robotcontrol.util.math.Converter;
+import com.robotcontrol.util.math.Geometry;
+import com.robotcontrol.util.math.Physics;
 
+import static com.robotcontrol.parameters.constant.Motion.MAX_ACCELERATION;
+import static com.robotcontrol.parameters.constant.Motion.TIME_GAP;
 import static java.lang.Math.abs;
 
 class G01Handler {
 
-    static void calcPath(LinearGCode gCode, double startTime)
+    static void calcPath(LinearGCode gCode, long startTime)
             throws BoundsViolation, ImpossibleToImplement {
         initialize(gCode);
         calculate(gCode, startTime);
@@ -24,16 +27,16 @@ class G01Handler {
 
         gCode.init();
 
-        gCode.setStartVelocity(MathCalc.makeUtmostVelocity(gCode.getStaticVelocity(), gCode.getPreviousVelocity()));
+        gCode.setStartVelocity(Physics.makeUtmostVelocity(gCode.getStaticVelocity(), gCode.getPreviousVelocity()));
 
-        gCode.setFinalVelocity(MathCalc.makeUtmostVelocity(gCode.getStaticVelocity(), gCode.getNextVelocity()));
+        gCode.setFinalVelocity(Physics.makeUtmostVelocity(gCode.getStaticVelocity(), gCode.getNextVelocity()));
 
-        gCode.setStartAngVelocities(MathCalc.makeAngVelocities(
+        gCode.setStartAngVelocities(Physics.makeAngVelocities(
                 gCode.getAxisDirections(),
                 gCode.getStartVelocity(),
                 gCode.getStartPosition()));
 
-        gCode.setFinalAngVelocities(MathCalc.makeAngVelocities(
+        gCode.setFinalAngVelocities(Physics.makeAngVelocities(
                 gCode.getAxisDirections(),
                 gCode.getFinalVelocity(),
                 gCode.getFinalPosition()));
@@ -42,12 +45,12 @@ class G01Handler {
     /**
      * Generates G code path of points.
      */
-    private static void calculate(LinearGCode gCode, double startTime) throws
+    private static void calculate(LinearGCode gCode, long startTime) throws
             ImpossibleToImplement,
             BoundsViolation {
         gCode.setStartTime(startTime);
         makeGCodePath(gCode);
-        double finalTime = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getTime();
+        long finalTime = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getTime();
         gCode.setFinalTime(finalTime);
     }
 
@@ -79,11 +82,11 @@ class G01Handler {
         double fullLength = gCode.getDistance();
 
 
-        double accLength = MathCalc.accLength(gCode.getStartVelocity(),
+        double accLength = Physics.accLength(gCode.getStartVelocity(),
                 gCode.getStaticVelocity(), gCode.getAcceleration());
 
 
-        double decLength = MathCalc.accLength(gCode.getStaticVelocity(),
+        double decLength = Physics.accLength(gCode.getStaticVelocity(),
                 gCode.getFinalVelocity(), gCode.getAcceleration());
 
 
@@ -98,18 +101,16 @@ class G01Handler {
      * Calculates full path of GCode by concatenating dynamic and static parts.
      *
      */
-    private static void fullPath(LinearGCode gCode)
-            throws BoundsViolation {
+    private static void fullPath(LinearGCode gCode) {
 
         makeDynamicPath(gCode.getStartTime(), gCode.getStartPosition(),
                 gCode.getAcceleration(), gCode.getStartVelocity(),
                 gCode.getStaticVelocity(), gCode);
 
-        double lastTime = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getTime();
+        long lastTime = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getTime();
         double[] lastPosition = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getPosition();
 
         makeStaticPath(lastTime, lastPosition, gCode);
-
         lastTime = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getTime();
         lastPosition = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getPosition();
 
@@ -123,7 +124,7 @@ class G01Handler {
      *
      */
     private static void incompletePath(LinearGCode gCode) throws
-            ImpossibleToImplement, BoundsViolation {
+            ImpossibleToImplement {
 
         double time;
         if (gCode.getStartVelocity() != gCode.getFinalVelocity()) {
@@ -132,10 +133,10 @@ class G01Handler {
             double acceleration = abs(gCode.getStartVelocity() -
                     gCode.getFinalVelocity()) / time;
 
-            if (acceleration > Constants.MAX_ACCELERATION) {
+            if (acceleration > MAX_ACCELERATION) {
                 throw new ImpossibleToImplement(("specified acceleration is" +
                         " higher than max allowed " +
-                        acceleration + " > " + Constants.MAX_ACCELERATION),
+                        acceleration + " > " + MAX_ACCELERATION),
                         gCode.getGCode());
             }
             gCode.setAcceleration(acceleration);
@@ -143,7 +144,7 @@ class G01Handler {
                     acceleration, gCode.getStartVelocity(),
                     gCode.getFinalVelocity(), gCode);
         } else {
-            gCode.setAcceleration(Constants.MAX_ACCELERATION);
+            gCode.setAcceleration(MAX_ACCELERATION);
 
             time = Math.sqrt(gCode.getDistance() / gCode.getAcceleration());
             double maxVelocity = time * gCode.getAcceleration();
@@ -152,7 +153,7 @@ class G01Handler {
                     gCode.getStartPosition(), gCode.getAcceleration(),
                     gCode.getStartVelocity(), maxVelocity, gCode);
 
-            double lastTime = gCode.getgCodePath()
+            long lastTime = gCode.getgCodePath()
                     .get(gCode.getgCodePath().size() - 1).getTime();
             double[] lastPosition = gCode.getgCodePath()
                     .get(gCode.getgCodePath().size() - 1).getPosition();
@@ -160,7 +161,6 @@ class G01Handler {
             makeDynamicPath(lastTime, lastPosition,
                     gCode.getAcceleration(), maxVelocity, gCode
                             .getFinalVelocity(), gCode);
-
         }
     }
 
@@ -177,57 +177,52 @@ class G01Handler {
      * @param startVelocity     initial velocity of the current path in cm/s.
      * @param finalVelocity     final velocity of the current path in cm/s.
      */
-    private static void makeDynamicPath(double pathStartTime,
+    private static void makeDynamicPath(long pathStartTime,
                                         double[] pathStartPosition, double acceleration,
-                                        double startVelocity, double finalVelocity, LinearGCode gCode)
-            throws BoundsViolation {
+                                        double startVelocity, double finalVelocity, LinearGCode gCode) {
         double[] axisDirections = gCode.getAxisDirections();
 
-        double fullTime = MathCalc.accTimeInUs(startVelocity, finalVelocity,
+        double fullTime = Physics.accTimeInUs(startVelocity, finalVelocity,
                 acceleration);
-        double pointsNumber = (fullTime / Constants.TIME_GAP);
+        double pointsNumber = (fullTime / TIME_GAP);
         int counter = (int) pointsNumber;
         double remainder = pointsNumber - counter;
 
         if (startVelocity > finalVelocity) acceleration = -acceleration;
 
-        double[] axisAccelerations = MathCalc.velocityCustomize(axisDirections,
+        double[] axisAccelerations = Physics.velocityCustomize(axisDirections,
                 acceleration);
-        double[] axisStartVelocities = MathCalc.velocityCustomize(axisDirections,
+        double[] axisStartVelocities = Physics.velocityCustomize(axisDirections,
                 startVelocity);
 
-        double t = 0;
+        long t = 0;
         for (int i = 0; i <= counter; i++) {
 
-            double currentVelocity = startVelocity
-                    + acceleration * MathCalc.toSec(t);
             double x = pathStartPosition[0]
-                    + axisStartVelocities[0] * MathCalc.toSec(t)
-                    + axisAccelerations[0] * Math.pow(MathCalc.toSec(t), 2)
+                    + axisStartVelocities[0] * Converter.toSec(t)
+                    + axisAccelerations[0] * Math.pow(Converter.toSec(t), 2)
                     / 2;
 
             double y = pathStartPosition[1]
-                    + axisStartVelocities[1] * MathCalc.toSec(t)
-                    + axisAccelerations[1] * Math.pow(MathCalc.toSec(t), 2)
+                    + axisStartVelocities[1] * Converter.toSec(t)
+                    + axisAccelerations[1] * Math.pow(Converter.toSec(t), 2)
                     / 2;
 
             double z = pathStartPosition[2]
-                    + axisStartVelocities[2] * MathCalc.toSec(t)
-                    + axisAccelerations[2] * Math.pow(MathCalc.toSec(t), 2)
+                    + axisStartVelocities[2] * Converter.toSec(t)
+                    + axisAccelerations[2] * Math.pow(Converter.toSec(t), 2)
                     / 2;
 
             double[] position = {x, y, z};
 
-            double currentTime = gCode.getStartTime() + pathStartTime + t;
-            gCode.getgCodePath().add(Utility.makePoint(position, axisDirections,
-                    currentVelocity, acceleration,
-                    currentTime, gCode.getGCode()));
+            long currentTime = pathStartTime + t;
+            gCode.getgCodePath().add(Utility.makePoint(position, currentTime));
 
             //to calculate last point which has different time gap
             if (i == counter - 1) {
-                t += Constants.TIME_GAP * (remainder + 1);
+                t += TIME_GAP * (remainder + 1);
             } else {
-                t += Constants.TIME_GAP;
+                t += TIME_GAP;
             }
         }
     }
@@ -241,18 +236,17 @@ class G01Handler {
      * @param pathStartPosition start position for the path that
      *                          will be calculated.
      */
-    private static void makeStaticPath(double pathStartTime,
+    private static void makeStaticPath(long pathStartTime,
                     double[] pathStartPosition,
-                    LinearGCode gCode)
-            throws BoundsViolation {
+                    LinearGCode gCode) {
 
         //length of the static part
-        double pathLength = MathCalc.linearLength(pathStartPosition,
+        double pathLength = Geometry.linearLength(pathStartPosition,
                 gCode.getFinalPosition())
-                - MathCalc.accLength(gCode.getStaticVelocity(), gCode.getFinalVelocity(),
+                - Physics.accLength(gCode.getStaticVelocity(), gCode.getFinalVelocity(),
                 gCode.getAcceleration());
 
-        double pointsNumber = MathCalc.pointsNumber(pathLength, gCode.getStaticVelocity());
+        double pointsNumber = Physics.pointsNumber(pathLength, gCode.getStaticVelocity());
 
         int counter = (int) pointsNumber;
         //remainder of the rounding
@@ -260,25 +254,23 @@ class G01Handler {
 
         double[] axisDirections = gCode.getAxisDirections();
 
-        double t = 0;
+        long t = 0;
         for (int i = 0; i <= counter; i++) {
-            double[] position = {axisDirections[0] * MathCalc.toSec(t)
+            double[] position = {axisDirections[0] * Converter.toSec(t)
                     + pathStartPosition[0],
-                    axisDirections[1] * MathCalc.toSec(t)
+                    axisDirections[1] * Converter.toSec(t)
                             + pathStartPosition[1],
-                    axisDirections[2] * MathCalc.toSec(t)
+                    axisDirections[2] * Converter.toSec(t)
                             + pathStartPosition[2]};
 
-            double currentTime = gCode.getStartTime() + pathStartTime + t;
-            gCode.getgCodePath().add(Utility.makePoint(position, axisDirections,
-                    gCode.getStaticVelocity(),
-                    0, currentTime, gCode.getGCode()));
+            long currentTime = pathStartTime + t;
+            gCode.getgCodePath().add(Utility.makePoint(position, currentTime));
 
             //to calculate last point which has different time gap
             if (i == counter - 1) {
-                t += Constants.TIME_GAP * (remainder + 1);
+                t += TIME_GAP * (remainder + 1);
             } else {
-                t += Constants.TIME_GAP;
+                t += TIME_GAP;
             }
         }
     }

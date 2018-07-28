@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class GCode {
 
-    private double startTime;
-    private double finalTime;
+    private long startTime;
+    private long finalTime;
 
     private double[] startPosition;
 
@@ -35,14 +35,14 @@ public class GCode {
     /**
      * @return start time of the current G code in μs.
      */
-    public double getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
     /**
      * @return final time of the current G code in μs.
      */
-    public double getFinalTime() {
+    public long getFinalTime() {
         return finalTime;
     }
 
@@ -83,11 +83,11 @@ public class GCode {
         return gCodeType;
     }
 
-    public void setStartTime(double startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 
-    public void setFinalTime(double finalTime) {
+    public void setFinalTime(long finalTime) {
         this.finalTime = finalTime;
     }
 

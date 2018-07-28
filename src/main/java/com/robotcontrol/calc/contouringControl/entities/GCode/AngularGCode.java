@@ -1,6 +1,6 @@
 package com.robotcontrol.calc.contouringControl.entities.GCode;
 
-import calc.util.MathCalc;
+import com.robotcontrol.util.math.Geometry;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -20,7 +20,7 @@ public class AngularGCode extends MotionGCode {
                         double radius) {
         super(startPosition, finalPosition, staticVelocity, acceleration, gCode, gCodeType);
         this.radius = radius;
-        setDistance(MathCalc.angularLength(startPosition, finalPosition, radius));
+        setDistance(Geometry.angularLength(startPosition, finalPosition, radius));
     }
 
     public double getRadius() {
@@ -40,7 +40,8 @@ public class AngularGCode extends MotionGCode {
     }
 
     public void init(){
-        setDistance(MathCalc.angularLength(getStartPosition(), getFinalPosition(), radius));
+        setDistance(Geometry.angularLength(getStartPosition(), getFinalPosition(),
+                radius));
     }
 
     @Override

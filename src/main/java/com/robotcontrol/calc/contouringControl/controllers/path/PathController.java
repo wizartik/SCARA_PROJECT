@@ -1,25 +1,31 @@
 package com.robotcontrol.calc.contouringControl.controllers.path;
 
 
-import calc.data.Constants;
-import calc.util.MathCalc;
-import calc.util.Utility;
+import com.robotcontrol.parameters.constant.ConstUtil;
+import com.robotcontrol.util.Utility;
 import com.robotcontrol.calc.checks.Checker;
 import com.robotcontrol.calc.contouringControl.controllers.GCode.GCodeController;
 import com.robotcontrol.calc.contouringControl.entities.GCode.*;
 import com.robotcontrol.calc.contouringControl.entities.path.Path;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.exc.ImpossibleToImplement;
+import com.robotcontrol.util.math.Converter;
+import com.robotcontrol.util.math.Geometry;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.robotcontrol.parameters.constant.Safety.MAX_VELOCITY_DIFFERENCE;
 
 public class PathController {
 
-    public static Path makePath(ArrayList<GCode> gCodes) throws BoundsViolation, ImpossibleToImplement {
+    public static Path makePath(List<GCode> gCodes) throws BoundsViolation, ImpossibleToImplement {
         Path path = new Path();
         path.setgCodeList(gCodes);
 
         processPath(path);
+
+        path.setFullTime(path.getgCodeList().get(path.getgCodeList().size() - 1).getFinalTime());
 
         return path;
     }
@@ -57,7 +63,7 @@ public class PathController {
      *
      * @param path path needed to be processed.
      */
-    private static void adjustDistances(Path path) {
+    private static void adjustDistances(Path path) throws BoundsViolation {
         int index = -1;
         boolean adjust = false;
         ArrayList<GCode> newGCodes = new ArrayList<>(path.getgCodeList().size());
@@ -72,8 +78,8 @@ public class PathController {
                     finalCoords = ((MotionGCode) path.getgCodeList().get(i))
                             .getFinalPosition();
 
-                    double length = MathCalc.linearLength(startCoords, finalCoords);
-                    if (length > Constants.MIN_LENGTH) {
+                    double length = Geometry.linearLength(startCoords, finalCoords);
+                    if (length > ConstUtil.MIN_LENGTH) {
 
                         GCode gCode = makeGCode(startCoords, finalCoords,
                                 path.getgCodeList().get(i));
@@ -82,7 +88,7 @@ public class PathController {
                         adjust = false;
                     }
                 } else if (((MotionGCode) path.getgCodeList().get(i))
-                        .getDistance() >= Constants.MIN_LENGTH) {
+                        .getDistance() >= ConstUtil.MIN_LENGTH) {
                     addGCode(path.getgCodeList().get(i), newGCodes, path);
                 } else {
                     index = i;
@@ -102,7 +108,8 @@ public class PathController {
      * @param gCode  G code to be added.
      * @param gCodes list of the G codes.
      */
-    private static void addGCode(GCode gCode, ArrayList<GCode> gCodes, Path path) {
+    private static void addGCode(GCode gCode, ArrayList<GCode> gCodes, Path path) throws BoundsViolation {
+        Checker.checkGCode(gCode);
         GCodeController.initialize(gCode);
         gCodes.add(gCode);
         path.setFullDistance(path.getFullDistance() + ((MotionGCode) gCode).getDistance());
@@ -118,7 +125,7 @@ public class PathController {
     private static GCode makeG01(double[] startCoords, double[] finalCoords,
                                  GCode gCode) {
         String gCodeLine = Utility.makeG01String(finalCoords,
-                MathCalc.toExternalVel(((MotionGCode) gCode).getStaticVelocity()));
+                Converter.toExternalVel(((MotionGCode) gCode).getStaticVelocity()));
 
         return new LinearGCode(startCoords, finalCoords,
                 ((MotionGCode) gCode).getStaticVelocity(),
@@ -139,7 +146,7 @@ public class PathController {
                                  GCode gCode) {
 
         String gCodeLine = Utility.makeG02String(finalCoords, ((AngularGCode) gCode).getRadius(),
-                MathCalc.toExternalVel(((AngularGCode) gCode).getStaticVelocity()));
+                Converter.toExternalVel(((AngularGCode) gCode).getStaticVelocity()));
 
         return new AngularGCode(startCoords,
                 finalCoords, ((MotionGCode) gCode).getStaticVelocity(), (
@@ -160,7 +167,7 @@ public class PathController {
                                  GCode gCode) {
 
         String gCodeLine = Utility.makeG03String(finalCoords, ((AngularGCode) gCode).getRadius(),
-                MathCalc.toExternalVel(((AngularGCode) gCode).getStaticVelocity()));
+                Converter.toExternalVel(((AngularGCode) gCode).getStaticVelocity()));
 
         return new AngularGCode(startCoords,
                 finalCoords, ((MotionGCode) gCode).getStaticVelocity(), (
@@ -191,7 +198,7 @@ public class PathController {
             // important arc or this G code don't cause big affect on whole
             // path and it will be enough to just follow predetermined final
             // coordinates and make it as line
-            boolean allowedDist = ((MotionGCode) gCode).getDistance() >= Constants.MIN_LENGTH;
+            boolean allowedDist = ((MotionGCode) gCode).getDistance() >= ConstUtil.MIN_LENGTH;
             if (gCodeType.equals(GCodeType.G02) && allowedDist) {
                 buff = makeG02(startCoords, finalCoords, gCode);
             } else if (gCodeType.equals(GCodeType.G03) && allowedDist) {
@@ -211,7 +218,7 @@ public class PathController {
      *
      * @param gCodes bunch of G codes need to be processed.
      */
-    private static void adjustHalts(ArrayList<GCode> gCodes) {
+    private static void adjustHalts(List<GCode> gCodes) {
 
         double[] previousVelocities = new double[3];
 
@@ -241,7 +248,7 @@ public class PathController {
      */
     private static boolean needToMakeHalt(double[] previousVel, double[] vel) {
         for (int i = 0; i < previousVel.length; i++) {
-            if (previousVel[i] - vel[i] > Constants.MAX_VELOCITY_DIFFERENCE) {
+            if (previousVel[i] - vel[i] > MAX_VELOCITY_DIFFERENCE) {
                 return true;
             }
         }
@@ -271,10 +278,9 @@ public class PathController {
      */
     private static void calculateGCodes(Path path)
             throws ImpossibleToImplement, BoundsViolation {
-        double startTime = 0;
+        long startTime = 0;
 
         for (int i = 0; i < path.getgCodeList().size(); i++) {
-            Checker.checkGCode(path.getgCodeList().get(i));
             GCodeController.calcPath(path.getgCodeList().get(i), startTime);
             startTime = path.getgCodeList().get(i).getFinalTime();
         }
@@ -292,6 +298,7 @@ public class PathController {
         adjustDistances(path);
         initializeGCodePath(path);
         adjustHalts(path.getgCodeList());
+
         calculateGCodes(path);
     }
 }

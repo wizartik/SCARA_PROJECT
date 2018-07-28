@@ -1,6 +1,6 @@
 package com.robotcontrol.exc;
 
-import calc.data.Constants;
+import com.robotcontrol.parameters.constant.ConstUtil;
 
 /**
  * This exception is thrown when file has wrong of forbidden extension.
@@ -28,8 +28,8 @@ public class WrongExtension extends Exception {
                     " is not a G code or is not supported.";
         }
         StringBuilder line = new StringBuilder();
-        for (int i = 0; i < Constants.ALLOWED_FILENAME_EXTENSIONS.length; i++) {
-            line.append(Constants.ALLOWED_FILENAME_EXTENSIONS[i]);
+        for (int i = 0; i < ConstUtil.ALLOWED_FILENAME_EXTENSIONS.length; i++) {
+            line.append(ConstUtil.ALLOWED_FILENAME_EXTENSIONS[i]);
             line.append("\n");
         }
         addMessage = line.toString();

@@ -3,14 +3,15 @@ package com.robotcontrol.calc.contouringControl.entities.path;
 import com.robotcontrol.calc.contouringControl.entities.GCode.GCode;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Path {
-    private ArrayList<GCode> gCodeList;
+    private List<GCode> gCodeList;
 
     private double fullDistance;
 
-    private double fullTime;
+    private long fullTime;
 
     public Path() {
     }
@@ -19,11 +20,11 @@ public class Path {
         this.gCodeList = gCodeList;
     }
 
-    public ArrayList<GCode> getgCodeList() {
+    public List<GCode> getgCodeList() {
         return gCodeList;
     }
 
-    public void setgCodeList(ArrayList<GCode> gCodeList) {
+    public void setgCodeList(List<GCode> gCodeList) {
         this.gCodeList = gCodeList;
     }
 
@@ -35,11 +36,11 @@ public class Path {
         this.fullDistance = fullDistance;
     }
 
-    public double getFullTime() {
+    public long getFullTime() {
         return fullTime;
     }
 
-    public void setFullTime(double fullTime) {
+    public void setFullTime(long fullTime) {
         this.fullTime = fullTime;
     }
 
@@ -62,8 +63,7 @@ public class Path {
     @Override
     public String toString() {
         return "Path{" +
-                "gCodeList=" + gCodeList +
-                ", fullDistance=" + fullDistance +
+                "fullDistance=" + fullDistance +
                 ", fullTime=" + fullTime +
                 '}';
     }

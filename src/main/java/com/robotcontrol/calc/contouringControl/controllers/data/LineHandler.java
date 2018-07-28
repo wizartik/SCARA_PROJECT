@@ -1,16 +1,19 @@
 package com.robotcontrol.calc.contouringControl.controllers.data;
 
-import calc.data.Constants;
-import calc.data.Dynamic;
-import calc.util.MathCalc;
-import calc.util.Utility;
+import com.robotcontrol.parameters.constant.ConstUtil;
+import com.robotcontrol.util.Utility;
 import com.robotcontrol.calc.contouringControl.entities.GCode.*;
 import com.robotcontrol.calc.contouringControl.entities.data.Container;
 import com.robotcontrol.exc.WrongInputData;
+import com.robotcontrol.util.math.Converter;
+import com.robotcontrol.util.math.Geometry;
 
 import java.util.Arrays;
 
 import static com.robotcontrol.calc.contouringControl.entities.GCode.GCodeType.GARBAGE;
+import static com.robotcontrol.parameters.constant.Motion.NORMAL_ACCELERATION;
+import static com.robotcontrol.parameters.constant.Motion.NORMAL_VELOCITY;
+import static com.robotcontrol.parameters.dynamic.Position.CURRENT_POSITION;
 
 class LineHandler {
 
@@ -33,10 +36,10 @@ class LineHandler {
         boolean zeroRadius = (container.getI() == 0.0 && container.getJ() == 0.0
                 && container.getRadius() == 0.0);
 
-        boolean wrongRadius = Math.abs(MathCalc.linearLength(container
+        boolean wrongRadius = Math.abs(Geometry.linearLength(container
                         .getStartPosition(),
                 container.getCenterPosition())
-                - MathCalc.linearLength(container.getFinalPosition(),
+                - Geometry.linearLength(container.getFinalPosition(),
                 container.getCenterPosition()))
                 > 10e-5;
 
@@ -78,14 +81,14 @@ class LineHandler {
     private static AngularGCode containerToAngularGCode(Container container){
         return new AngularGCode(container.getStartPosition(),
                 container.getFinalPosition(), container.getStaticVelocity(),
-                Constants.NORMAL_ACCELERATION, container.getLine(),
+                NORMAL_ACCELERATION, container.getLine(),
                 container.getgCodeType(), container.getRadius());
     }
 
     private static LinearGCode containerToLinearGCode(Container container){
         return new LinearGCode(container.getStartPosition(),
                 container.getFinalPosition(), container.getStaticVelocity(),
-                Constants.NORMAL_ACCELERATION, container.getLine(),
+                NORMAL_ACCELERATION, container.getLine(),
                 container.getgCodeType());
     }
 
@@ -139,15 +142,18 @@ class LineHandler {
             container.getCenterPosition()[1] = container.getStartPosition()[1]
                     + container.getJ();
 
-            container.setRadius(MathCalc.linearLength(container.getCenterPosition(),
+            container.setRadius(Geometry.linearLength(container.getCenterPosition(),
                     container.getStartPosition()));
         } else if (container.getRadius() > 0) {
             if (container.getgCodeType().equals(GCodeType.G02)) {
-                container.setCenterPosition(MathCalc.findCenterG02(container.getStartPosition(),
+
+                container.setCenterPosition(Geometry.findCenterG02(container.getStartPosition(),
                         container.getFinalPosition(),
                         container.getRadius()));
+
             } else if (container.getgCodeType().equals(GCodeType.G03)) {
-                container.setCenterPosition(MathCalc.findCenterG03(container.getStartPosition(),
+
+                container.setCenterPosition(Geometry.findCenterG03(container.getStartPosition(),
                         container.getFinalPosition(),
                         container.getRadius()));
             }
@@ -176,7 +182,7 @@ class LineHandler {
                 break;
             case 'X':
                 if (container.getgCodeType().equals(GCodeType.G04)) {
-                    container.setPauseInUs(MathCalc.toUSec(value));
+                    container.setPauseInUs(Converter.toUSec(value));
                 } else {
                     container.getFinalPosition()[0] = value;
                 }
@@ -188,7 +194,7 @@ class LineHandler {
                 container.getFinalPosition()[2] = value;
                 break;
             case 'F':
-                container.setStaticVelocity(MathCalc.toInternalVel(value));
+                container.setStaticVelocity(Converter.toInternalVel(value));
                 break;
             case 'R':
                 container.setRadius(value);
@@ -206,7 +212,7 @@ class LineHandler {
                 break;
             case 'P':
             case 'U':
-                container.setPauseInUs(MathCalc.toUSec(value));
+                container.setPauseInUs(Converter.toUSec(value));
                 break;
         }
         return circular;
@@ -218,8 +224,8 @@ class LineHandler {
      * @return true if known.
      */
     private static boolean isKnown(char c) {
-        for (int i = 0; i < Constants.KNOWN_COMMANDS.length; i++) {
-            if (c == Constants.KNOWN_COMMANDS[i]) {
+        for (int i = 0; i < ConstUtil.KNOWN_COMMANDS.length; i++) {
+            if (c == ConstUtil.KNOWN_COMMANDS[i]) {
                 return true;
             }
         }
@@ -256,14 +262,11 @@ class LineHandler {
     private static void prepareContainer(GCode gCode, Container container,
                                          String line){
         container.setLine(line);
-        container.setStaticVelocity(Constants.NORMAL_VELOCITY);
+        container.setStaticVelocity(NORMAL_VELOCITY);
         if (gCode == null){
-            container.setStartPosition(Arrays.copyOf(Dynamic
-                    .CURRENT_POSITION, Dynamic.CURRENT_POSITION.length));
-            container.setFinalPosition(Arrays.copyOf(Dynamic
-                    .CURRENT_POSITION, Dynamic.CURRENT_POSITION.length));
-            container.setCenterPosition(Arrays.copyOf(Dynamic
-                    .CURRENT_POSITION, Dynamic.CURRENT_POSITION.length));
+            container.setStartPosition(Arrays.copyOf(CURRENT_POSITION, CURRENT_POSITION.length));
+            container.setFinalPosition(Arrays.copyOf(CURRENT_POSITION, CURRENT_POSITION.length));
+            container.setCenterPosition(Arrays.copyOf(CURRENT_POSITION, CURRENT_POSITION.length));
         } else {
             container.setStartPosition(Arrays.copyOf(gCode.getStartPosition(),
                     gCode.getStartPosition().length));

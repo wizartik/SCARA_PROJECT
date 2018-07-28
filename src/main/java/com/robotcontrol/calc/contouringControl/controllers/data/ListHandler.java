@@ -1,18 +1,19 @@
 package com.robotcontrol.calc.contouringControl.controllers.data;
 
 import com.robotcontrol.calc.contouringControl.entities.GCode.GCode;
-import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.exc.WrongInputData;
+import org.magicwerk.brownies.collections.GapList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class ListHandler {
 
-    static ArrayList<GCode> makeGCodeList(ArrayList<String> source) throws WrongInputData, BoundsViolation {
-        ArrayList<GCode> result = new ArrayList<>(source.size());
+    static List<GCode> makeGCodeList(ArrayList<String> source) throws WrongInputData {
+        List<GCode> result = new GapList<>(source.size());
         makeData(source, result);
-        result.trimToSize();
-        if (result.size() == 0){
+        ((GapList<GCode>) result).trimToSize();
+        if (result.size() == 0) {
             throw new WrongInputData("Current G code path does not" +
                     " contain any GCode command.", "There are no" +
                     " commands.");
@@ -46,8 +47,8 @@ class ListHandler {
      *
      * @throws WrongInputData if line in G code has wrong data.
      */
-    private static void makeData(ArrayList<String> initialList,
-                                 ArrayList<GCode> result)
+    private static void makeData(List<String> initialList,
+                                 List<GCode> result)
             throws WrongInputData {
 
         GCode previousGCode = null;

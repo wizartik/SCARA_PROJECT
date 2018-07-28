@@ -1,6 +1,6 @@
 package com.robotcontrol.util;
 
-import calc.data.Constants;
+import com.robotcontrol.parameters.constant.ConstUtil;
 import com.robotcontrol.exc.WrongExtension;
 
 import java.io.*;
@@ -50,8 +50,8 @@ public class FilesHandler {
      */
     private static boolean checkExtension(String extension) {
 
-        for (int i = 0; i < Constants.ALLOWED_FILENAME_EXTENSIONS.length; i++) {
-            String allowed = Constants.ALLOWED_FILENAME_EXTENSIONS[i];
+        for (int i = 0; i < ConstUtil.ALLOWED_FILENAME_EXTENSIONS.length; i++) {
+            String allowed = ConstUtil.ALLOWED_FILENAME_EXTENSIONS[i];
             if (extension.equalsIgnoreCase(allowed)) {
                 return true;
             }

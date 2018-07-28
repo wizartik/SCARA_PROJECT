@@ -1,17 +1,22 @@
 package com.robotcontrol.calc.contouringControl.controllers.GCode;
 
-import calc.data.Constants;
-import calc.util.MathCalc;
-import calc.util.Utility;
+import com.robotcontrol.util.Utility;
 import com.robotcontrol.calc.contouringControl.entities.GCode.AngularGCode;
 import com.robotcontrol.calc.contouringControl.entities.Point;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.exc.ImpossibleToImplement;
+import com.robotcontrol.util.math.Converter;
+import com.robotcontrol.util.math.Geometry;
+import com.robotcontrol.util.math.Physics;
 
 import java.util.Arrays;
 
+import static com.robotcontrol.parameters.constant.Motion.MAX_ACCELERATION;
+import static com.robotcontrol.parameters.constant.Motion.TIME_GAP;
+
 class G03Handler {
-    static void calcPath(AngularGCode gCode, double startTime) throws BoundsViolation, ImpossibleToImplement {
+    static void calcPath(AngularGCode gCode, long startTime) throws
+            BoundsViolation, ImpossibleToImplement {
         initialize(gCode);
         calculate(gCode, startTime);
     }
@@ -24,26 +29,26 @@ class G03Handler {
 
         gCode.init();
 
-        gCode.setCenterPosition(MathCalc.findCenterG03(gCode.getStartPosition(),
+        gCode.setCenterPosition(Geometry.findCenterG03(gCode.getStartPosition(),
                 gCode.getFinalPosition(), gCode.getRadius()));
 
-        gCode.setStartVelocity(MathCalc.makeUtmostVelocity(gCode.getStaticVelocity(), gCode.getPreviousVelocity()));
-        gCode.setFinalVelocity(MathCalc.makeUtmostVelocity(gCode.getStaticVelocity(), gCode.getNextVelocity()));
+        gCode.setStartVelocity(Physics.makeUtmostVelocity(gCode.getStaticVelocity()
+                , gCode.getPreviousVelocity()));
+        gCode.setFinalVelocity(Physics.makeUtmostVelocity(gCode.getStaticVelocity(), gCode.getNextVelocity()));
 
         double[] axisStartDirections;
-        axisStartDirections = MathCalc.makeG03AxisDirections(gCode.getCenterPosition(),
+        axisStartDirections = Physics.makeG03AxisDirections(gCode.getCenterPosition(),
                 gCode.getStartPosition());
 
         double[] axisFinalDirections;
-        axisFinalDirections = MathCalc.makeG03AxisDirections(gCode.getCenterPosition(),
+        axisFinalDirections = Physics.makeG03AxisDirections(gCode.getCenterPosition(),
                 gCode.getFinalPosition());
 
 
-        gCode.setStartAngVelocities(MathCalc.makeAngVelocities(axisStartDirections,
+        gCode.setStartAngVelocities(Physics.makeAngVelocities(axisStartDirections,
                 gCode.getStartVelocity(), gCode.getStartPosition()));
 
-        gCode.setFinalAngVelocities(MathCalc.makeAngVelocities
-                (axisFinalDirections, gCode.getFinalVelocity(), gCode
+        gCode.setFinalAngVelocities(Physics.makeAngVelocities(axisFinalDirections, gCode.getFinalVelocity(), gCode
                         .getFinalPosition()));
 
     }
@@ -51,7 +56,7 @@ class G03Handler {
     /**
      * Generates G code path of points.
      */
-    public static void calculate(AngularGCode gCode, double startTime) throws
+    public static void calculate(AngularGCode gCode, long startTime) throws
             ImpossibleToImplement,
             BoundsViolation {
         gCode.setStartTime(startTime);
@@ -84,11 +89,11 @@ class G03Handler {
             ImpossibleToImplement,
             BoundsViolation {
 
-        double accLength = MathCalc.angleOfAcceleration(gCode.getStartVelocity(),
+        double accLength = Physics.angleOfAcceleration(gCode.getStartVelocity(),
                 gCode.getStaticVelocity(), gCode.getAcceleration(), gCode.getRadius())
                 * gCode.getRadius();
 
-        double decLength = MathCalc.angleOfAcceleration(gCode.getStaticVelocity(),
+        double decLength = Physics.angleOfAcceleration(gCode.getStaticVelocity(),
                 gCode.getFinalVelocity(), gCode.getAcceleration(), gCode.getRadius())
                 * gCode.getRadius();
 
@@ -103,13 +108,14 @@ class G03Handler {
      * Calculates full path of GCode by concatenating dynamic and static parts.
      *
      */
-    private static void fullPath(AngularGCode gCode) throws BoundsViolation {
+    private static void fullPath(AngularGCode gCode) {
 
         makeDynamicPath(gCode.getStartTime(), gCode.getStartPosition(),
                 gCode.getAcceleration(),
                 gCode.getStartVelocity(), gCode.getStaticVelocity(), gCode);
 
-        double lastTime = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getTime();
+        long lastTime = gCode.getgCodePath().get(gCode.getgCodePath().size() -
+                1).getTime();
         double[] lastPosition = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getPosition();
 
         makeStaticPath(lastTime, lastPosition, gCode);
@@ -128,7 +134,7 @@ class G03Handler {
      *
      */
     private static void incompletePath(AngularGCode gCode)
-            throws ImpossibleToImplement, BoundsViolation {
+            throws ImpossibleToImplement {
 
         double time;
         if (gCode.getStartVelocity() != gCode.getFinalVelocity()) {
@@ -138,10 +144,10 @@ class G03Handler {
             double acceleration = Math.abs(gCode.getStartVelocity() - gCode.getFinalVelocity())
                     / time;
 
-            if (acceleration > Constants.MAX_ACCELERATION) {
+            if (acceleration > MAX_ACCELERATION) {
                 throw new ImpossibleToImplement(("specified acceleration is" +
                         " higher than max allowed " +
-                        acceleration + " > " + Constants.MAX_ACCELERATION),
+                        acceleration + " > " + MAX_ACCELERATION),
                         gCode.getGCode());
             }
             gCode.setAcceleration(acceleration);
@@ -150,7 +156,7 @@ class G03Handler {
                     gCode.getAcceleration(), gCode.getStartVelocity(),
                     gCode.getFinalVelocity(), gCode);
         } else {
-            gCode.setAcceleration(Constants.MAX_ACCELERATION);
+            gCode.setAcceleration(MAX_ACCELERATION);
 
             time = Math.sqrt(gCode.getDistance() / gCode.getAcceleration());
             double maxVelocity = time * gCode.getAcceleration();
@@ -159,7 +165,8 @@ class G03Handler {
                     gCode.getAcceleration(), gCode.getStartVelocity(),
                     maxVelocity, gCode);
 
-            double lastTime = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getTime();
+            long lastTime = gCode.getgCodePath().get(gCode.getgCodePath().size()
+                    - 1).getTime();
             double[] lastPosition = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getPosition();
 
             makeDynamicPath(lastTime, lastPosition, gCode.getAcceleration(),
@@ -180,11 +187,10 @@ class G03Handler {
      * @param startVelocity     initial velocity of the current path in cm/s.
      * @param finalVelocity     final velocity of the current path in cm/s.
      */
-    private static void makeDynamicPath(double pathStartTime,
+    private static void makeDynamicPath(long pathStartTime,
                                              double[] pathStartPosition, double acceleration,
                                              double startVelocity, double finalVelocity,
-                                             AngularGCode gCode)
-            throws BoundsViolation {
+                                             AngularGCode gCode) {
 
         if (startVelocity > finalVelocity) {
             acceleration = -acceleration;
@@ -194,10 +200,10 @@ class G03Handler {
 
         double currentAngle = Math.atan2(currentPosition[1] - gCode.getCenterPosition()[1],
                 currentPosition[0] - gCode.getCenterPosition()[0]);
-        double t = 0;
+        long t = 0;
         while (true) {
             double currentVelocity = startVelocity
-                    + acceleration * MathCalc.toSec(t);
+                    + acceleration * Converter.toSec(t);
 
             //if last point
             if (((acceleration > 0) && (currentVelocity > finalVelocity))
@@ -206,8 +212,8 @@ class G03Handler {
                 break;
             }
             double chordLength = Math.abs(currentVelocity
-                    * MathCalc.toSec(Constants.TIME_GAP));
-            double segmentAngle = MathCalc.segmentAngle(gCode.getRadius(), chordLength);
+                    * Converter.toSec(TIME_GAP));
+            double segmentAngle = Geometry.segmentAngle(gCode.getRadius(), chordLength);
 
             double[] nextPosition = new double[]{gCode.getCenterPosition()[0]
                     + gCode.getRadius() * Math.cos(currentAngle + segmentAngle),
@@ -215,18 +221,13 @@ class G03Handler {
                             + gCode.getRadius() * Math.sin(currentAngle + segmentAngle),
                     currentPosition[2]};
 
-            double[] axisDirections = {nextPosition[0] - currentPosition[0],
-                    nextPosition[1] - currentPosition[1],
-                    nextPosition[2] - currentPosition[2]};
-            double currentTime = gCode.getStartTime() + pathStartTime + t;
-            Point point = Utility.makePoint(currentPosition, axisDirections,
-                    currentVelocity, acceleration,
-                    currentTime, gCode.getGCode());
+            long currentTime = pathStartTime + t;
+            Point point = Utility.makePoint(currentPosition, currentTime);
             gCode.getgCodePath().add(point);
             System.arraycopy(nextPosition, 0, currentPosition,
                     0, nextPosition.length);
 
-            t += Constants.TIME_GAP;
+            t += TIME_GAP;
             currentAngle += segmentAngle;
         }
     }
@@ -242,13 +243,13 @@ class G03Handler {
      * @param pathStartPosition start position for the path that will be
      *                          calculated.
      */
-    private static void makeStaticPath(double pathStartTime,
+    private static void makeStaticPath(long pathStartTime,
                                        double[] pathStartPosition,
-                                       AngularGCode gCode)
-            throws BoundsViolation {
+                                       AngularGCode gCode) {
 
         //find points number
-        double angleOfDeceleration = MathCalc.angleOfAcceleration(gCode.getStaticVelocity(),
+        double angleOfDeceleration = Physics.angleOfAcceleration(gCode
+                        .getStaticVelocity(),
                 gCode.getFinalVelocity(), gCode.getAcceleration(), gCode.getRadius());
         double[] currentPosition = Arrays.copyOf(pathStartPosition,
                 pathStartPosition.length);
@@ -257,7 +258,7 @@ class G03Handler {
         currentAngle = Math.atan2(pathStartPosition[1] - gCode.getCenterPosition()[1],
                 pathStartPosition[0] - gCode.getCenterPosition()[0]);
 
-        double angleOfStaticPath = MathCalc.findAngle(pathStartPosition,
+        double angleOfStaticPath = Geometry.findAngle(pathStartPosition,
                 gCode.getFinalPosition(), gCode.getRadius())
                 - angleOfDeceleration;
 
@@ -269,11 +270,11 @@ class G03Handler {
                 gCode.getCenterPosition()[2]};
 
         double oneChordLength = gCode.getStaticVelocity()
-                * MathCalc.toSec(Constants.TIME_GAP);
-        double oneSegmentAngle = MathCalc.segmentAngle(gCode.getRadius(),
+                * Converter.toSec(TIME_GAP);
+        double oneSegmentAngle = Geometry.segmentAngle(gCode.getRadius(),
                 oneChordLength);
-        double oneArcLength = MathCalc.arcLength(gCode.getRadius(), oneChordLength);
-        double fullPathLength = MathCalc.angularLength(pathStartPosition,
+        double oneArcLength = Geometry.arcLength(gCode.getRadius(), oneChordLength);
+        double fullPathLength = Geometry.angularLength(pathStartPosition,
                 pathFinalPosition,
                 gCode.getRadius());
 
@@ -286,13 +287,12 @@ class G03Handler {
 
     private static void makeStaticPathCycle(AngularGCode gCode, double pointsNumber,
                                             double currentAngle, double oneSegmentAngle,
-                                            double[] currentPosition, double pathStartTime)
-            throws BoundsViolation {
+                                            double[] currentPosition, long pathStartTime) {
 
         int counter = (int) pointsNumber;
         //remainder of the rounding
         double remainder = pointsNumber - counter;
-        double t = 0;
+        long t = 0;
 
         for (int i = 0; i <= counter + 1; i++) {
             double[] nextPosition = {gCode.getCenterPosition()[0]
@@ -301,23 +301,18 @@ class G03Handler {
                             + gCode.getRadius() * Math.sin(currentAngle +
                             oneSegmentAngle),
                     currentPosition[2]};
-            double[] axisDirections = {nextPosition[0] - currentPosition[0],
-                    nextPosition[1] - currentPosition[1],
-                    nextPosition[2] - currentPosition[2]};
 
-            double currentTime = gCode.getStartTime() + pathStartTime + t;
+            long currentTime = pathStartTime + t;
 
-            Point point = Utility.makePoint(currentPosition, axisDirections,
-                    gCode.getStaticVelocity(), 0,
-                    currentTime, gCode.getGCode());
+            Point point = Utility.makePoint(currentPosition, currentTime);
             gCode.getgCodePath().add(point);
 
             //to calculate last point which has different time gap and arc angle
             if (i == counter - 1) {
-                t += Constants.TIME_GAP * remainder;
+                t += TIME_GAP * remainder;
                 currentAngle += oneSegmentAngle * remainder;
             } else {
-                t += Constants.TIME_GAP;
+                t += TIME_GAP;
                 currentAngle += oneSegmentAngle;
             }
             System.arraycopy(nextPosition, 0, currentPosition,

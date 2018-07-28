@@ -9,15 +9,16 @@ import com.robotcontrol.util.FilesHandler;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DataController {
 
-    public static ArrayList<GCode> convertToGCode(ArrayList<String> sourceList)
+    public static List<GCode> convertToGCode(ArrayList<String> sourceList)
             throws WrongInputData, BoundsViolation {
         return ListHandler.makeGCodeList(sourceList);
     }
 
-    public static ArrayList<GCode> convertToGCode(File sourceFile)
+    public static List<GCode> convertToGCode(File sourceFile)
             throws IOException, WrongExtension, WrongInputData, BoundsViolation {
         ArrayList<String> source = FilesHandler.gCodeFileToList(sourceFile);
 

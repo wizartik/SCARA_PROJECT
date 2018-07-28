@@ -1,6 +1,8 @@
 package com.robotcontrol.calc.contouringControl.entities.GCode;
 
-import calc.util.MathCalc;
+
+import com.robotcontrol.util.math.Geometry;
+import com.robotcontrol.util.math.Physics;
 
 import java.util.Arrays;
 
@@ -22,7 +24,7 @@ public class LinearGCode extends MotionGCode {
                 {getFinalPosition()[0] - getStartPosition()[0],
                         getFinalPosition()[1] - getStartPosition()[1],
                         getFinalPosition()[2] - getStartPosition()[2]};
-        this.axisDirections = MathCalc.velocityCustomize(this.axisDirections,
+        this.axisDirections = Physics.velocityCustomize(this.axisDirections,
                 getStaticVelocity());
     }
 
@@ -51,7 +53,7 @@ public class LinearGCode extends MotionGCode {
     }
 
     public void init(){
-        setDistance(MathCalc.linearLength(getStartPosition(), getFinalPosition()));
+        setDistance(Geometry.linearLength(getStartPosition(), getFinalPosition()));
         makeAxisVelocities();
     }
 

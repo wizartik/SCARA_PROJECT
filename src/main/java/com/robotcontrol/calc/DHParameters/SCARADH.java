@@ -1,10 +1,9 @@
 package com.robotcontrol.calc.DHParameters;
 
-import calc.data.Dynamic;
-
-import static calc.data.Dynamic.FIRST_LINK_LENGTH;
-import static calc.data.Dynamic.SECOND_LINK_LENGTH;
-import static calc.data.Constants.INCREMENT_PER_REVOLUTION;
+import static com.robotcontrol.parameters.constant.PhysicalParameters.INCREMENT_PER_REVOLUTION;
+import static com.robotcontrol.parameters.dynamic.Links.DIRECTION;
+import static com.robotcontrol.parameters.dynamic.Links.FIRST_LINK_LENGTH;
+import static com.robotcontrol.parameters.dynamic.Links.SECOND_LINK_LENGTH;
 import static java.lang.Math.*;
 
 public class SCARADH {
@@ -49,7 +48,7 @@ public class SCARADH {
                     / (2 * FIRST_LINK_LENGTH * SECOND_LINK_LENGTH);
         double sT2 = sqrt(1 - pow(cT2, 2));
 
-        if (Dynamic.DIRECTION) {
+        if (DIRECTION) {
             sT2 = -sT2;
         }
         double T2 = atan2(sT2, cT2);
@@ -59,7 +58,7 @@ public class SCARADH {
 
         double sT1 = sqrt(1 - pow(cT1, 2));
 
-        if (Dynamic.DIRECTION) {
+        if (DIRECTION) {
             sT1 = -sT1;
         }
         double T1 = atan2(sT1, cT1);

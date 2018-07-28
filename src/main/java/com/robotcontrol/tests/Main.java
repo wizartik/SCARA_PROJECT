@@ -2,7 +2,8 @@ package com.robotcontrol.tests;
 
 import com.robotcontrol.calc.contouringControl.controllers.data.DataController;
 import com.robotcontrol.calc.contouringControl.controllers.path.PathController;
-import com.robotcontrol.calc.contouringControl.entities.GCode.GCode;
+import com.robotcontrol.calc.contouringControl.entities.GCode.MotionGCode;
+import com.robotcontrol.calc.contouringControl.entities.path.Path;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.exc.ImpossibleToImplement;
 import com.robotcontrol.exc.WrongExtension;
@@ -10,7 +11,6 @@ import com.robotcontrol.exc.WrongInputData;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Main {
@@ -37,34 +37,83 @@ public class Main {
 //        System.out.println("radius " + angularGCode.getRadius());
 //        System.out.println("center " + Arrays.toString(angularGCode.getCenterPosition()));
 
-        File file = new File("D:\\GCodes\\cartman.ngc");
+        File file = new File("D:\\GCodes\\Tangent.ngc");
 
-        ArrayList<GCode> gCodes = DataController.convertToGCode(file);
+
 
         Date date = new Date();
-//        new Path(file);
+        for (int i = 0; i < 20; i++) {
+//            new Path(file);
+        }
         Date date1 = new Date();
 
         System.out.println("old " + (date1.getTime() - date.getTime()));
 
 
-        try {
+
             date = new Date();
-            PathController.makePath(DataController.convertToGCode(file));
-            date1 = new Date();
-            System.out.println("new " + (date1.getTime() - date.getTime()));
+        Path path = null;
+        try {
+            path = PathController.makePath(DataController.convertToGCode(file));
         } catch (BoundsViolation boundsViolation) {
             boundsViolation.printStackTrace();
         } catch (ImpossibleToImplement impossibleToImplement) {
             impossibleToImplement.printStackTrace();
-            System.out.println(impossibleToImplement.getGCode());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (WrongExtension wrongExtension) {
             wrongExtension.printStackTrace();
         } catch (WrongInputData wrongInputData) {
             wrongInputData.printStackTrace();
+            System.out.println(wrongInputData.getgCode());
         }
+        date1 = new Date();
+            System.out.println("new " + (date1.getTime() - date.getTime()));
+
+        System.out.println(path);
+        
+        long num = 0;
+
+
+        for (int i = 0; i < path.getgCodeList().size(); i++) {
+            MotionGCode motionGCode = ((MotionGCode)path.getgCodeList().get(i));
+            long points = motionGCode.getgCodePath().size();
+
+            long time = motionGCode.getFinalTime() - motionGCode.getStartTime();
+
+            System.out.println("points: " + points + " time: " + time + " / "
+                    + ((time / (double) points)));
+        }
+//
+//        List<Point> points = ((MotionGCode) path.getgCodeList().get(0)).getgCodePath();
+//
+//
+//        long big = 0;
+//        long prev = ((MotionGCode) path.getgCodeList().get(1)).getgCodePath()
+//                .get(0).getTime();
+//        for (int i = 1; i < path.getgCodeList().size(); i++) {
+//            System.out.println("start " + path.getgCodeList().get(i).getStartTime());
+//            System.out.println("final " + path.getgCodeList().get(i).getFinalTime());
+//            for (int j = 0; j < ((MotionGCode) path.getgCodeList().get(i)).getgCodePath().size(); j++) {
+//                long now = ((MotionGCode) path.getgCodeList().get(i))
+//                        .getgCodePath()
+//                        .get(j).getTime();
+//
+//                if (now - prev > big) {
+//                    big = now - prev;
+////                    System.out.println("in " + big);
+////                    System.out.println(((MotionGCode) path.getgCodeList().get(i))
+////                            .getgCodePath()
+////                            .get(j));
+//                }
+//
+//                prev = now;
+//            }
+//
+//        }
+//
+//        System.out.println("biggest gap " + big);
+//        System.out.println("points " + num);
 
     }
 }

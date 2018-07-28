@@ -1,15 +1,17 @@
 package com.robotcontrol.calc.contouringControl.controllers.GCode;
 
-import calc.data.Constants;
 import com.robotcontrol.calc.contouringControl.entities.GCode.LinearGCode;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.exc.ImpossibleToImplement;
 
+import static com.robotcontrol.parameters.constant.Motion.MAX_ACCELERATION;
+import static com.robotcontrol.parameters.constant.Motion.MAX_VELOCITY;
+
 class G00Handler {
-    static void calcPath(LinearGCode gCode, double startTime) throws
+    static void calcPath(LinearGCode gCode, long startTime) throws
             BoundsViolation, ImpossibleToImplement {
-        gCode.setStaticVelocity(Constants.MAX_VELOCITY);
-        gCode.setAcceleration(Constants.MAX_ACCELERATION);
+        gCode.setStaticVelocity(MAX_VELOCITY);
+        gCode.setAcceleration(MAX_ACCELERATION);
         G01Handler.calcPath(gCode, startTime);
     }
 }
