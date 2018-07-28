@@ -80,7 +80,7 @@ public class Container {
         return pauseInUs;
     }
 
-    public void setPauseInUs(double pauseInUs) {
+    public void setPauseInUs(final double pauseInUs) {
         this.pauseInUs = pauseInUs;
     }
 

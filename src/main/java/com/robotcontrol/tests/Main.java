@@ -2,7 +2,6 @@ package com.robotcontrol.tests;
 
 import com.robotcontrol.calc.contouringControl.controllers.data.DataController;
 import com.robotcontrol.calc.contouringControl.controllers.path.PathController;
-import com.robotcontrol.calc.contouringControl.entities.GCode.MotionGCode;
 import com.robotcontrol.calc.contouringControl.entities.path.Path;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.exc.ImpossibleToImplement;
@@ -37,7 +36,7 @@ public class Main {
 //        System.out.println("radius " + angularGCode.getRadius());
 //        System.out.println("center " + Arrays.toString(angularGCode.getCenterPosition()));
 
-        File file = new File("D:\\GCodes\\Tangent.ngc");
+        File file = new File("D:\\GCodes\\cartman.ngc");
 
 
 
@@ -75,15 +74,6 @@ public class Main {
         long num = 0;
 
 
-        for (int i = 0; i < path.getgCodeList().size(); i++) {
-            MotionGCode motionGCode = ((MotionGCode)path.getgCodeList().get(i));
-            long points = motionGCode.getgCodePath().size();
-
-            long time = motionGCode.getFinalTime() - motionGCode.getStartTime();
-
-            System.out.println("points: " + points + " time: " + time + " / "
-                    + ((time / (double) points)));
-        }
 //
 //        List<Point> points = ((MotionGCode) path.getgCodeList().get(0)).getgCodePath();
 //

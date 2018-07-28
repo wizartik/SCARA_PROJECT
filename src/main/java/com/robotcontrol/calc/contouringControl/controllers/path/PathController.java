@@ -48,6 +48,8 @@ public class PathController {
 
                 previousVelocity = ((MotionGCode) path.getgCodeList()
                         .get(i)).getStaticVelocity();
+                GCodeController.initialize(path.getgCodeList().get(i));
+
             }
         }
 
@@ -110,7 +112,6 @@ public class PathController {
      */
     private static void addGCode(GCode gCode, ArrayList<GCode> gCodes, Path path) throws BoundsViolation {
         Checker.checkGCode(gCode);
-        GCodeController.initialize(gCode);
         gCodes.add(gCode);
         path.setFullDistance(path.getFullDistance() + ((MotionGCode) gCode).getDistance());
     }
@@ -298,7 +299,6 @@ public class PathController {
         adjustDistances(path);
         initializeGCodePath(path);
         adjustHalts(path.getgCodeList());
-
         calculateGCodes(path);
     }
 }
