@@ -118,7 +118,7 @@ public class Utility {
      * @param z third number.
      * @return largest number;
      */
-    public static int findLargest(int x, int y, int z) {
+    public static long findLargest(long x, long y, long z) {
         if (x > y && x > z) {
             return x;
         } else if (y > x && y > z) {

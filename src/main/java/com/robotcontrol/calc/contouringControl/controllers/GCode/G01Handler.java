@@ -155,6 +155,8 @@ class G01Handler {
 
             long lastTime = gCode.getgCodePath()
                     .get(gCode.getgCodePath().size() - 1).getTime();
+
+            System.out.println(time + " "  + lastTime);
             double[] lastPosition = gCode.getgCodePath()
                     .get(gCode.getgCodePath().size() - 1).getPosition();
 

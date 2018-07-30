@@ -27,6 +27,12 @@ public class Motion {
      */
     public final static double NORMAL_VELOCITY = 1;
 
+    public final static double NORMAL_ANG_VELOCITY = 1;
 
+    public final static double MAX_ANG_VELOCITY = 2;
+
+    public final static double NORMAL_ANG_ACCELERATION = 1;
+
+    public final static double MAX_ANG_ACCELERATION = 2;
 
 }

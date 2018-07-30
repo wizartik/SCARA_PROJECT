@@ -3,7 +3,7 @@ package com.robotcontrol.calc.contouringControl.controllers.path;
 
 import com.robotcontrol.parameters.constant.ConstUtil;
 import com.robotcontrol.util.Utility;
-import com.robotcontrol.calc.checks.Checker;
+import com.robotcontrol.calc.checks.GCodeChecker;
 import com.robotcontrol.calc.contouringControl.controllers.GCode.GCodeController;
 import com.robotcontrol.calc.contouringControl.entities.GCode.*;
 import com.robotcontrol.calc.contouringControl.entities.path.Path;
@@ -111,7 +111,7 @@ public class PathController {
      * @param gCodes list of the G codes.
      */
     private static void addGCode(GCode gCode, ArrayList<GCode> gCodes, Path path) throws BoundsViolation {
-        Checker.checkGCode(gCode);
+        GCodeChecker.checkGCode(gCode);
         gCodes.add(gCode);
         path.setFullDistance(path.getFullDistance() + ((MotionGCode) gCode).getDistance());
     }

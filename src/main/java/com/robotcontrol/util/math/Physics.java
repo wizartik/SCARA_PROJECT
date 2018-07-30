@@ -25,7 +25,7 @@ public class Physics {
             acceleration = -acceleration;
         }
 
-        return startV * t + (acceleration * pow(t, 2)) / 2;
+        return Math.abs(startV * t + (acceleration * pow(t, 2)) / 2);
     }
 
     /**
@@ -78,7 +78,7 @@ public class Physics {
      * @return number of points.
      */
     public static double pointsNumber(double length, double velocity) {
-        return length / (velocity * toSec(TIME_GAP));
+        return Math.abs(length / (velocity * toSec(TIME_GAP)));
     }
 
     /**

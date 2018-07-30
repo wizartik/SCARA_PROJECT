@@ -4,7 +4,7 @@ package com.robotcontrol.exc;
  * This exception is thrown if the point is out of the allowed bounds.
  */
 public class BoundsViolation extends Exception{
-    String gCode;
+    private String gCode;
 
     /**
      * Constructs a new exception with the specified detail message.  The
@@ -14,6 +14,10 @@ public class BoundsViolation extends Exception{
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
+    public BoundsViolation(String message) {
+        super(message);
+    }
+
     public BoundsViolation(String message, String gCode) {
         super(message);
         this.gCode = gCode;
