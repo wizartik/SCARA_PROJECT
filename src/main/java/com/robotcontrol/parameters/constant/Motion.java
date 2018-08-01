@@ -15,7 +15,7 @@ public class Motion {
     /**
      * Normal acceleration if initial acceleration is not specified (in cm/s^2).
      */
-    public final static double NORMAL_ACCELERATION = 100;
+    public final static double NORMAL_ACCELERATION = 1;
 
     /**
      * Maximum allowed velocity for no-load G00 in cm/s.
@@ -31,8 +31,8 @@ public class Motion {
 
     public final static double MAX_ANG_VELOCITY = 2;
 
-    public final static double NORMAL_ANG_ACCELERATION = 1;
+    public final static double NORMAL_ANG_ACCELERATION = 10;
 
-    public final static double MAX_ANG_ACCELERATION = 2;
+    public final static double MAX_ANG_ACCELERATION = 20;
 
 }

@@ -39,4 +39,7 @@ public class PhysicalParameters {
      * One step of the stepper motor in degrees.
      */
     public final static double STEP = 1.8;
+
+
+    public final static double[] REDUCTION_RATIO = new double[]{14.0625, 14.0625, 1};
 }

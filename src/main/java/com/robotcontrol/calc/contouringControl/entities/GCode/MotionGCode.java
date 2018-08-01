@@ -187,7 +187,6 @@ public class MotionGCode extends GCode{
                 ", distance=" + distance +
                 ", startVelocity=" + startVelocity +
                 ", finalVelocity=" + finalVelocity +
-                ", gCodePath=" + gCodePath +
                 "} " + super.toString();
     }
 }

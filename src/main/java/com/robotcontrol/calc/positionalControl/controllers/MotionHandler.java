@@ -20,7 +20,7 @@ import java.util.List;
 
 import static com.robotcontrol.parameters.constant.Motion.TIME_GAP;
 
-public class MotionHandler {
+class MotionHandler {
 
     static PositionalPath makePath(double[] startAngles, double[] finalAngles,
                                    double angVelocity, double angAcceleration) {
@@ -49,8 +49,8 @@ public class MotionHandler {
             singleJointPath = makeIncompletePath(startAngle, finalAngle);
         }
 
-        singleJointPath.setTime(singleJointPath.getStepperPath()
-                .get(singleJointPath.getStepperPath().size() - 1).getTime());
+        singleJointPath.setTime(singleJointPath.getJointPoints()
+                .get(singleJointPath.getJointPoints().size() - 1).getTime());
 
         return singleJointPath;
     }
@@ -69,14 +69,14 @@ public class MotionHandler {
                 ArrayList<SingleJointPoint>(pointsNumber));
 
         //first dynamic part
-        path.getStepperPath().addAll(makeDynamicPath(startAngle, 0,
+        path.getJointPoints().addAll(makeDynamicPath(startAngle, 0,
                 angVelocity, angAcceleration, 0, decrease));
 
         //static part
-        int lastIndex = path.getStepperPath().size() - 1;
+        int lastIndex = path.getJointPoints().size() - 1;
 
-        long startTime = path.getStepperPath().get(lastIndex).getTime();
-        double startPathAngle = path.getStepperPath().get(lastIndex)
+        long startTime = path.getJointPoints().get(lastIndex).getTime();
+        double startPathAngle = path.getJointPoints().get(lastIndex)
                 .getAngle();
 
         double finalPathAngle;
@@ -87,16 +87,16 @@ public class MotionHandler {
             finalPathAngle = finalAngle - accLength;
         }
 
-        path.getStepperPath().addAll(makeStaticPath(startPathAngle,
+        path.getJointPoints().addAll(makeStaticPath(startPathAngle,
                 finalPathAngle, angVelocity, startTime));
 
         //second dynamic part
-        lastIndex = path.getStepperPath().size() - 1;
+        lastIndex = path.getJointPoints().size() - 1;
 
-        startTime = path.getStepperPath().get(lastIndex).getTime();
-        startPathAngle = path.getStepperPath().get(lastIndex).getAngle();
+        startTime = path.getJointPoints().get(lastIndex).getTime();
+        startPathAngle = path.getJointPoints().get(lastIndex).getAngle();
 
-        path.getStepperPath().addAll(makeDynamicPath(startPathAngle,
+        path.getJointPoints().addAll(makeDynamicPath(startPathAngle,
                 angVelocity, 0, angAcceleration, startTime, decrease));
 
         return path;
@@ -117,16 +117,16 @@ public class MotionHandler {
         SingleJointPath path = new SingleJointPath(new
                 ArrayList<SingleJointPoint>(100));
 
-        path.getStepperPath().addAll(makeDynamicPath(startAngle, 0,
+        path.getJointPoints().addAll(makeDynamicPath(startAngle, 0,
                 maxVelocity, angAcceleration, 0, decrease));
 
-        int lastIndex = path.getStepperPath().size() - 1;
+        int lastIndex = path.getJointPoints().size() - 1;
 
-        long startTime = path.getStepperPath().get(lastIndex).getTime();
+        long startTime = path.getJointPoints().get(lastIndex).getTime();
 
-        double startPathAngle = path.getStepperPath().get(lastIndex).getAngle();
+        double startPathAngle = path.getJointPoints().get(lastIndex).getAngle();
 
-        path.getStepperPath().addAll(makeDynamicPath(startPathAngle,
+        path.getJointPoints().addAll(makeDynamicPath(startPathAngle,
                 maxVelocity, 0, angAcceleration, startTime, decrease));
 
         return path;

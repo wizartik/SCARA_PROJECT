@@ -1,12 +1,12 @@
 package com.robotcontrol.calc.contouringControl.controllers.path;
 
 
+import com.robotcontrol.calc.contouringControl.entities.path.ContourPath;
 import com.robotcontrol.parameters.constant.ConstUtil;
 import com.robotcontrol.util.Utility;
 import com.robotcontrol.calc.checks.GCodeChecker;
 import com.robotcontrol.calc.contouringControl.controllers.GCode.GCodeController;
 import com.robotcontrol.calc.contouringControl.entities.GCode.*;
-import com.robotcontrol.calc.contouringControl.entities.path.Path;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.exc.ImpossibleToImplement;
 import com.robotcontrol.util.math.Converter;
@@ -19,8 +19,8 @@ import static com.robotcontrol.parameters.constant.Safety.MAX_VELOCITY_DIFFERENC
 
 public class PathController {
 
-    public static Path makePath(List<GCode> gCodes) throws BoundsViolation, ImpossibleToImplement {
-        Path path = new Path();
+    public static ContourPath makePath(List<GCode> gCodes) throws BoundsViolation, ImpossibleToImplement {
+        ContourPath path = new ContourPath();
         path.setgCodeList(gCodes);
 
         processPath(path);
@@ -34,7 +34,7 @@ public class PathController {
      * Initializes GCode objects by initializing each object with it's
      * previous and next velocity.
      */
-    private static void initializeGCodePath(Path path) {
+    private static void initializeGCodePath(ContourPath path) {
 
         double previousVelocity = 0;
         for (int i = 0; i < path.getgCodeList().size() - 1; i++) {
@@ -65,7 +65,7 @@ public class PathController {
      *
      * @param path path needed to be processed.
      */
-    private static void adjustDistances(Path path) throws BoundsViolation {
+    private static void adjustDistances(ContourPath path) throws BoundsViolation {
         int index = -1;
         boolean adjust = false;
         ArrayList<GCode> newGCodes = new ArrayList<>(path.getgCodeList().size());
@@ -110,7 +110,7 @@ public class PathController {
      * @param gCode  G code to be added.
      * @param gCodes list of the G codes.
      */
-    private static void addGCode(GCode gCode, ArrayList<GCode> gCodes, Path path) throws BoundsViolation {
+    private static void addGCode(GCode gCode, ArrayList<GCode> gCodes, ContourPath path) throws BoundsViolation {
         GCodeChecker.checkGCode(gCode);
         gCodes.add(gCode);
         path.setFullDistance(path.getFullDistance() + ((MotionGCode) gCode).getDistance());
@@ -277,7 +277,7 @@ public class PathController {
      * @throws ImpossibleToImplement thrown if its impossible to implement
      *                               this G code.
      */
-    private static void calculateGCodes(Path path)
+    private static void calculateGCodes(ContourPath path)
             throws ImpossibleToImplement, BoundsViolation {
         long startTime = 0;
 
@@ -293,7 +293,7 @@ public class PathController {
      * @throws ImpossibleToImplement if one of G codes is impossible to
      *                               implement.
      */
-    private static void processPath(Path path)
+    private static void processPath(ContourPath path)
             throws ImpossibleToImplement, BoundsViolation {
 
         adjustDistances(path);

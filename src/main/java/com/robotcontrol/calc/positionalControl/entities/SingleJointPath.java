@@ -4,23 +4,23 @@ import java.util.List;
 import java.util.Objects;
 
 public class SingleJointPath {
-    private List<SingleJointPoint> stepperPath;
+    private List<SingleJointPoint> jointPoints;
 
     private long time;
 
     public SingleJointPath() {
     }
 
-    public SingleJointPath(List<SingleJointPoint> stepperPath) {
-        this.stepperPath = stepperPath;
+    public SingleJointPath(List<SingleJointPoint> jointPoints) {
+        this.jointPoints = jointPoints;
     }
 
-    public List<SingleJointPoint> getStepperPath() {
-        return stepperPath;
+    public List<SingleJointPoint> getJointPoints() {
+        return jointPoints;
     }
 
-    public void setStepperPath(List<SingleJointPoint> stepperPath) {
-        this.stepperPath = stepperPath;
+    public void setJointPoints(List<SingleJointPoint> jointPoints) {
+        this.jointPoints = jointPoints;
     }
 
     public long getTime() {
@@ -37,19 +37,19 @@ public class SingleJointPath {
         if (!(o instanceof SingleJointPath)) return false;
         SingleJointPath that = (SingleJointPath) o;
         return getTime() == that.getTime() &&
-                Objects.equals(getStepperPath(), that.getStepperPath());
+                Objects.equals(getJointPoints(), that.getJointPoints());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getStepperPath(), getTime());
+        return Objects.hash(getJointPoints(), getTime());
     }
 
     @Override
     public String toString() {
         return "SingleJointPath{" +
-                "stepperPath=" + stepperPath +
+                "jointPoints=" + jointPoints +
                 ", time=" + time +
                 '}';
     }
