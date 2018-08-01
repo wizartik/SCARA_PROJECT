@@ -1,14 +1,14 @@
 package com.robotcontrol.calc.contouringControl.controllers.path;
 
 
-import com.robotcontrol.calc.contouringControl.entities.path.ContourPath;
-import com.robotcontrol.parameters.constant.ConstUtil;
-import com.robotcontrol.util.Utility;
 import com.robotcontrol.calc.checks.GCodeChecker;
 import com.robotcontrol.calc.contouringControl.controllers.GCode.GCodeController;
 import com.robotcontrol.calc.contouringControl.entities.GCode.*;
+import com.robotcontrol.calc.contouringControl.entities.path.ContourPath;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.exc.ImpossibleToImplement;
+import com.robotcontrol.parameters.constant.ConstUtil;
+import com.robotcontrol.util.Utility;
 import com.robotcontrol.util.math.Converter;
 import com.robotcontrol.util.math.Geometry;
 
@@ -57,6 +57,7 @@ public class PathController {
                 .setNextVelocity(0);
         path.getgCodeList().get(path.getgCodeList().size() - 1)
                 .setPreviousVelocity(previousVelocity);
+        GCodeController.initialize(path.getgCodeList().get(path.getgCodeList().size() - 1));
     }
 
     /**
@@ -235,6 +236,17 @@ public class PathController {
             previousVelocities = ((MotionGCode) gCodes.get(i))
                     .getFinalAngVelocities();
         }
+
+        if (gCodes.size() > 1) {
+            double[] currentVelocity = ((MotionGCode) gCodes.get(gCodes.size() - 1))
+                    .getStartAngVelocities();
+
+            if (needToMakeHalt(previousVelocities, currentVelocity)) {
+                makeHalt(gCodes.get(gCodes.size() - 2), gCodes.get(gCodes.size() - 1));
+            }
+        }
+
+
         //to initialize last one
         makeHalt(gCodes.get(gCodes.size() - 1), null);
     }
@@ -249,7 +261,7 @@ public class PathController {
      */
     private static boolean needToMakeHalt(double[] previousVel, double[] vel) {
         for (int i = 0; i < previousVel.length; i++) {
-            if (previousVel[i] - vel[i] > MAX_VELOCITY_DIFFERENCE) {
+            if (Math.abs(previousVel[i] - vel[i]) > MAX_VELOCITY_DIFFERENCE) {
                 return true;
             }
         }
