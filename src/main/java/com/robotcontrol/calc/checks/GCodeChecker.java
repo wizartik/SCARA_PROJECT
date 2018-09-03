@@ -25,11 +25,11 @@ public class GCodeChecker {
         if (gCode instanceof MotionGCode) {
 
             double[] startCoords = new double[]{gCode.getStartPosition()[0],
-                    gCode.getStartPosition()[1],
-                    0};
+                                                gCode.getStartPosition()[1],
+                                                0};
             double[] finalCoords = new double[]{((MotionGCode) gCode).getFinalPosition()[0],
-                    ((MotionGCode) gCode).getFinalPosition()[1],
-                    0};
+                                                ((MotionGCode) gCode).getFinalPosition()[1],
+                                                0};
 
             checkLength(startCoords, finalCoords, gCode.getGCode());
             checkHeight(gCode.getStartPosition()[2], gCode.getGCode());
@@ -37,36 +37,37 @@ public class GCodeChecker {
         }
     }
 
-    private static void checkLength(double[] startCoords, double[] finalCoords,
+    static void checkLength(double[] startCoords, double[] finalCoords,
                                     String gCode) throws BoundsViolation {
         double[] zero = new double[]{0, 0, 0};
 
-        if (Geometry.linearLength(zero, startCoords) > DynSafety.MAX_RADIUS
-                || Geometry.linearLength(zero, finalCoords) > DynSafety.MAX_RADIUS) {
+        double startLength = Geometry.linearLength(zero, startCoords);
+        double finalLength = Geometry.linearLength(zero, finalCoords);
+
+        if ((startLength > DynSafety.MAX_RADIUS) || (finalLength > DynSafety.MAX_RADIUS)) {
             throw new BoundsViolation("G code tries to violate allowed " +
-                    "bounds. Maximum radius of working area is " +
-                    DynSafety.MAX_RADIUS, gCode);
+                                      "bounds. Maximum radius of working area is " +
+                                      DynSafety.MAX_RADIUS, gCode);
         }
 
-        if (Geometry.linearLength(zero, startCoords) < DynSafety.MIN_RADIUS
-                || Geometry.linearLength(zero, finalCoords) < DynSafety.MIN_RADIUS) {
+        if ((startLength < DynSafety.MIN_RADIUS) || (finalLength < DynSafety.MIN_RADIUS)) {
             throw new BoundsViolation("G code tries to violate allowed " +
-                    "bounds. Minimum radius of working area is " +
-                    DynSafety.MAX_RADIUS, gCode);
+                                      "bounds. Minimum radius of working area is " +
+                                      DynSafety.MAX_RADIUS, gCode);
         }
     }
 
-    private static void checkHeight(double height, String gCode) throws BoundsViolation {
+    static void checkHeight(double height, String gCode) throws BoundsViolation {
         if (height > Safety.MAX_HEIGHT_COORD) {
             throw new BoundsViolation("G code tries to violate allowed " +
-                    "bounds. Maximum height of working area is " +
-                    Safety.MAX_HEIGHT_COORD, gCode);
+                                    "bounds. Maximum height of working area is " +
+                                    Safety.MAX_HEIGHT_COORD, gCode);
         }
 
         if (height < Safety.MIN_HEIGHT_COORD) {
             throw new BoundsViolation("G code tries to violate allowed " +
-                    "bounds. Minimum height of working area is " + Safety.MIN_HEIGHT_COORD,
-                    gCode);
+                                    "bounds. Minimum height of working area is " +
+                                    Safety.MIN_HEIGHT_COORD, gCode);
         }
     }
 
