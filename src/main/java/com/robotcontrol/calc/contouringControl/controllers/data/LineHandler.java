@@ -33,15 +33,14 @@ class LineHandler {
     private static void checkData(Container container) throws WrongInputData {
         boolean circular = (container.getgCodeType().equals(GCodeType.G02)
                 || container.getgCodeType().equals(GCodeType.G03));
+
         boolean zeroRadius = (container.getI() == 0.0 && container.getJ() == 0.0
                 && container.getRadius() == 0.0);
 
-        boolean wrongRadius = Math.abs(Geometry.linearLength(container
-                        .getStartPosition(),
-                container.getCenterPosition())
-                - Geometry.linearLength(container.getFinalPosition(),
-                container.getCenterPosition()))
-                > 10e-5;
+        double startRadius = Geometry.linearLength(container.getStartPosition(), container.getCenterPosition());
+        double finalRadius = Geometry.linearLength(container.getFinalPosition(), container.getCenterPosition());
+
+        boolean wrongRadius = Math.abs(startRadius - finalRadius) > 10e-5;
 
         if (circular && (zeroRadius || wrongRadius)) {
             throw new WrongInputData("This circular G code " +
@@ -51,7 +50,7 @@ class LineHandler {
 
         if (Utility.containsNaN(container.getStartPosition())
                 || Utility.containsNaN(container.getFinalPosition())
-                || Utility.containsNaN(container.getCenterPosition())){
+                || Utility.containsNaN(container.getCenterPosition())) {
             throw new WrongInputData("This G code has incorrect data",
                     container.getLine());
         }
@@ -60,32 +59,32 @@ class LineHandler {
     private static GCode containerToGCode(Container container) {
 
         if (container.getgCodeType() == GCodeType.G00
-                || container.getgCodeType() == GCodeType.G01 ){
+                || container.getgCodeType() == GCodeType.G01) {
             return containerToLinearGCode(container);
         } else if (container.getgCodeType() == GCodeType.G02
-                || container.getgCodeType() == GCodeType.G03 ){
+                || container.getgCodeType() == GCodeType.G03) {
             return containerToAngularGCode(container);
-        } else if (container.getgCodeType() == GCodeType.G04){
+        } else if (container.getgCodeType() == GCodeType.G04) {
             return containerToPauseGCode(container);
         } else {
             return null;
         }
     }
 
-    private static PauseGCode containerToPauseGCode(Container container){
+    private static PauseGCode containerToPauseGCode(Container container) {
         return new PauseGCode(container.getStartPosition(),
                 container.getLine(), container.getgCodeType(),
                 container.getPauseInUs());
     }
 
-    private static AngularGCode containerToAngularGCode(Container container){
+    private static AngularGCode containerToAngularGCode(Container container) {
         return new AngularGCode(container.getStartPosition(),
                 container.getFinalPosition(), container.getStaticVelocity(),
                 NORMAL_ACCELERATION, container.getLine(),
                 container.getgCodeType(), container.getRadius());
     }
 
-    private static LinearGCode containerToLinearGCode(Container container){
+    private static LinearGCode containerToLinearGCode(Container container) {
         return new LinearGCode(container.getStartPosition(),
                 container.getFinalPosition(), container.getStaticVelocity(),
                 NORMAL_ACCELERATION, container.getLine(),
@@ -137,10 +136,8 @@ class LineHandler {
      */
     private static void makeCircular(Container container) throws WrongInputData {
         if (container.isIJ()) {
-            container.getCenterPosition()[0] = container.getStartPosition()[0]
-                    + container.getI();
-            container.getCenterPosition()[1] = container.getStartPosition()[1]
-                    + container.getJ();
+            container.getCenterPosition()[0] = container.getStartPosition()[0] + container.getI();
+            container.getCenterPosition()[1] = container.getStartPosition()[1] + container.getJ();
 
             container.setRadius(Geometry.linearLength(container.getCenterPosition(),
                     container.getStartPosition()));
@@ -259,27 +256,23 @@ class LineHandler {
     }
 
 
-    private static void prepareContainer(GCode gCode, Container container,
-                                         String line){
+    private static void prepareContainer(GCode gCode, Container container, String line) {
         container.setLine(line);
         container.setStaticVelocity(NORMAL_VELOCITY);
-        if (gCode == null){
+        if (gCode == null) {
             container.setStartPosition(Arrays.copyOf(CURRENT_POSITION, CURRENT_POSITION.length));
             container.setFinalPosition(Arrays.copyOf(CURRENT_POSITION, CURRENT_POSITION.length));
             container.setCenterPosition(Arrays.copyOf(CURRENT_POSITION, CURRENT_POSITION.length));
         } else {
-            container.setStartPosition(Arrays.copyOf(gCode.getStartPosition(),
-                    gCode.getStartPosition().length));
-            if (gCode instanceof MotionGCode){
-                container.setStartPosition(Arrays.copyOf(((MotionGCode)
-                        gCode).getFinalPosition(), ((MotionGCode) gCode)
-                        .getFinalPosition().length));
+            container.setStartPosition(Arrays.copyOf(gCode.getStartPosition(), gCode.getStartPosition().length));
+            if (gCode instanceof MotionGCode) {
+                container.setStartPosition(Arrays.copyOf(((MotionGCode) gCode).getFinalPosition(),
+                        ((MotionGCode) gCode).getFinalPosition().length));
+
                 container.setStaticVelocity(((MotionGCode) gCode).getStaticVelocity());
             }
-            container.setCenterPosition(Arrays.copyOf(container
-                    .getStartPosition(), container.getStartPosition().length));
-            container.setFinalPosition(Arrays.copyOf(container
-                    .getStartPosition(), container.getStartPosition().length));
+            container.setCenterPosition(Arrays.copyOf(container.getStartPosition(), container.getStartPosition().length));
+            container.setFinalPosition(Arrays.copyOf(container.getStartPosition(), container.getStartPosition().length));
         }
     }
 }

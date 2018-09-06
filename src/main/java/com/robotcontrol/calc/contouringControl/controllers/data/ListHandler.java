@@ -10,9 +10,9 @@ import java.util.List;
 class ListHandler {
 
     static List<GCode> makeGCodeList(ArrayList<String> source) throws WrongInputData {
-        List<GCode> result = new GapList<>(source.size());
+        GapList<GCode> result = new GapList<>(source.size());
         makeData(source, result);
-        ((GapList<GCode>) result).trimToSize();
+        result.trimToSize();
         if (result.size() == 0) {
             throw new WrongInputData("Current G code path does not" +
                     " contain any GCode command.", "There are no" +
@@ -47,14 +47,13 @@ class ListHandler {
      *
      * @throws WrongInputData if line in G code has wrong data.
      */
-    private static void makeData(List<String> initialList,
-                                 List<GCode> result)
+    private static void makeData(List<String> initialList, List<GCode> result)
             throws WrongInputData {
 
         GCode previousGCode = null;
 
-        for (String anInitialList : initialList) {
-            String line = clearGarbage(anInitialList);
+        for (String initialGCode : initialList) {
+            String line = clearGarbage(initialGCode);
             if (line != null && line.length() > 1) {
                 previousGCode = LineHandler.makeGCode(previousGCode, line);
 

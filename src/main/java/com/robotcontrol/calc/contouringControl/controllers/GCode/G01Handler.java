@@ -58,20 +58,20 @@ class G01Handler {
      * Calculates path of the GCode depending on the distance.
      * If path has enough length for dynamic and static parts
      * velocity trajectory will be like this:
-     * __________
-     * /|          |\
-     * / |          | \
-     * /  |          |  \
-     * /   |          |   \
-     * /    |          |    \
-     * /     |          |     \
+     *         __________
+     *       /|          |\
+     *      / |          | \
+     *     /  |          |  \
+     *    /   |          |   \
+     *   /    |          |    \
+     *  /     |          |     \
      * /      |          |      \
      * /dynamic|  static  |dynamic\
      * <p>
      * If not, like this:
-     * /
-     * /
-     * /
+     *    /
+     *   /
+     *  /
      * /
      *
      */
@@ -130,8 +130,8 @@ class G01Handler {
         if (gCode.getStartVelocity() != gCode.getFinalVelocity()) {
             time = abs((2 * gCode.getDistance()) / (abs(gCode.getStartVelocity())
                     + abs(gCode.getFinalVelocity())));
-            double acceleration = abs(gCode.getStartVelocity() -
-                    gCode.getFinalVelocity()) / time;
+
+            double acceleration = abs(gCode.getStartVelocity() - gCode.getFinalVelocity()) / time;
 
             if (acceleration > MAX_ACCELERATION) {
                 throw new ImpossibleToImplement(("specified acceleration is" +
@@ -153,16 +153,12 @@ class G01Handler {
                     gCode.getStartPosition(), gCode.getAcceleration(),
                     gCode.getStartVelocity(), maxVelocity, gCode);
 
-            long lastTime = gCode.getgCodePath()
-                    .get(gCode.getgCodePath().size() - 1).getTime();
+            long lastTime = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getTime();
 
             System.out.println(time + " "  + lastTime);
-            double[] lastPosition = gCode.getgCodePath()
-                    .get(gCode.getgCodePath().size() - 1).getPosition();
+            double[] lastPosition = gCode.getgCodePath().get(gCode.getgCodePath().size() - 1).getPosition();
 
-            makeDynamicPath(lastTime, lastPosition,
-                    gCode.getAcceleration(), maxVelocity, gCode
-                            .getFinalVelocity(), gCode);
+            makeDynamicPath(lastTime, lastPosition, gCode.getAcceleration(), maxVelocity, gCode.getFinalVelocity(), gCode);
         }
     }
 
@@ -184,18 +180,17 @@ class G01Handler {
                                         double startVelocity, double finalVelocity, LinearGCode gCode) {
         double[] axisDirections = gCode.getAxisDirections();
 
-        double fullTime = Physics.accTimeInUs(startVelocity, finalVelocity,
-                acceleration);
+        double fullTime = Physics.accTimeInUs(startVelocity, finalVelocity, acceleration);
         double pointsNumber = (fullTime / TIME_GAP);
         int counter = (int) pointsNumber;
         double remainder = pointsNumber - counter;
 
-        if (startVelocity > finalVelocity) acceleration = -acceleration;
+        if (startVelocity > finalVelocity){
+            acceleration = -acceleration;
+        }
 
-        double[] axisAccelerations = Physics.velocityCustomize(axisDirections,
-                acceleration);
-        double[] axisStartVelocities = Physics.velocityCustomize(axisDirections,
-                startVelocity);
+        double[] axisAccelerations = Physics.velocityCustomize(axisDirections, acceleration);
+        double[] axisStartVelocities = Physics.velocityCustomize(axisDirections, startVelocity);
 
         long t = 0;
         for (int i = 0; i <= counter; i++) {
@@ -243,10 +238,8 @@ class G01Handler {
                     LinearGCode gCode) {
 
         //length of the static part
-        double pathLength = Geometry.linearLength(pathStartPosition,
-                gCode.getFinalPosition())
-                - Physics.accLength(gCode.getStaticVelocity(), gCode.getFinalVelocity(),
-                gCode.getAcceleration());
+        double pathLength = Geometry.linearLength(pathStartPosition, gCode.getFinalPosition())
+                - Physics.accLength(gCode.getStaticVelocity(), gCode.getFinalVelocity(), gCode.getAcceleration());
 
         double pointsNumber = Physics.pointsNumber(pathLength, gCode.getStaticVelocity());
 
@@ -258,12 +251,9 @@ class G01Handler {
 
         long t = 0;
         for (int i = 0; i <= counter; i++) {
-            double[] position = {axisDirections[0] * Converter.toSec(t)
-                    + pathStartPosition[0],
-                    axisDirections[1] * Converter.toSec(t)
-                            + pathStartPosition[1],
-                    axisDirections[2] * Converter.toSec(t)
-                            + pathStartPosition[2]};
+            double[] position = {axisDirections[0] * Converter.toSec(t) + pathStartPosition[0],
+                    axisDirections[1] * Converter.toSec(t) + pathStartPosition[1],
+                    axisDirections[2] * Converter.toSec(t) + pathStartPosition[2]};
 
             long currentTime = pathStartTime + t;
             gCode.getgCodePath().add(Utility.makePoint(position, currentTime));

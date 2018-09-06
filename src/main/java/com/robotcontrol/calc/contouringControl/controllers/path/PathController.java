@@ -40,23 +40,20 @@ public class PathController {
         for (int i = 0; i < path.getgCodeList().size() - 1; i++) {
 
             if (path.getgCodeList().get(i) instanceof MotionGCode) {
-                double nextVelocity = ((MotionGCode) path.getgCodeList()
-                        .get(i + 1)).getStaticVelocity();
+                double nextVelocity = ((MotionGCode) path.getgCodeList().get(i + 1)).getStaticVelocity();
 
                 path.getgCodeList().get(i).setPreviousVelocity(previousVelocity);
                 path.getgCodeList().get(i).setNextVelocity(nextVelocity);
 
-                previousVelocity = ((MotionGCode) path.getgCodeList()
-                        .get(i)).getStaticVelocity();
+                previousVelocity = ((MotionGCode) path.getgCodeList().get(i)).getStaticVelocity();
                 GCodeController.initialize(path.getgCodeList().get(i));
 
             }
         }
 
-        path.getgCodeList().get(path.getgCodeList().size() - 1)
-                .setNextVelocity(0);
-        path.getgCodeList().get(path.getgCodeList().size() - 1)
-                .setPreviousVelocity(previousVelocity);
+        //initialize velocities
+        path.getgCodeList().get(path.getgCodeList().size() - 1).setNextVelocity(0);
+        path.getgCodeList().get(path.getgCodeList().size() - 1).setPreviousVelocity(previousVelocity);
         GCodeController.initialize(path.getgCodeList().get(path.getgCodeList().size() - 1));
     }
 
@@ -78,8 +75,7 @@ public class PathController {
             if (path.getgCodeList().get(i) instanceof MotionGCode) {
                 if (adjust) {
                     startCoords = path.getgCodeList().get(index).getStartPosition();
-                    finalCoords = ((MotionGCode) path.getgCodeList().get(i))
-                            .getFinalPosition();
+                    finalCoords = ((MotionGCode) path.getgCodeList().get(i)).getFinalPosition();
 
                     double length = Geometry.linearLength(startCoords, finalCoords);
                     if (length > ConstUtil.MIN_LENGTH) {
@@ -90,8 +86,7 @@ public class PathController {
                         addGCode(gCode, newGCodes, path);
                         adjust = false;
                     }
-                } else if (((MotionGCode) path.getgCodeList().get(i))
-                        .getDistance() >= ConstUtil.MIN_LENGTH) {
+                } else if (((MotionGCode) path.getgCodeList().get(i)).getDistance() >= ConstUtil.MIN_LENGTH) {
                     addGCode(path.getgCodeList().get(i), newGCodes, path);
                 } else {
                     index = i;
@@ -227,19 +222,16 @@ public class PathController {
         //to initialize first G code.
         makeHalt(null, gCodes.get(0));
         for (int i = 1; i < gCodes.size() - 1; i++) {
-            double[] velocities = ((MotionGCode) gCodes.get(i))
-                    .getStartAngVelocities();
+            double[] velocities = ((MotionGCode) gCodes.get(i)).getStartAngVelocities();
 
             if (needToMakeHalt(previousVelocities, velocities)) {
                 makeHalt(gCodes.get(i - 1), gCodes.get(i));
             }
-            previousVelocities = ((MotionGCode) gCodes.get(i))
-                    .getFinalAngVelocities();
+            previousVelocities = ((MotionGCode) gCodes.get(i)).getFinalAngVelocities();
         }
 
         if (gCodes.size() > 1) {
-            double[] currentVelocity = ((MotionGCode) gCodes.get(gCodes.size() - 1))
-                    .getStartAngVelocities();
+            double[] currentVelocity = ((MotionGCode) gCodes.get(gCodes.size() - 1)).getStartAngVelocities();
 
             if (needToMakeHalt(previousVelocities, currentVelocity)) {
                 makeHalt(gCodes.get(gCodes.size() - 2), gCodes.get(gCodes.size() - 1));
