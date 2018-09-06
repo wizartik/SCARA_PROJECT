@@ -43,8 +43,7 @@ public class SCARADH {
         double y = coords[1];
         double z = coords[2];
 
-        double cT2 = (pow(x, 2) + pow(y, 2) - pow(FIRST_LINK_LENGTH, 2)
-                    - pow(SECOND_LINK_LENGTH, 2))
+        double cT2 = (pow(x, 2) + pow(y, 2) - pow(FIRST_LINK_LENGTH, 2) - pow(SECOND_LINK_LENGTH, 2))
                     / (2 * FIRST_LINK_LENGTH * SECOND_LINK_LENGTH);
         double sT2 = sqrt(1 - pow(cT2, 2));
 
@@ -53,8 +52,8 @@ public class SCARADH {
         }
         double T2 = atan2(sT2, cT2);
 
-        double cT1 = (x * (FIRST_LINK_LENGTH + SECOND_LINK_LENGTH * cT2)
-                    + y * SECOND_LINK_LENGTH * sT2) / (pow(x, 2) + pow(y, 2));
+        double cT1 = (x * (FIRST_LINK_LENGTH + SECOND_LINK_LENGTH * cT2) + y * SECOND_LINK_LENGTH * sT2)
+                / (pow(x, 2) + pow(y, 2));
 
         double sT1 = sqrt(1 - pow(cT1, 2));
 
@@ -92,8 +91,7 @@ public class SCARADH {
         }
 
         double w1 = 1 / (FIRST_LINK_LENGTH * SECOND_LINK_LENGTH * sin(T2))
-                    * (vx * SECOND_LINK_LENGTH * cos(T1 + T2)
-                        + vy * SECOND_LINK_LENGTH * sin(T1 + T2));
+                        * (vx * SECOND_LINK_LENGTH * cos(T1 + T2) + vy * SECOND_LINK_LENGTH * sin(T1 + T2));
 
         double w2 = -1 / (FIRST_LINK_LENGTH * SECOND_LINK_LENGTH * sin(T2))
                     * (vx * (FIRST_LINK_LENGTH * cos(T1)
