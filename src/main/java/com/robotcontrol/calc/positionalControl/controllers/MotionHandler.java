@@ -43,8 +43,7 @@ class MotionHandler {
         SingleJointPath singleJointPath;
 
         if (accLength * 2 < fullLength) {
-            singleJointPath = makeFullPath(startAngle, finalAngle, angVelocity,
-                    angAcceleration);
+            singleJointPath = makeFullPath(startAngle, finalAngle, angVelocity, angAcceleration);
         } else {
             singleJointPath = makeIncompletePath(startAngle, finalAngle);
         }
@@ -65,8 +64,7 @@ class MotionHandler {
 
         int pointsNumber = (int) Physics.pointsNumber(fullLength, angVelocity);
 
-        SingleJointPath path = new SingleJointPath(new
-                ArrayList<SingleJointPoint>(pointsNumber));
+        SingleJointPath path = new SingleJointPath(new ArrayList<SingleJointPoint>(pointsNumber));
 
         //first dynamic part
         path.getJointPoints().addAll(makeDynamicPath(startAngle, 0,
@@ -76,8 +74,7 @@ class MotionHandler {
         int lastIndex = path.getJointPoints().size() - 1;
 
         long startTime = path.getJointPoints().get(lastIndex).getTime();
-        double startPathAngle = path.getJointPoints().get(lastIndex)
-                .getAngle();
+        double startPathAngle = path.getJointPoints().get(lastIndex).getAngle();
 
         double finalPathAngle;
 
@@ -87,8 +84,8 @@ class MotionHandler {
             finalPathAngle = finalAngle - accLength;
         }
 
-        path.getJointPoints().addAll(makeStaticPath(startPathAngle,
-                finalPathAngle, angVelocity, startTime));
+        path.getJointPoints().addAll(makeStaticPath(startPathAngle, finalPathAngle,
+                angVelocity, startTime));
 
         //second dynamic part
         lastIndex = path.getJointPoints().size() - 1;
@@ -114,8 +111,7 @@ class MotionHandler {
         double time = Math.sqrt(distance / angAcceleration);
         double maxVelocity = time * angAcceleration;
 
-        SingleJointPath path = new SingleJointPath(new
-                ArrayList<SingleJointPoint>(100));
+        SingleJointPath path = new SingleJointPath(new ArrayList<SingleJointPoint>(100));
 
         path.getJointPoints().addAll(makeDynamicPath(startAngle, 0,
                 maxVelocity, angAcceleration, 0, decrease));
@@ -133,15 +129,16 @@ class MotionHandler {
     }
 
     private static List<SingleJointPoint> makeDynamicPath(double startAngle,
-                                                          double startAngVel, double finalAngVel, double angAcceleration,
+                                                          double startAngVel,
+                                                          double finalAngVel,
+                                                          double angAcceleration,
                                                           long startTime,
                                                           boolean decrease) {
         if (startAngVel > finalAngVel) {
             angAcceleration = -angAcceleration;
         }
 
-        double fullTime = Physics.accTimeInUs(startAngVel, finalAngVel,
-                angAcceleration);
+        double fullTime = Physics.accTimeInUs(startAngVel, finalAngVel, angAcceleration);
         double pointsNumber = (fullTime / TIME_GAP);
         int counter = (int) pointsNumber;
         double remainder = pointsNumber - counter;
@@ -154,15 +151,13 @@ class MotionHandler {
 
             long currentTime = startTime + t;
 
-            double currentVelocity = startAngVel
-                    + angAcceleration * Converter.toSec(t) / 2;
+            double currentVelocity = startAngVel + angAcceleration * Converter.toSec(t) / 2;
 
             if (decrease) {
                 currentVelocity = - currentVelocity;
             }
 
-            double currentAngle = startAngle + currentVelocity * Converter
-                    .toSec(t);
+            double currentAngle = startAngle + currentVelocity * Converter.toSec(t);
 
             result.add(new SingleJointPoint(currentAngle, currentTime));
             //to calculate last point which has different time gap
@@ -197,8 +192,7 @@ class MotionHandler {
 
             long currentTime = startTime + t;
 
-            double currentAngle = startAngle
-                    + angStatVelocity * Converter.toSec(t);
+            double currentAngle = startAngle + angStatVelocity * Converter.toSec(t);
 
             result.add(new SingleJointPoint(currentAngle, currentTime));
 
