@@ -5,7 +5,7 @@ public class Motion {
     /**
      * Number of microsteps per step.
      */
-    public static byte MICROSTEPS = 8;
+    public static byte MICROSTEPS[] = {8, 8, 1};
 
     public static double ANG_VELOCITY = com.robotcontrol.parameters.constant
             .Motion.NORMAL_ANG_VELOCITY;

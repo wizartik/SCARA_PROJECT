@@ -21,9 +21,9 @@ import java.util.List;
 
 import static com.robotcontrol.calc.stepperControl.controllers.StepsHandler.addSteps;
 
-public class ContourPathHandler {
+class ContourPathHandler {
 
-    public static SteppersPath makeStepperPath(ContourPath contourPath){
+    static SteppersPath makeStepperPath(ContourPath contourPath){
         List<List<Integer>> lists = new ArrayList<>(3);
 
         for (int i = 0; i < 3; i++) {
@@ -42,7 +42,9 @@ public class ContourPathHandler {
 
     private static void addPointsFromGCode(MotionGCode gCode, List<List<Integer>> lists, double[] reductionRatio){
 
-        double step = Math.toRadians(PhysicalParameters.STEP) / Motion.MICROSTEPS;
+        double step1 = Math.toRadians(PhysicalParameters.STEP) / Motion.MICROSTEPS[0];
+        double step2 = Math.toRadians(PhysicalParameters.STEP) / Motion.MICROSTEPS[1];
+        double step3 = Math.toRadians(PhysicalParameters.STEP) / Motion.MICROSTEPS[2];
 
         double previousAngle1 = gCode.getgCodePath().get(0).getAngles()[0];
         double angleReminder1 = 0;
@@ -84,32 +86,32 @@ public class ContourPathHandler {
             timeRemainder3 += currentTime3 - previousTime3;
             previousTime3 = currentTime3;
 
-            if (Math.abs(angleReminder1) > step) {
-                Remaining remaining = addSteps(angleReminder1, step, timeRemainder1, lists.get(0));
+            if (Math.abs(angleReminder1) > step1) {
+                Remaining remaining = addSteps(angleReminder1, step1, timeRemainder1, lists.get(0));
                 angleReminder1 = remaining.getAngleRemaining();
                 timeRemainder1 = remaining.getTimeRemaining();
             }
 
-            if (Math.abs(angleReminder2) > step) {
-                Remaining remaining = addSteps(angleReminder2, step, timeRemainder2, lists.get(1));
+            if (Math.abs(angleReminder2) > step2) {
+                Remaining remaining = addSteps(angleReminder2, step2, timeRemainder2, lists.get(1));
                 angleReminder2 = remaining.getAngleRemaining();
                 timeRemainder2 = remaining.getTimeRemaining();
             }
 
-            if (Math.abs(angleReminder3) > step) {
-                Remaining remaining = addSteps(angleReminder3, step, timeRemainder3, lists.get(2));
+            if (Math.abs(angleReminder3) > step3) {
+                Remaining remaining = addSteps(angleReminder3, step3, timeRemainder3, lists.get(2));
                 angleReminder3 = remaining.getAngleRemaining();
                 timeRemainder3 = remaining.getTimeRemaining();
             }
 
         }
-        if (Math.abs(angleReminder1) > 0.5 * step) {
+        if (Math.abs(angleReminder1) > 0.5 * step1) {
             lists.get(0).add((int) (Math.signum(angleReminder1) * timeRemainder1));
         }
-        if (Math.abs(angleReminder2) > 0.5 * step) {
+        if (Math.abs(angleReminder2) > 0.5 * step2) {
             lists.get(1).add((int) (Math.signum(angleReminder2) * timeRemainder2));
         }
-        if (Math.abs(angleReminder3) > 0.5 * step) {
+        if (Math.abs(angleReminder3) > 0.5 * step3) {
             lists.get(2).add((int) (Math.signum(angleReminder3) * timeRemainder3));
         }
     }

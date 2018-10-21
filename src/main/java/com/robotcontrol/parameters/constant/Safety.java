@@ -15,7 +15,7 @@ public class Safety {
     /**
      * Maximum allowed operating distance for drawing.
      */
-    public final static double MAX_RADIUS_DRAWING = 400;
+    public final static double MAX_RADIUS_DRAWING = 4000;
 
     /**
      * Minimum allowed operating distance for drawing.

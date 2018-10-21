@@ -53,7 +53,7 @@ public class GCodeChecker {
         if ((startLength < DynSafety.MIN_RADIUS) || (finalLength < DynSafety.MIN_RADIUS)) {
             throw new BoundsViolation("G code tries to violate allowed " +
                                       "bounds. Minimum radius of working area is " +
-                                      DynSafety.MAX_RADIUS, gCode);
+                                      DynSafety.MIN_RADIUS, gCode);
         }
     }
 

@@ -8,7 +8,31 @@
 
 package com.robotcontrol.calc.stepperControl.controllers;
 
+import com.robotcontrol.calc.contouringControl.entities.path.ContourPath;
+import com.robotcontrol.calc.positionalControl.entities.PositionalPath;
+import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class PathConverter {
 
+    public static SteppersPath convertToSteppersPath(ContourPath contourPath){
+        SteppersPath steppersPath = ContourPathHandler.makeStepperPath(contourPath);
+        trimList(steppersPath.getSteppersPoints());
+        return steppersPath;
+    }
+
+    public static SteppersPath convertToSteppersPath(PositionalPath positionalPath){
+        SteppersPath steppersPath = JointPathHandler.makeStepperPath(positionalPath);
+        trimList(steppersPath.getSteppersPoints());
+        return steppersPath;
+    }
+
+    private static void trimList(List list){
+        if (list instanceof ArrayList){
+            ((ArrayList) list).trimToSize();
+        }
+    }
 
 }
