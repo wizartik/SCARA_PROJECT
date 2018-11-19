@@ -8,6 +8,7 @@
 
 package com.robotcontrol.comm;
 
+import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
 import com.robotcontrol.calc.stepperControl.entities.SteppersPoint;
 
 import static com.robotcontrol.parameters.constant.Communication.*;
@@ -33,5 +34,22 @@ public class DataFormer {
             }
         }
         return dataLine.toString();
+    }
+
+    public String makeDataForOneStepper(SteppersPath steppersPath, int stepper) {
+        StringBuilder data = new StringBuilder(steppersPath.getSteppersPoints().size());
+
+        data.append(MOVEMENT_HEADER).append(stepper).append(SEPARATOR);
+        for (int i = 0; i < steppersPath.getSteppersPoints().size(); i++) {
+            int delay = steppersPath.getSteppersPoints().get(i).getStepsDelays()[stepper];
+            if (delay == 0) {
+                break;
+            }
+            data.append(delay);
+            data.append(SEPARATOR);
+        }
+        data.append(MOVEMENT_FOOTER);
+
+        return data.toString();
     }
 }

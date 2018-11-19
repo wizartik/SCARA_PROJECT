@@ -6,6 +6,8 @@ public class Position {
      */
     public static double[] HOME_COORDS = {10, 10, 10};
 
+    public static double[] DESIRED_POSITION = HOME_COORDS;
+
 
     /**
      * Current position of the working body.

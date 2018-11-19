@@ -12,4 +12,6 @@ public class Motion {
 
     public static double ANG_ACCELERATION = com.robotcontrol.parameters.constant
             .Motion.NORMAL_ANG_ACCELERATION;
+
+    public static boolean MOVING = false;
 }

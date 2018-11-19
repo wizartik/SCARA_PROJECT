@@ -20,4 +20,6 @@ public class Communication {
     public final static Character END_LINE_SYMBOL = ';';
 
     public final static int BAUDRATE = SerialPort.BAUDRATE_115200;
+
+    public final static int PORT = 14888;
 }
