@@ -18,16 +18,16 @@ public class WrongExtension extends Exception {
      * @param fileExtension wrong extension that caused this exception.
      */
     public WrongExtension(String fileExtension) {
-        String fileExtension1 = fileExtension;
 
         if (fileExtension.isEmpty()){
             this.message = "This file has no extension, please pick another " +
                     "file.";
         } else {
-            this.message = "This filename extension \"" + fileExtension + " \" " +
+            this.message = "This filename extension \"" + fileExtension + "\" " +
                     " is not a G code or is not supported.";
         }
         StringBuilder line = new StringBuilder();
+        line.append("Allowed file name extensions:\n");
         for (int i = 0; i < ConstUtil.ALLOWED_FILENAME_EXTENSIONS.length; i++) {
             line.append(ConstUtil.ALLOWED_FILENAME_EXTENSIONS[i]);
             line.append("\n");

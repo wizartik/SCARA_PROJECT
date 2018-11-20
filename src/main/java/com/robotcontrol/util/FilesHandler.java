@@ -17,9 +17,33 @@ public class FilesHandler {
      *                        doesn't has it at all.
      * @throws IOException    thrown if somehow there is IOException.
      */
-    public static ArrayList<String> gCodeFileToList(File file) throws
-            WrongExtension, IOException {
-        ArrayList<String> gCode;
+    public static ArrayList<String> gCodeFileToList(File file) throws WrongExtension, IOException {
+        checkFile(file);
+        ArrayList<String> gCode = fileToList(file);
+        gCode.trimToSize();
+        return gCode;
+    }
+
+    /**
+     * Checks if extension is right and allowed.
+     *
+     * @param extension filename extension that will be checked.
+     * @return true if extension is allowed, false if not.
+     */
+    private static boolean checkExtension(String extension) throws WrongExtension {
+        for (int i = 0; i < ConstUtil.ALLOWED_FILENAME_EXTENSIONS.length; i++) {
+            String allowed = ConstUtil.ALLOWED_FILENAME_EXTENSIONS[i];
+            if (extension.equalsIgnoreCase(allowed)) {
+                return true;
+            }
+        }
+        throw new WrongExtension(extension);
+    }
+
+    public static boolean checkFile(File file) throws WrongExtension {
+        if (file == null){
+            return false;
+        }
 
         String fileName = file.getName();
 
@@ -32,31 +56,9 @@ public class FilesHandler {
             throw new WrongExtension("");
         }
 
-        if (checkExtension(extension)) {
-            gCode = fileToList(file);
-        } else {
-            throw new WrongExtension(extension);
-        }
+        checkExtension(extension);
 
-        gCode.trimToSize();
-        return gCode;
-    }
-
-    /**
-     * Checks if extension is right and allowed.
-     *
-     * @param extension filename extension that will be checked.
-     * @return true if extension is allowed, false if not.
-     */
-    private static boolean checkExtension(String extension) {
-
-        for (int i = 0; i < ConstUtil.ALLOWED_FILENAME_EXTENSIONS.length; i++) {
-            String allowed = ConstUtil.ALLOWED_FILENAME_EXTENSIONS[i];
-            if (extension.equalsIgnoreCase(allowed)) {
-                return true;
-            }
-        }
-        return false;
+        return true;
     }
 
     /**
