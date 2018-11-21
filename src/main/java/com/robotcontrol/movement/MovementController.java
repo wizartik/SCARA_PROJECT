@@ -11,16 +11,15 @@ import com.robotcontrol.calc.positionalControl.entities.PositionalPath;
 import com.robotcontrol.calc.stepperControl.controllers.PathConverter;
 import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
 import com.robotcontrol.comm.wifi.WifiController;
-import com.robotcontrol.exc.BoundsViolation;
-import com.robotcontrol.exc.ImpossibleToImplement;
-import com.robotcontrol.exc.WrongExtension;
-import com.robotcontrol.exc.WrongInputData;
+import com.robotcontrol.exc.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.robotcontrol.parameters.dynamic.Position.CURRENT_POSITION;
+import static com.robotcontrol.util.CommUtil.checkConnection;
 
 public class MovementController {
     private static volatile MovementController instance;
@@ -40,14 +39,15 @@ public class MovementController {
         return localInstance;
     }
 
-    private MovementController() throws IOException {
-        wifiController = new WifiController();
+    private MovementController() {
     }
 
-    public void moveByGCodeFile(File file) throws WrongExtension, BoundsViolation, WrongInputData, IOException, ImpossibleToImplement {
+    public void moveByGCodeFile(File file) throws WrongExtension, BoundsViolation, WrongInputData, IOException, ImpossibleToImplement, NoConnection {
         if (ParametersController.isMoving()){
             return;
         }
+
+        checkConnection();
 
         List<GCode> gCodes = DataController.convertToGCode(file);
         ContourPath contourPath = PathController.makePath(gCodes);
@@ -58,10 +58,12 @@ public class MovementController {
         ParametersController.startedMovement(getFinalPosition(gCodes));
     }
 
-    public void moveToPointAng(double[] finalAngles) throws BoundsViolation, IOException {
+    public void moveToPointAng(double[] finalAngles) throws BoundsViolation, IOException, NoConnection {
         if (ParametersController.isMoving()){
             return;
         }
+
+        checkConnection();
 
         double[] currentAngles = SCARADH.inverseKinematics(CURRENT_POSITION);
         PositionalPath positionalPath = PositionalCotroller.moveToPointAng(currentAngles, finalAngles);
@@ -73,16 +75,31 @@ public class MovementController {
         ParametersController.startedMovement(finalPosition);
     }
 
-    public void moveToPointPos(double[] finalPosition) throws BoundsViolation, IOException {
+    public void moveToPointPos(double[] finalPosition) throws BoundsViolation, IOException, NoConnection {
         if (ParametersController.isMoving()){
             return;
         }
+
+        checkConnection();
 
         PositionalPath positionalPath = PositionalCotroller.moveToPointPos(CURRENT_POSITION, finalPosition);
         SteppersPath steppersPath = PathConverter.convertToSteppersPath(positionalPath);
         sendByWifi(steppersPath);
 
         ParametersController.startedMovement(finalPosition);
+    }
+
+    public void travelByPos(double[] differences) throws BoundsViolation, IOException, NoConnection {
+        double[] finalPosition = new double[differences.length];
+        Arrays.setAll(finalPosition, i -> CURRENT_POSITION[i] + differences[i]);
+        moveToPointPos(finalPosition);
+    }
+
+    public void travelByAng(double[] differences) throws BoundsViolation, IOException, NoConnection {
+        double[] currentAngles = SCARADH.inverseKinematics(CURRENT_POSITION);
+        double[] finalAngles = new double[differences.length];
+        Arrays.setAll(finalAngles, i -> currentAngles[i] + differences[i]);
+        moveToPointAng(finalAngles);
     }
 
     private void sendByWifi(SteppersPath steppersPath) throws IOException {

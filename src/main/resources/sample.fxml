@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.GridPane?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.robotcontrol.gui.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="1000" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.robotcontrol.gui.Controller">
    <left>
-      <VBox prefHeight="400.0" prefWidth="200.0" spacing="30.0" style="-fx-background-color: #a9a9a9;" BorderPane.alignment="CENTER">
+      <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="150.0" spacing="30.0" style="-fx-background-color: #a9a9a9;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="gCodePaneChose" mnemonicParsing="false" onAction="#changePaneToGCode" text="G-code" />
-            <Button mnemonicParsing="false" text="Positional" />
-            <Button mnemonicParsing="false" text="Settings" />
+            <Label text="coords" />
+            <JFXButton onAction="#changePaneToGCode" text="G-code" />
+            <JFXButton onAction="#changePaneToPositional" text="Positional" />
+            <JFXButton text="Settings" />
          </children>
          <padding>
             <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
@@ -20,6 +22,6 @@
       </VBox>
    </left>
    <center>
-      <AnchorPane fx:id="content" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="content" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

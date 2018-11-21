@@ -8,9 +8,12 @@
 
 package com.robotcontrol.parameters.dynamic;
 
+import com.robotcontrol.comm.wifi.WifiController;
 import jssc.SerialPort;
 
 public class Communication {
     public static SerialPort SERIAL_PORT = null;
     public static String PORT_NAME = null;
+
+    public static WifiController WIFI_CONTROLLER;
 }

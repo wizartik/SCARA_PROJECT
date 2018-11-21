@@ -27,8 +27,11 @@ public class SCARADH {
         double y = FIRST_LINK_LENGTH * sin(T1)
                    + SECOND_LINK_LENGTH * sin(T2 + T1);
 
+        System.out.println(" forward T3 = " + T3);
+
         double z = T3 * INCREMENT_PER_REVOLUTION / Math.toRadians(360);
 
+        System.out.println("forward z = " + z);
         return new double[]{x, y, z};
     }
 
@@ -62,7 +65,11 @@ public class SCARADH {
         }
         double T1 = atan2(sT1, cT1);
 
+        System.out.println(" inverse  z = " + z);
+
         double T3 = z / (INCREMENT_PER_REVOLUTION / Math.toRadians(360));
+
+        System.out.println(" inverse T3 = " + T3);
 
         return new double[]{T1, T2, T3};
     }

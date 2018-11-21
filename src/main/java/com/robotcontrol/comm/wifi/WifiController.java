@@ -38,6 +38,10 @@ public class WifiController {
         dataReceiver.setListening(false);
     }
 
+    public boolean isConnected(){
+        return server != null && server.getServer() != null && server.getServer().isBound() && server.getSocket() != null && server.getSocket().isConnected();
+    }
+
     public void closeConnection() throws IOException {
         stopListening();
         server.closeSocket();

@@ -1,5 +1,7 @@
 package com.robotcontrol.util.math;
 
+import java.util.Arrays;
+
 public class Converter {
     /**
      * @param inUs time in microseconds.
@@ -54,6 +56,15 @@ public class Converter {
      */
     public static double toExternalVel(double internal){
         return internal * 60;
+    }
+
+
+    public static double[] toRad(double[] degrees){
+        return Arrays.stream(degrees).map(Math::toRadians).toArray();
+    }
+
+    public static double[] toDegrees(double[] rads){
+        return Arrays.stream(rads).map(Math::toDegrees).toArray();
     }
 
 }

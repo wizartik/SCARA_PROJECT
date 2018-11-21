@@ -1,5 +1,7 @@
 package com.robotcontrol.gui.util;
 
+import com.robotcontrol.exc.BoundsViolation;
+import com.robotcontrol.exc.NoConnection;
 import com.robotcontrol.exc.WrongExtension;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -12,15 +14,37 @@ import java.io.StringWriter;
 
 public class ErrorHandler {
 
+    public static void showException(Exception e){
+        String title = e.getClass().getName();
+        String headerText = e.getMessage();
+        String exceptionText = getExceprionText(e);
+
+        showError(title, headerText, title, exceptionText);
+    }
+
+    public static void showNoConnection(NoConnection noConnection){
+        String title = "No connection!";
+        String headerText = noConnection.getMessage();
+        String exceptionText = getExceprionText(noConnection);
+
+        showError(title, headerText, title, exceptionText);
+
+    }
+
     public static void showWrongExtension(WrongExtension wrongExtension){
         String title = "Wrong file extension!";
         String headerText = wrongExtension.getMessage();
         String contextText = wrongExtension.getAddMessage();
+        String exceptionText = getExceprionText(wrongExtension);
 
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        wrongExtension.printStackTrace(pw);
-        String exceptionText = sw.toString();
+        showError(title, headerText, contextText, exceptionText);
+    }
+
+    public static void showBoundViolation(BoundsViolation boundsViolation){
+        String title = "Bounds violation";
+        String headerText = boundsViolation.getMessage();
+        String contextText = boundsViolation.getgCode();
+        String exceptionText = getExceprionText(boundsViolation);
 
         showError(title, headerText, contextText, exceptionText);
     }
@@ -50,5 +74,12 @@ public class ErrorHandler {
         alert.getDialogPane().setExpandableContent(expContent);
         alert.getDialogPane().setMinSize(600, 500);
         alert.showAndWait();
+    }
+
+    private static String getExceprionText(Exception e){
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        return sw.toString();
     }
 }
