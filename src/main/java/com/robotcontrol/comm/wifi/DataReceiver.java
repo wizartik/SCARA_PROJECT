@@ -23,13 +23,16 @@ public class DataReceiver {
                 try {
                     String data = (String) inputStream.readObject();
                     listener.onDataReceiveEvent(data);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean isListening() {

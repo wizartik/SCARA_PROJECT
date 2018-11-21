@@ -1,6 +1,7 @@
 package com.robotcontrol.comm.wifi;
 
 import com.robotcontrol.movement.ParametersController;
+import com.robotcontrol.util.CommUtil;
 
 public class DataReceiverResolver implements DataReceiverListener {
 
@@ -10,9 +11,12 @@ public class DataReceiverResolver implements DataReceiverListener {
     }
 
     private void resolveData(String data) {
-        switch (data){
+        switch (data) {
             case "finished":
                 ParametersController.finishedMovement();
+                break;
+            case "connected":
+                CommUtil.setStatusConnected();
                 break;
         }
     }
