@@ -1,5 +1,7 @@
 package com.robotcontrol.parameters.dynamic;
 
+import java.util.Arrays;
+
 public class Position {
     /**
      * Coordinates of the home position.
@@ -12,6 +14,6 @@ public class Position {
     /**
      * Current position of the working body.
      */
-    public static double[] CURRENT_POSITION = HOME_COORDS;
+    public static double[] CURRENT_POSITION = Arrays.copyOf(HOME_COORDS, HOME_COORDS.length);
 
 }

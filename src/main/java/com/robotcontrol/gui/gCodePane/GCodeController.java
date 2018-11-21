@@ -2,7 +2,7 @@ package com.robotcontrol.gui.gCodePane;
 
 import com.robotcontrol.exc.WrongExtension;
 import com.robotcontrol.gui.util.ErrorHandler;
-import com.robotcontrol.parameters.dynamic.Misc;
+import com.robotcontrol.parameters.dynamic.Files;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -19,7 +19,7 @@ public class GCodeController {
 
     @FXML
     private void initialize(){
-        fileNameLabel.textProperty().bind(Misc.CURRENT_FILE_NAME);
+        fileNameLabel.textProperty().bind(Files.CURRENT_FILE_NAME);
     }
 
     public void openFile(ActionEvent actionEvent) {
@@ -35,8 +35,8 @@ public class GCodeController {
 
     private void setCurrentFile(File file) throws WrongExtension {
         if (checkFile(file)) {
-            Misc.CURRENT_FILE = file;
-            Misc.CURRENT_FILE_NAME.set(file.getName());
+            Files.CURRENT_FILE = file;
+            Files.CURRENT_FILE_NAME.set(file.getName());
         }
     }
 }

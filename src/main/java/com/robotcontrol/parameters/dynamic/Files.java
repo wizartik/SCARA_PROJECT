@@ -5,7 +5,7 @@ import javafx.beans.property.StringProperty;
 
 import java.io.File;
 
-public class Misc {
+public class Files {
 
     public static File CURRENT_FILE;
 

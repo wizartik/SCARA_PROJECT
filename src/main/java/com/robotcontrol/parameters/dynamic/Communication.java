@@ -9,6 +9,8 @@
 package com.robotcontrol.parameters.dynamic;
 
 import com.robotcontrol.comm.wifi.WifiController;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import jssc.SerialPort;
 
 public class Communication {
@@ -16,4 +18,7 @@ public class Communication {
     public static String PORT_NAME = null;
 
     public static WifiController WIFI_CONTROLLER;
+
+    public static StringProperty CONNECTION_STATUS = new SimpleStringProperty("disconnected");
+
 }

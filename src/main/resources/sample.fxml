@@ -14,7 +14,7 @@
             <Label text="coords" />
             <JFXButton onAction="#changePaneToGCode" text="G-code" />
             <JFXButton onAction="#changePaneToPositional" text="Positional" />
-            <JFXButton text="Settings" />
+            <JFXButton onAction="#changePaneToSettings" text="Settings" />
          </children>
          <padding>
             <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
