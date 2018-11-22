@@ -18,6 +18,9 @@ public class DataReceiverResolver implements DataReceiverListener {
             case "connected":
                 CommUtil.setStatusConnected();
                 break;
+            case "finished calibration":
+                ParametersController.finishedCalibration();
+                break;
         }
     }
 }

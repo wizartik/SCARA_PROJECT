@@ -10,7 +10,7 @@ import com.robotcontrol.calc.positionalControl.controllers.PositionalCotroller;
 import com.robotcontrol.calc.positionalControl.entities.PositionalPath;
 import com.robotcontrol.calc.stepperControl.controllers.PathConverter;
 import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
-import com.robotcontrol.comm.wifi.WifiController;
+import com.robotcontrol.comm.CommunicationController;
 import com.robotcontrol.exc.*;
 
 import java.io.File;
@@ -24,9 +24,7 @@ import static com.robotcontrol.util.CommUtil.checkConnection;
 public class MovementController {
     private static volatile MovementController instance;
 
-    private WifiController wifiController;
-
-    public static MovementController getInstance() throws IOException {
+    public static MovementController getInstance() {
         MovementController localInstance = instance;
         if (localInstance == null) {
             synchronized (MovementController.class) {
@@ -43,7 +41,7 @@ public class MovementController {
     }
 
     public void moveByGCodeFile(File file) throws WrongExtension, BoundsViolation, WrongInputData, IOException, ImpossibleToImplement, NoConnection {
-        if (ParametersController.isMoving()){
+        if (ParametersController.isMoving()) {
             return;
         }
 
@@ -59,7 +57,7 @@ public class MovementController {
     }
 
     public void moveToPointAng(double[] finalAngles) throws BoundsViolation, IOException, NoConnection {
-        if (ParametersController.isMoving()){
+        if (ParametersController.isMoving()) {
             return;
         }
 
@@ -76,7 +74,7 @@ public class MovementController {
     }
 
     public void moveToPointPos(double[] finalPosition) throws BoundsViolation, IOException, NoConnection {
-        if (ParametersController.isMoving()){
+        if (ParametersController.isMoving()) {
             return;
         }
 
@@ -102,17 +100,22 @@ public class MovementController {
         moveToPointAng(finalAngles);
     }
 
-    private void sendByWifi(SteppersPath steppersPath) throws IOException {
-        wifiController.sendData(steppersPath, 0);
-        wifiController.sendData(steppersPath, 1);
-        wifiController.sendData(steppersPath, 2);
+    public void startCalibrating() throws IOException, NoConnection {
+        CommunicationController.sendString("calibrate");
+        ParametersController.startedCalibration();
     }
 
-    private double[] getFinalPosition(List<GCode> gCodes){
+    private void sendByWifi(SteppersPath steppersPath) throws IOException, NoConnection {
+        CommunicationController.sendData(steppersPath, 0);
+        CommunicationController.sendData(steppersPath, 1);
+        CommunicationController.sendData(steppersPath, 2);
+    }
+
+    private double[] getFinalPosition(List<GCode> gCodes) {
         double[] finalPosition;
         GCode lastGCode = gCodes.get(gCodes.size() - 1);
 
-        if (lastGCode instanceof MotionGCode){
+        if (lastGCode instanceof MotionGCode) {
             finalPosition = ((MotionGCode) lastGCode).getFinalPosition();
         } else {
             finalPosition = lastGCode.getStartPosition();

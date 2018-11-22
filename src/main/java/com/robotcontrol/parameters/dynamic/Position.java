@@ -1,5 +1,9 @@
 package com.robotcontrol.parameters.dynamic;
 
+import com.robotcontrol.util.SettingsUtil;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.util.Arrays;
 
 public class Position {
@@ -10,6 +14,12 @@ public class Position {
 
     public static double[] DESIRED_POSITION = HOME_COORDS;
 
+    public static StringProperty HOME_COORDS_STRING = new SimpleStringProperty(SettingsUtil.makeHomeCoordsString());
+
+    /**
+     * In degrees.
+     */
+    public static double[] ANGLES_AFTER_CALIBRATION = {0, -100, 0};
 
     /**
      * Current position of the working body.

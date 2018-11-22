@@ -14,4 +14,6 @@ public class Motion {
             .Motion.NORMAL_ANG_ACCELERATION;
 
     public static boolean MOVING = false;
+
+
 }

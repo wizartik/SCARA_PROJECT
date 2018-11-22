@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXTextField;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.exc.NoConnection;
 import com.robotcontrol.movement.MovementController;
-import com.robotcontrol.util.Utility;
 import com.robotcontrol.util.math.Converter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,9 +13,8 @@ import javafx.fxml.FXML;
 
 import java.io.IOException;
 
-import static com.robotcontrol.gui.util.ErrorHandler.showBoundViolation;
-import static com.robotcontrol.gui.util.ErrorHandler.showException;
-import static com.robotcontrol.gui.util.ErrorHandler.showNoConnection;
+import static com.robotcontrol.gui.util.ErrorHandler.*;
+import static com.robotcontrol.gui.util.Util.getFieldsArray;
 
 public class PositionalController {
 
@@ -156,26 +154,5 @@ public class PositionalController {
 
     private double[] getAngTravelArray() {
         return getFieldsArray(tAng1, tAng2, tAng3);
-    }
-
-    private double[] getFieldsArray(JFXTextField field1, JFXTextField field2, JFXTextField field3) {
-        if (!isFieldsValid(field1, field2, field3)) {
-            return null;
-        }
-        double x = Double.parseDouble(field1.getText());
-        double y = Double.parseDouble(field2.getText());
-        double z = Double.parseDouble(field3.getText());
-
-        return new double[]{x, y, z};
-    }
-
-    private boolean isFieldsValid(JFXTextField... field) {
-        for (JFXTextField aField : field) {
-            aField.setText(aField.getText().replaceAll(",", "."));
-            if (!Utility.isNumeric(aField.getText())) {
-                return false;
-            }
-        }
-        return true;
     }
 }

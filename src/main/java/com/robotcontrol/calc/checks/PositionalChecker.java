@@ -11,16 +11,18 @@ package com.robotcontrol.calc.checks;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.parameters.constant.Safety;
 
-import java.util.Arrays;
+import static com.robotcontrol.parameters.dynamic.Position.HOME_COORDS;
 
 public class PositionalChecker {
 
     public static void checkPositionalPathAngular(double[] startAngles,
                                                   double[] finalAngles) throws BoundsViolation {
-        System.out.println("start angles " + Arrays.toString(startAngles));
         checkPositionalPath(startAngles, finalAngles);
     }
 
+    public static void checkCoords(double[] coords) throws BoundsViolation {
+        checkPositionalPath(HOME_COORDS, coords);
+    }
 
     public static void checkPositionalPath(double[] startPosition,
                                            double[] finalPosition) throws BoundsViolation {
@@ -33,8 +35,6 @@ public class PositionalChecker {
                                                 0};
 
             checkLength(startCoords, finalCoords);
-        System.out.println(Arrays.toString(startPosition));
-        System.out.println(Arrays.toString(finalPosition));
             checkHeight(startPosition[2]);
             checkHeight(finalPosition[2]);
     }

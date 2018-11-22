@@ -1,6 +1,8 @@
 package com.robotcontrol.comm;
 
+import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
 import com.robotcontrol.comm.wifi.WifiController;
+import com.robotcontrol.exc.NoConnection;
 import com.robotcontrol.util.CommUtil;
 
 import java.io.IOException;
@@ -35,4 +37,16 @@ public class CommunicationController {
             e.printStackTrace();
         }
     }
+
+    public static void sendData(SteppersPath steppersPath, int stepper) throws NoConnection, IOException {
+        CommUtil.checkConnection();
+        WIFI_CONTROLLER.sendData(steppersPath, stepper);
+    }
+
+    public static void sendString(String string) throws NoConnection, IOException {
+        CommUtil.checkConnection();
+        WIFI_CONTROLLER.sendString(string);
+    }
+
+
 }

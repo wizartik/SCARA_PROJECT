@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.text.Font?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.robotcontrol.gui.SettingsController">
    <children>
@@ -27,6 +30,47 @@
                   <Label fx:id="connectionLabel" text="connection" />
                   <JFXButton onAction="#connect" text="connect" />
                   <JFXButton onAction="#disconnect" text="disconnect" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+               <children>
+                  <Label text="current mode" />
+                  <Label fx:id="currentMode" text="Label" />
+                  <JFXButton onAction="#switchToSelective" text="Selective mode" />
+                  <JFXButton onAction="#switchToDrawing" text="Drawing mode" />
+               </children>
+            </VBox>
+            <JFXButton onAction="#calibrate" text="calibrate" GridPane.rowIndex="1" />
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <VBox>
+                     <children>
+                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="350.0" text="change home coordinates" textAlignment="CENTER">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="currentHomeCoords" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="350.0" text="current" textAlignment="CENTER">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="59.0">
+                           <children>
+                              <Label text="X" />
+                              <JFXTextField fx:id="posX" promptText="X" />
+                              <Label text="Y" />
+                              <JFXTextField fx:id="posY" promptText="Y" />
+                              <Label text="Z" />
+                              <JFXTextField fx:id="posZ" promptText="Z" />
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </HBox>
+                        <JFXButton onAction="#changeHomeCoords" prefHeight="26.0" prefWidth="301.0" text="Change" />
+                     </children>
+                  </VBox>
                </children>
             </VBox>
          </children>
