@@ -1,8 +1,6 @@
 package com.robotcontrol.gui.util;
 
-import com.robotcontrol.exc.BoundsViolation;
-import com.robotcontrol.exc.NoConnection;
-import com.robotcontrol.exc.WrongExtension;
+import com.robotcontrol.exc.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -29,6 +27,24 @@ public class ErrorHandler {
 
         showError(title, headerText, title, exceptionText);
 
+    }
+
+    public static void showWrongInputData(WrongInputData wrongInputData){
+        String title = "Wrong input data!";
+        String headerText = wrongInputData.getMessage();
+        String contextText = wrongInputData.getgCode();
+        String exceptionText = getExceprionText(wrongInputData);
+
+        showError(title, headerText, contextText, exceptionText);
+    }
+
+    public static void showImpossibleToImplement(ImpossibleToImplement impossibleToImplement){
+        String title = "Impossible to implement!";
+        String headerText = impossibleToImplement.getMessage();
+        String contextText = impossibleToImplement.getGCode();
+        String exceptionText = getExceprionText(impossibleToImplement);
+
+        showError(title, headerText, contextText, exceptionText);
     }
 
     public static void showWrongExtension(WrongExtension wrongExtension){

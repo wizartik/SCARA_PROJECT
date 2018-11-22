@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="1000" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.robotcontrol.gui.Controller">
    <left>
-      <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="150.0" spacing="30.0" style="-fx-background-color: #a9a9a9;" BorderPane.alignment="CENTER">
+      <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="150.0" style="-fx-background-color: #a9a9a9;" BorderPane.alignment="CENTER">
          <children>
-            <Label text="coords" />
-            <JFXButton onAction="#changePaneToGCode" text="G-code" />
-            <JFXButton onAction="#changePaneToPositional" text="Positional" />
-            <JFXButton onAction="#changePaneToSettings" text="Settings" />
+            <Label fx:id="currentCoords" contentDisplay="CENTER" prefHeight="50.0" prefWidth="200.0" text="coords" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <JFXButton onAction="#changePaneToGCode" prefHeight="100.0" prefWidth="200.0" text="G-code">
+               <font>
+                  <Font size="20.0" />
+               </font></JFXButton>
+            <JFXButton onAction="#changePaneToPositional" prefHeight="100.0" prefWidth="200.0" text="Positional">
+               <font>
+                  <Font size="20.0" />
+               </font></JFXButton>
+            <JFXButton onAction="#changePaneToSettings" prefHeight="100.0" prefWidth="200.0" text="Settings">
+               <font>
+                  <Font size="20.0" />
+               </font></JFXButton>
          </children>
-         <padding>
-            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
-         </padding>
       </VBox>
    </left>
    <center>

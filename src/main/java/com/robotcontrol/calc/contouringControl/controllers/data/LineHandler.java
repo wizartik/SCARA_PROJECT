@@ -170,8 +170,7 @@ class LineHandler {
      * @return true if is known that G code is circular (word contains
      * definition of I, J, or radius).
      */
-    private static boolean parseWord(char letter, double value, Container
-            container) {
+    private static boolean parseWord(char letter, double value, Container container) {
         boolean circular = false;
         switch (letter) {
             case 'G':

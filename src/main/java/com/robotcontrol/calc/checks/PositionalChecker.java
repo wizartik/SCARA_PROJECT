@@ -8,6 +8,7 @@
 
 package com.robotcontrol.calc.checks;
 
+import com.robotcontrol.calc.DHParameters.SCARADH;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.parameters.constant.Safety;
 
@@ -17,7 +18,7 @@ public class PositionalChecker {
 
     public static void checkPositionalPathAngular(double[] startAngles,
                                                   double[] finalAngles) throws BoundsViolation {
-        checkPositionalPath(startAngles, finalAngles);
+        checkPositionalPath(SCARADH.forwardKinematics(startAngles), SCARADH.forwardKinematics(finalAngles));
     }
 
     public static void checkCoords(double[] coords) throws BoundsViolation {

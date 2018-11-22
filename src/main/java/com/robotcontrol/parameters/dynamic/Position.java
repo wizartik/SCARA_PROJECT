@@ -1,5 +1,6 @@
 package com.robotcontrol.parameters.dynamic;
 
+import com.robotcontrol.movement.ParametersController;
 import com.robotcontrol.util.SettingsUtil;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -25,5 +26,7 @@ public class Position {
      * Current position of the working body.
      */
     public static double[] CURRENT_POSITION = Arrays.copyOf(HOME_COORDS, HOME_COORDS.length);
+
+    public static StringProperty CURRENT_POSITION_STRING = new SimpleStringProperty(ParametersController.getCurrentCoordsString());
 
 }

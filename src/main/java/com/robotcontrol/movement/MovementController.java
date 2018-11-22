@@ -1,23 +1,22 @@
 package com.robotcontrol.movement;
 
 import com.robotcontrol.calc.DHParameters.SCARADH;
-import com.robotcontrol.calc.contouringControl.controllers.data.DataController;
-import com.robotcontrol.calc.contouringControl.controllers.path.PathController;
 import com.robotcontrol.calc.contouringControl.entities.GCode.GCode;
 import com.robotcontrol.calc.contouringControl.entities.GCode.MotionGCode;
-import com.robotcontrol.calc.contouringControl.entities.path.ContourPath;
-import com.robotcontrol.calc.positionalControl.controllers.PositionalCotroller;
+import com.robotcontrol.calc.positionalControl.controllers.PositionalController;
 import com.robotcontrol.calc.positionalControl.entities.PositionalPath;
 import com.robotcontrol.calc.stepperControl.controllers.PathConverter;
 import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
 import com.robotcontrol.comm.CommunicationController;
 import com.robotcontrol.exc.*;
+import com.robotcontrol.gui.util.DialogHandler;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.robotcontrol.parameters.dynamic.DynUtil.CURRENT_CONTOUR_PATH;
+import static com.robotcontrol.parameters.dynamic.DynUtil.CURRENT_CONTOUR_STEPPER_PATH;
 import static com.robotcontrol.parameters.dynamic.Position.CURRENT_POSITION;
 import static com.robotcontrol.util.CommUtil.checkConnection;
 
@@ -40,20 +39,25 @@ public class MovementController {
     private MovementController() {
     }
 
-    public void moveByGCodeFile(File file) throws WrongExtension, BoundsViolation, WrongInputData, IOException, ImpossibleToImplement, NoConnection {
+    public void moveByGCode() throws NoConnection, IOException {
         if (ParametersController.isMoving()) {
             return;
         }
 
         checkConnection();
 
-        List<GCode> gCodes = DataController.convertToGCode(file);
-        ContourPath contourPath = PathController.makePath(gCodes);
-        SteppersPath steppersPath = PathConverter.convertToSteppersPath(contourPath);
+        if ((CURRENT_CONTOUR_STEPPER_PATH != null) && (CURRENT_CONTOUR_PATH != null)) {
+            double[] startCoords = CURRENT_CONTOUR_PATH.getgCodeList().get(0).getStartPosition();
+            if (needToRecalculateContour(startCoords)) {
+                DialogHandler.recalculatePath();
+                return;
+            }
 
-        sendByWifi(steppersPath);
-
-        ParametersController.startedMovement(getFinalPosition(gCodes));
+            sendByWifi(CURRENT_CONTOUR_STEPPER_PATH);
+            ParametersController.startedMovement(getFinalPosition(CURRENT_CONTOUR_PATH.getgCodeList()));
+        } else {
+            DialogHandler.nothingToProcess();
+        }
     }
 
     public void moveToPointAng(double[] finalAngles) throws BoundsViolation, IOException, NoConnection {
@@ -64,7 +68,7 @@ public class MovementController {
         checkConnection();
 
         double[] currentAngles = SCARADH.inverseKinematics(CURRENT_POSITION);
-        PositionalPath positionalPath = PositionalCotroller.moveToPointAng(currentAngles, finalAngles);
+        PositionalPath positionalPath = PositionalController.moveToPointAng(currentAngles, finalAngles);
         SteppersPath steppersPath = PathConverter.convertToSteppersPath(positionalPath);
 
         sendByWifi(steppersPath);
@@ -80,7 +84,7 @@ public class MovementController {
 
         checkConnection();
 
-        PositionalPath positionalPath = PositionalCotroller.moveToPointPos(CURRENT_POSITION, finalPosition);
+        PositionalPath positionalPath = PositionalController.moveToPointPos(CURRENT_POSITION, finalPosition);
         SteppersPath steppersPath = PathConverter.convertToSteppersPath(positionalPath);
         sendByWifi(steppersPath);
 
@@ -103,6 +107,10 @@ public class MovementController {
     public void startCalibrating() throws IOException, NoConnection {
         CommunicationController.sendString("calibrate");
         ParametersController.startedCalibration();
+    }
+
+    private boolean needToRecalculateContour(double[] startCoords) {
+        return !Arrays.equals(startCoords, CURRENT_POSITION);
     }
 
     private void sendByWifi(SteppersPath steppersPath) throws IOException, NoConnection {

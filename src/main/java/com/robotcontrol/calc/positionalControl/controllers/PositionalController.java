@@ -14,7 +14,7 @@ import com.robotcontrol.calc.positionalControl.entities.PositionalPath;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.parameters.dynamic.Motion;
 
-public class PositionalCotroller {
+public class PositionalController {
 
     public static PositionalPath moveToPointAng(double[] startAngles,
                                                 double[] finalAngles) throws BoundsViolation {

@@ -1,8 +1,10 @@
 package com.robotcontrol.gui;
 
+import com.robotcontrol.parameters.dynamic.Position;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -19,7 +21,11 @@ public class Controller {
     AnchorPane content;
 
     @FXML
+    Label currentCoords;
+
+    @FXML
     private void initialize() {
+        currentCoords.textProperty().bind(Position.CURRENT_POSITION_STRING);
         changePaneToGCode(null);
     }
 

@@ -15,5 +15,4 @@ public class Motion {
 
     public static boolean MOVING = false;
 
-
 }

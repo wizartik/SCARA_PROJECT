@@ -4,12 +4,12 @@ import com.robotcontrol.calc.contouringControl.entities.GCode.GCode;
 import com.robotcontrol.exc.WrongInputData;
 import org.magicwerk.brownies.collections.GapList;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 class ListHandler {
 
-    static List<GCode> makeGCodeList(ArrayList<String> source) throws WrongInputData {
+    static List<GCode> makeGCodeList(List<String> source) throws WrongInputData {
         GapList<GCode> result = new GapList<>(source.size());
         makeData(source, result);
         result.trimToSize();
@@ -19,6 +19,7 @@ class ListHandler {
                     " commands.");
         }
 
+        System.out.println(Arrays.toString(result.toArray()));
         return result;
     }
 

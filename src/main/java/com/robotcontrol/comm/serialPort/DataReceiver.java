@@ -20,8 +20,7 @@ public class DataReceiver implements SerialPortEventListener {
             try {
                 String receivedData = Communication.SERIAL_PORT.readString(serialPortEvent.getEventValue());
             }
-            catch (SerialPortException ex) {
-                System.out.println("Error in receiving response from port: " + ex);
+            catch (SerialPortException ignored) {
             }
         }
     }

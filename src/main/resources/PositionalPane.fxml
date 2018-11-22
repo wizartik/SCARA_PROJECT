@@ -60,7 +60,7 @@
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <JFXButton onAction="#positionalGo" prefHeight="26.0" prefWidth="301.0" text="GO!" />
+                        <JFXButton onAction="#angularGo" prefHeight="26.0" prefWidth="301.0" text="GO!" />
                      </children>
                   </VBox>
                </children>

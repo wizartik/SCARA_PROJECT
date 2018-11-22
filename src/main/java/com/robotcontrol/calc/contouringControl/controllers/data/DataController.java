@@ -13,8 +13,8 @@ import java.util.List;
 
 public class DataController {
 
-    public static List<GCode> convertToGCode(ArrayList<String> sourceList)
-            throws WrongInputData, BoundsViolation {
+    public static List<GCode> convertToGCode(List<String> sourceList)
+            throws WrongInputData {
         return ListHandler.makeGCodeList(sourceList);
     }
 
