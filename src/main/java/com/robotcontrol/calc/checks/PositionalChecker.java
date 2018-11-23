@@ -12,7 +12,9 @@ import com.robotcontrol.calc.DHParameters.SCARADH;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.parameters.constant.Safety;
 
+import static com.robotcontrol.parameters.dynamic.DynSafety.MIN_RADIUS;
 import static com.robotcontrol.parameters.dynamic.Position.HOME_COORDS;
+import static java.lang.Math.abs;
 
 public class PositionalChecker {
 
@@ -28,18 +30,58 @@ public class PositionalChecker {
     public static void checkPositionalPath(double[] startPosition,
                                            double[] finalPosition) throws BoundsViolation {
 
-            double[] startCoords = new double[]{startPosition[0],
-                                                finalPosition[1],
-                                                0};
-            double[] finalCoords = new double[]{startCoords[0],
-                                                finalPosition[1],
-                                                0};
+        double[] startCoords = new double[]{startPosition[0],
+                finalPosition[1],
+                0};
+        double[] finalCoords = new double[]{startCoords[0],
+                finalPosition[1],
+                0};
 
-            checkLength(startCoords, finalCoords);
-            checkHeight(startPosition[2]);
-            checkHeight(finalPosition[2]);
+        checkCollision(startCoords, finalCoords, "");
+        GCodeChecker.checkUtmostPoints(startCoords, "");
+        GCodeChecker.checkUtmostPoints(finalCoords, "");
+        checkLength(startCoords, finalCoords);
+        checkHeight(startPosition[2]);
+        checkHeight(finalPosition[2]);
     }
 
+    static void checkCollision(double[] startCoords, double[] finalCoords, String gCode) throws BoundsViolation {
+        double rr = MIN_RADIUS * MIN_RADIUS;
+
+        double x01 = startCoords[0];
+        double y01 = startCoords[1];
+
+        double x02 = finalCoords[0];
+        double y02 = finalCoords[1];
+
+        if ((x01) * (x01) + (y01) * (y01) <= rr) {
+            throw new BoundsViolation("G code intercepts minimum allowed radius and cannot be performed!", gCode);
+        }
+        if ((x02) * (x02) + (y02) * (y02) <= rr) {
+            throw new BoundsViolation("G code intercepts minimum allowed radius and cannot be performed!", gCode);
+        }
+
+        if (x01 == x02) {
+            if ((y01 < 0 && y02 > 0 || y01 > 0 && y02 < 0) && abs(x01) <= MIN_RADIUS) {
+                throw new BoundsViolation("G code intercepts minimum allowed radius and cannot be performed!", gCode);
+            }
+        }
+        if (y01 == y02) {
+            if ((x01 < 0 && x02 > 0 || x01 > 0 && x02 < 0) && abs(y01) <= MIN_RADIUS){
+                throw new BoundsViolation("G code intercepts minimum allowed radius and cannot be performed!", gCode);
+            }
+        }
+
+        double a = (y01 - y02) / (x01 - x02);
+        double b = y01 - a * x01;
+        double xp = (-b) / (a + 1 / a);
+        double yp = a * xp + b;
+
+        if (x01 < xp && x02 > xp || x02 < xp && x01 > xp)
+            if ((xp) * (xp) + (yp) * (yp) <= rr){
+                throw new BoundsViolation("G code intercepts minimum allowed radius and cannot be performed!", gCode);
+            }
+    }
 
     private static void checkLength(double[] startCoords, double[] finalCoords)
             throws BoundsViolation {

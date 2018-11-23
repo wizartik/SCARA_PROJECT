@@ -10,6 +10,10 @@ import com.robotcontrol.parameters.constant.Safety;
 import com.robotcontrol.parameters.dynamic.DynSafety;
 import com.robotcontrol.util.math.Geometry;
 
+import java.util.Arrays;
+
+import static com.robotcontrol.calc.checks.PositionalChecker.checkCollision;
+
 public class GCodeChecker {
 
     /**
@@ -22,6 +26,10 @@ public class GCodeChecker {
     public static void checkGCode(GCode gCode) throws BoundsViolation {
         checkUtmostPoints(gCode);
         checkVelocity(gCode);
+
+        if (gCode instanceof MotionGCode){
+            checkCollision(gCode.getStartPosition(), ((MotionGCode) gCode).getFinalPosition(), gCode.getGCode());
+        }
 
         if (gCode instanceof AngularGCode){
             checkAngularGCode((AngularGCode) gCode);
@@ -45,6 +53,9 @@ public class GCodeChecker {
                                                 ((MotionGCode) gCode).getFinalPosition()[1],
                                                 0};
 
+
+            checkUtmostPoints(startCoords, gCode.getGCode());
+            checkUtmostPoints(finalCoords, gCode.getGCode());
             checkLength(startCoords, finalCoords, gCode.getGCode());
             checkHeight(gCode.getStartPosition()[2], gCode.getGCode());
             checkHeight(((MotionGCode) gCode).getFinalPosition()[2], gCode.getGCode());
@@ -77,6 +88,14 @@ public class GCodeChecker {
             throw new BoundsViolation("G code tries to violate allowed " +
                                       "bounds. Minimum radius of working area is " +
                                       DynSafety.MIN_RADIUS, gCode);
+        }
+    }
+
+    static void checkUtmostPoints(double[] coords, String gCode) throws BoundsViolation {
+        if (coords[0] >= DynSafety.MAX_RADIUS || coords[1] >= DynSafety.MAX_RADIUS){
+            throw new BoundsViolation("G code tries to violate allowed " +
+                    "bounds. Maximum radius of working area is " +
+                    DynSafety.MAX_RADIUS + " coordinates are " + Arrays.toString(coords), gCode);
         }
     }
 
