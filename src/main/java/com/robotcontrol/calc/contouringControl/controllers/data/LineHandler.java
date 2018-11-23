@@ -1,10 +1,10 @@
 package com.robotcontrol.calc.contouringControl.controllers.data;
 
-import com.robotcontrol.parameters.constant.ConstUtil;
-import com.robotcontrol.util.Utility;
 import com.robotcontrol.calc.contouringControl.entities.GCode.*;
 import com.robotcontrol.calc.contouringControl.entities.data.Container;
 import com.robotcontrol.exc.WrongInputData;
+import com.robotcontrol.parameters.constant.ConstUtil;
+import com.robotcontrol.util.Utility;
 import com.robotcontrol.util.math.Converter;
 import com.robotcontrol.util.math.Geometry;
 
@@ -107,6 +107,11 @@ class LineHandler {
         String[] words = line.split("\\s+");
 
         char c = words[0].charAt(0);
+
+        if (!isGcodeTypeWord(words[0])){
+            container.setgCodeType(GARBAGE);
+            return;
+        }
 
         if (!isKnown(c)) {
             container.setgCodeType(GARBAGE);
@@ -244,6 +249,32 @@ class LineHandler {
         } else {
             return false;
         }
+    }
+
+    private static boolean isGcodeTypeWord(String word){
+        if (word.length() <= 1) {
+            return false;
+        }
+
+        if (!word.startsWith("G")){
+            return false;
+        }
+
+        String potentialNumber = word.substring(1);
+
+        if (Utility.isNumeric(potentialNumber)){
+            try {
+                int number = Integer.parseInt(potentialNumber);
+                if (number < 0 || number > 3){
+                    return false;
+                }
+            } catch (NumberFormatException e){
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return true;
     }
 
     /**

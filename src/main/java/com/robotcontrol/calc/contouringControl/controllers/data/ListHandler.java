@@ -37,6 +37,12 @@ class ListHandler {
             line = line.substring(0, j);
         }
 
+        //delete all after ;
+        int k = line.indexOf(';');
+        if (k != -1) {
+            line = line.substring(0, k);
+        }
+
         line = line.toUpperCase();
         return line;
     }
