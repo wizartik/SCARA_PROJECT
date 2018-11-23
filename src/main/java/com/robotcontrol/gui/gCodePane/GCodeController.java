@@ -3,12 +3,15 @@ package com.robotcontrol.gui.gCodePane;
 import com.jfoenix.controls.JFXTextArea;
 import com.robotcontrol.calc.CalculateController;
 import com.robotcontrol.exc.*;
+import com.robotcontrol.gui.util.Drawing;
 import com.robotcontrol.gui.util.ErrorHandler;
 import com.robotcontrol.movement.MovementController;
+import com.robotcontrol.parameters.dynamic.DynUtil;
 import com.robotcontrol.parameters.dynamic.Files;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -19,6 +22,9 @@ import java.util.List;
 import static com.robotcontrol.util.FilesHandler.checkFile;
 
 public class GCodeController {
+
+    @FXML
+    public Pane drawingPane;
 
     @FXML
     Label fileNameLabel;
@@ -53,6 +59,7 @@ public class GCodeController {
     public void fileCalc() {
         try {
             CalculateController.calculateContourPath(Files.CURRENT_FILE);
+            drawPath();
         } catch (WrongExtension wrongExtension) {
             ErrorHandler.showWrongExtension(wrongExtension);
         } catch (BoundsViolation boundsViolation) {
@@ -69,6 +76,7 @@ public class GCodeController {
     public void areaCalc() {
         try {
             CalculateController.calculateContourPathByList(stringToList(gCodeArea.getText()));
+            drawPath();
         } catch (WrongInputData wrongInputData) {
             ErrorHandler.showWrongInputData(wrongInputData);
         } catch (BoundsViolation boundsViolation) {
@@ -85,6 +93,12 @@ public class GCodeController {
             ErrorHandler.showNoConnection(noConnection);
         } catch (IOException e) {
             ErrorHandler.showException(e);
+        }
+    }
+
+    private void drawPath(){
+        if (DynUtil.CURRENT_CONTOUR_PATH != null && !DynUtil.CURRENT_CONTOUR_PATH.getgCodeList().isEmpty()){
+            Drawing.addPathToPane(drawingPane, DynUtil.CURRENT_CONTOUR_PATH.getgCodeList());
         }
     }
 

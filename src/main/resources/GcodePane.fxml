@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.robotcontrol.gui.gCodePane.GCodeController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.robotcontrol.gui.gCodePane.GCodeController">
    <children>
-      <HBox prefHeight="400.0" prefWidth="600.0">
+      <HBox prefHeight="600.0" prefWidth="800.0">
          <children>
             <VBox prefHeight="400.0" prefWidth="267.0">
                <children>
@@ -35,7 +35,7 @@
                   <JFXButton onAction="#go" prefHeight="26.0" prefWidth="84.0" text="Go!" />
                </children>
             </VBox>
-            <Pane prefHeight="400.0" prefWidth="336.0" />
+            <Pane fx:id="drawingPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="533.0" />
          </children>
       </HBox>
    </children>
