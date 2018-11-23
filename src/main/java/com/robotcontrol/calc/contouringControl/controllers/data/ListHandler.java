@@ -4,7 +4,6 @@ import com.robotcontrol.calc.contouringControl.entities.GCode.GCode;
 import com.robotcontrol.exc.WrongInputData;
 import org.magicwerk.brownies.collections.GapList;
 
-import java.util.Arrays;
 import java.util.List;
 
 class ListHandler {
@@ -19,7 +18,6 @@ class ListHandler {
                     " commands.");
         }
 
-        System.out.println(Arrays.toString(result.toArray()));
         return result;
     }
 
@@ -64,7 +62,6 @@ class ListHandler {
             }
 
         }
-
     }
 
 }

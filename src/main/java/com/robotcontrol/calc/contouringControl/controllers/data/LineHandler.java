@@ -98,8 +98,12 @@ class LineHandler {
      * @throws WrongInputData if line has no correct data for radius or center
      *                        definition.
      */
-    private static void parseLine(String line, Container container) throws
-            WrongInputData {
+    private static void parseLine(String line, Container container) throws WrongInputData {
+
+        if (isEmptyGcode(line)){
+            throw new WrongInputData("This G-code has empty body", line);
+        }
+
         String[] words = line.split("\\s+");
 
         char c = words[0].charAt(0);
@@ -113,12 +117,11 @@ class LineHandler {
             String sValue;
             char letter;
 
-            if (word.length() > 1
-                    && Utility.isNumeric(sValue = word.substring(1))) {
+            if (word.length() > 1 && Utility.isNumeric(sValue = word.substring(1)) && isKnown(word.charAt(0))) {
                 value = Double.parseDouble(sValue);
                 letter = word.charAt(0);
             } else {
-                continue;
+                throw new WrongInputData("This G-code has wrong specified data \"" + word + "\"", line);
             }
 
             boolean circular = parseWord(letter, value, container);
@@ -139,8 +142,7 @@ class LineHandler {
             container.getCenterPosition()[0] = container.getStartPosition()[0] + container.getI();
             container.getCenterPosition()[1] = container.getStartPosition()[1] + container.getJ();
 
-            container.setRadius(Geometry.linearLength(container.getCenterPosition(),
-                    container.getStartPosition()));
+            container.setRadius(Geometry.linearLength(container.getCenterPosition(), container.getStartPosition()));
         } else if (container.getRadius() > 0) {
             if (container.getgCodeType().equals(GCodeType.G02)) {
 
@@ -226,6 +228,22 @@ class LineHandler {
             }
         }
         return false;
+    }
+
+    private static boolean isEmptyGcode(String word) {
+        if (word.length() > 1) {
+            char firsLetter = word.charAt(0);
+            String potentialNumber = word.substring(1);
+
+            if (firsLetter == 'G' && Utility.isNumeric(potentialNumber)) {
+                int gCodeNumber = Integer.parseInt(potentialNumber);
+                return gCodeNumber >= 0 && gCodeNumber <= 3;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
