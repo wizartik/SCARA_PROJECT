@@ -10,27 +10,27 @@ public class Safety {
     /**
      * Minimum allowed height working body can lift.
      */
-    public final static double MIN_HEIGHT_COORD = 0;
+    public final static double MIN_HEIGHT_COORD = -1;
 
     /**
      * Maximum allowed operating distance for drawing.
      */
-    public final static double MAX_RADIUS_DRAWING = 200;
+    public final static double MAX_RADIUS_DRAWING = 100;
 
     /**
      * Minimum allowed operating distance for drawing.
      */
-    public final static double MIN_RADIUS_DRAWING = 9;
+    public final static double MIN_RADIUS_DRAWING = 0;
 
     /**
      * Maximum allowed operating distance for pick and place.
      */
-    public final static double MAX_RADIUS_SELECTIVE = 200;
+    public final static double MAX_RADIUS_SELECTIVE = 100;
 
     /**
      * Minimum allowed operating distance for pick and place.
      */
-    public final static double MIN_RADIUS_SELECTIVE = 9;
+    public final static double MIN_RADIUS_SELECTIVE = 0;
 
     /**
      * Maximum angular velocity difference among 2 G codes utmost angular

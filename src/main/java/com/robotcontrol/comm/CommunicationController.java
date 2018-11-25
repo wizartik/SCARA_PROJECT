@@ -4,6 +4,7 @@ import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
 import com.robotcontrol.comm.wifi.WifiController;
 import com.robotcontrol.exc.NoConnection;
 import com.robotcontrol.util.CommUtil;
+import javafx.application.Platform;
 
 import java.io.IOException;
 
@@ -14,16 +15,22 @@ public class CommunicationController {
         if (WIFI_CONTROLLER != null) {
             return;
         }
+
         new Thread(() -> {
             try {
                 WIFI_CONTROLLER = new WifiController();
-                if (CommUtil.isConnected()) {
-                    CommUtil.setStatusConnected();
-                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
+
+        Platform.runLater(() -> {
+            while (!CommUtil.isConnected()){
+                Thread.yield();
+            }
+            CommUtil.setStatusConnected();
+        });
+
     }
 
     public static void closeWiFiConnection() {
@@ -33,6 +40,7 @@ public class CommunicationController {
         try {
             WIFI_CONTROLLER.closeConnection();
             WIFI_CONTROLLER = null;
+            CommUtil.setStatusDisconnected();
         } catch (IOException e) {
             e.printStackTrace();
         }

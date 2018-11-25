@@ -19,4 +19,8 @@ public class DialogHandler {
     public static void nothingToProcess(){
         showDialog("Nothing to process!", "pls select file or create G-code path and click calculate", "wtf");
     }
+
+    public static void currentlyMoving(){
+        showDialog("Robot is busy!", "motors are working now, wait for end of the operation", "or reboot program if motors arent actually moving");
+    }
 }

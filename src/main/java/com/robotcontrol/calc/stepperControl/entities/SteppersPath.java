@@ -8,12 +8,15 @@
 
 package com.robotcontrol.calc.stepperControl.entities;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class SteppersPath {
 
     private List<SteppersPoint> steppersPoints;
+
+    private int[] steps = new int[3];
 
     public SteppersPath() {
     }
@@ -30,24 +33,35 @@ public class SteppersPath {
         this.steppersPoints = steppersPoints;
     }
 
+    public int[] getSteps() {
+        return steps;
+    }
+
+    public void setSteps(int[] steps) {
+        this.steps = steps;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof SteppersPath)) return false;
         SteppersPath that = (SteppersPath) o;
-        return Objects.equals(getSteppersPoints(), that.getSteppersPoints());
+        return Objects.equals(getSteppersPoints(), that.getSteppersPoints()) &&
+                Arrays.equals(getSteps(), that.getSteps());
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(getSteppersPoints());
+        int result = Objects.hash(getSteppersPoints());
+        result = 31 * result + Arrays.hashCode(getSteps());
+        return result;
     }
 
     @Override
     public String toString() {
         return "SteppersPath{" +
                 "steppersPoints=" + steppersPoints +
+                ", steps=" + Arrays.toString(steps) +
                 '}';
     }
 }

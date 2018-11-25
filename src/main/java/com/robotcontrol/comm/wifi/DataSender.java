@@ -1,25 +1,31 @@
 package com.robotcontrol.comm.wifi;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 public class DataSender {
 
     private SocketServer server;
 
-    private ObjectOutputStream outputStream;
+    private BufferedOutputStream outputStream;
+    private BufferedWriter bufferedWriter;
 
     public DataSender(SocketServer server) throws IOException {
         this.server = server;
 
         server.createServer();
         server.createSocket();
-        outputStream = new ObjectOutputStream(server.getSocket().getOutputStream());
+        outputStream = new BufferedOutputStream(server.getSocket().getOutputStream());
+//        outputStream = new ObjectOutputStream(server.getSocket().getOutputStream());
+        bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
     }
 
     public void sendString(String string) throws IOException {
-        outputStream.writeChars(string);
-        outputStream.flush();
+
+        System.out.println("sending: " + string);
+
+        bufferedWriter.write(string);
+        bufferedWriter.flush();
+//        outputStream.flush();
     }
 
     @Override

@@ -1,19 +1,20 @@
 package com.robotcontrol.comm.wifi;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 
 public class DataReceiver {
 
     private DataReceiverListener listener;
-    private ObjectInputStream inputStream;
+    private BufferedInputStream inputStream;
+    private BufferedReader bufferedReader;
     private SocketServer server;
     private boolean listening;
 
     public DataReceiver(SocketServer socketServer) throws IOException {
         this.server = socketServer;
         listener = new DataReceiverResolver();
-        inputStream =  new ObjectInputStream(server.getSocket().getInputStream());
+        inputStream =  new BufferedInputStream(server.getSocket().getInputStream());
+        bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         listening = true;
     }
 
@@ -21,18 +22,19 @@ public class DataReceiver {
         new Thread(() -> {
             while (listening) {
                 try {
-                    String data = (String) inputStream.readObject();
+                    String data = bufferedReader.readLine();
                     listener.onDataReceiveEvent(data);
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }).start();
-        try {
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public boolean isListening() {

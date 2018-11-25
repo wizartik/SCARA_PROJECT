@@ -119,9 +119,9 @@ public class Utility {
      * @return largest number;
      */
     public static long findLargest(long x, long y, long z) {
-        if (x > y && x > z) {
+        if (x >= y && x >= z) {
             return x;
-        } else if (y > x && y > z) {
+        } else if (y >= x && y >= z) {
             return y;
         } else {
             return z;

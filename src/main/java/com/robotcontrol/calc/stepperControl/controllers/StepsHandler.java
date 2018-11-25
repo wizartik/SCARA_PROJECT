@@ -35,7 +35,12 @@ class StepsHandler {
             steppersPoints.add(new SteppersPoint(delays));
         }
 
-        return new SteppersPath(steppersPoints);
+        SteppersPath steppersPath = new SteppersPath(steppersPoints);
+        steppersPath.getSteps()[0] = lists.get(0).size();
+        steppersPath.getSteps()[1] = lists.get(1).size();
+        steppersPath.getSteps()[2] = lists.get(2).size();
+
+        return steppersPath;
     }
 
 
