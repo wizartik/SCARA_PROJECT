@@ -3,6 +3,8 @@ package com.robotcontrol.comm.wifi;
 import com.robotcontrol.movement.ParametersController;
 import com.robotcontrol.util.CommUtil;
 
+import static com.robotcontrol.parameters.constant.Communication.*;
+
 public class DataReceiverResolver implements DataReceiverListener {
 
     @Override
@@ -11,16 +13,24 @@ public class DataReceiverResolver implements DataReceiverListener {
     }
 
     private void resolveData(String data) {
-        System.out.println(data);
         switch (data) {
-            case "finished":
+            case MESSAGE_MOVEMENT_FINISHED:
                 ParametersController.finishedMovement();
                 break;
-            case "connected":
+            case MESSAGE_CONNECTED:
                 CommUtil.setStatusConnected();
                 break;
-            case "finished calibration":
+            case MESSAGE_CALIBRATION_FINISHED:
                 ParametersController.finishedCalibration();
+                break;
+            case MESSAGE_CRASH1:
+                ParametersController.motorCrash(1);
+                break;
+            case MESSAGE_CRASH2:
+                ParametersController.motorCrash(2);
+                break;
+            case MESSAGE_CRASH3:
+                ParametersController.motorCrash(3);
                 break;
         }
     }

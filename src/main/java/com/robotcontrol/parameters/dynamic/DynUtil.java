@@ -6,8 +6,6 @@ import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.util.Timer;
-
 public class DynUtil {
 
     public static StringProperty CURRENT_MODE_STRING = new SimpleStringProperty("current: selective");

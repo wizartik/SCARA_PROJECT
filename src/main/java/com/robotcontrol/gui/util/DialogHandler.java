@@ -23,4 +23,8 @@ public class DialogHandler {
     public static void currentlyMoving(){
         showDialog("Robot is busy!", "motors are working now, wait for end of the operation", "or reboot program if motors arent actually moving");
     }
+
+    public static void showMotorCrash(int num){
+        showDialog("Endstop yield!","Link "+num+"hits endstop!", "stop and recalibrate!");
+    }
 }

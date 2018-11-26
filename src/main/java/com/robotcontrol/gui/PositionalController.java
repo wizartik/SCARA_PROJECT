@@ -18,7 +18,7 @@ import static com.robotcontrol.gui.util.Util.getFieldsArray;
 
 public class PositionalController {
 
-    MovementController movementController;
+    private MovementController movementController;
 
     @FXML
     public JFXTextField posX;
@@ -139,6 +139,17 @@ public class PositionalController {
         }
     }
 
+    public void goHome(ActionEvent actionEvent) {
+        try {
+            movementController.goToHomeCoords();
+        } catch (NoConnection noConnection) {
+            showNoConnection(noConnection);
+        } catch (BoundsViolation boundsViolation) {
+            showBoundViolation(boundsViolation);
+        } catch (IOException e) {
+            showException(e);
+        }
+    }
 
     private double[] getPositionalArray() {
         return getFieldsArray(posX, posY, posZ);
@@ -155,4 +166,5 @@ public class PositionalController {
     private double[] getAngTravelArray() {
         return getFieldsArray(tAng1, tAng2, tAng3);
     }
+
 }

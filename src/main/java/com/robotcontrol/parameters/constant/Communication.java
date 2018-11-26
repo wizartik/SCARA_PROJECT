@@ -27,6 +27,16 @@ public class Communication {
 
     public final static Character DATA_STATIC_VALUE = 'v';
 
+    public final static String MESSAGE_MOVEMENT_FINISHED = "finished";
+
+    public final static String MESSAGE_CONNECTED = "connected";
+
+    public final static String MESSAGE_CALIBRATION_FINISHED = "finished calibration";
+
+    public final static String MESSAGE_CRASH1 = "pizdec1";
+    public final static String MESSAGE_CRASH2 = "pizdec2";
+    public final static String MESSAGE_CRASH3 = "pizdec3";
+
     public final static int BAUDRATE = SerialPort.BAUDRATE_115200;
 
     public final static int PORT = 14888;

@@ -18,6 +18,7 @@ import java.util.List;
 import static com.robotcontrol.parameters.dynamic.DynUtil.CURRENT_CONTOUR_PATH;
 import static com.robotcontrol.parameters.dynamic.DynUtil.CURRENT_CONTOUR_STEPPER_PATH;
 import static com.robotcontrol.parameters.dynamic.Position.CURRENT_POSITION;
+import static com.robotcontrol.parameters.dynamic.Position.HOME_COORDS;
 import static com.robotcontrol.util.CommUtil.checkConnection;
 
 public class MovementController {
@@ -107,6 +108,10 @@ public class MovementController {
     public void startCalibrating() throws IOException, NoConnection {
         CommunicationController.sendString("calibrate");
         ParametersController.startedCalibration();
+    }
+
+    public void goToHomeCoords() throws NoConnection, BoundsViolation, IOException {
+        moveToPointPos(HOME_COORDS);
     }
 
     private boolean needToRecalculateContour(double[] startCoords) {

@@ -1,6 +1,7 @@
 package com.robotcontrol.movement;
 
 import com.robotcontrol.calc.DHParameters.SCARADH;
+import com.robotcontrol.gui.util.DialogHandler;
 import com.robotcontrol.parameters.dynamic.Motion;
 import com.robotcontrol.parameters.dynamic.Position;
 import com.robotcontrol.util.math.Converter;
@@ -46,6 +47,11 @@ public class ParametersController {
     public static String getCurrentCoordsString(){
         DecimalFormat decimalFormat = new DecimalFormat("##.#");
         return "[" + decimalFormat.format(CURRENT_POSITION[0]) + "; " + decimalFormat.format(CURRENT_POSITION[1]) + "; " + decimalFormat.format(CURRENT_POSITION[2]) + "]";
+    }
+
+    public static void motorCrash(int number){
+        DialogHandler.showMotorCrash(number);
+        MOVING = false;
     }
 
     private static double[] getPositionAfterCalibration(){
