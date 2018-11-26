@@ -44,23 +44,60 @@ public class DataFormer {
         data.append(MOVEMENT_HEADER).append(stepper);
         appendDataNumberInfo(data, steppersPath, stepper);
         data.append(SEPARATOR);
+        appendData(data, steppersPath, stepper);
+        data.append(MOVEMENT_FOOTER);
+
+        data.append('\n');
+
+        return data.toString();
+    }
+
+    private void appendDataNumberInfo(StringBuilder data, SteppersPath steppersPath, int stepper) {
+        data.append(Communication.DATA_NUMBER_START);
+        data.append(steppersPath.getSteps()[stepper]);
+        data.append(Communication.DATA_NUMBER_END);
+    }
+
+    private void appendData(StringBuilder data, SteppersPath steppersPath, int stepper) {
+
+        boolean staticPart = false;
+        int staticPartNumber = 1;
+        int value = 0;
+
         for (int i = 0; i < steppersPath.getSteppersPoints().size(); i++) {
             int delay = steppersPath.getSteppersPoints().get(i).getStepsDelays()[stepper];
             if (delay == 0) {
                 break;
             }
-            data.append(delay);
-            data.append(SEPARATOR);
-        }
-        data.append(MOVEMENT_FOOTER);
 
-        data.append('\n');
-        return data.toString();
+            if (i + 1 < steppersPath.getSteppersPoints().size()) {
+                int nextDelay = steppersPath.getSteppersPoints().get(i + 1).getStepsDelays()[stepper];
+                if (almostEqual(delay, nextDelay)) {
+                    staticPart = true;
+                    staticPartNumber++;
+                    value = delay;
+                } else if (staticPart) {
+                    data.append(DATA_STATIC_SIGN);
+                    data.append(staticPartNumber);
+                    data.append(DATA_STATIC_VALUE);
+                    data.append(value);
+                    data.append(SEPARATOR);
+
+                    staticPart = false;
+                    value = 0;
+                    staticPartNumber = 1;
+                } else {
+                    data.append(delay);
+                    data.append(SEPARATOR);
+                }
+            } else {
+                data.append(delay);
+                data.append(SEPARATOR);
+            }
+        }
     }
 
-    private void appendDataNumberInfo(StringBuilder data, SteppersPath steppersPath, int stepper){
-        data.append(Communication.DATA_NUMBER_START);
-        data.append(steppersPath.getSteps()[stepper]);
-        data.append(Communication.DATA_NUMBER_END);
+    private boolean almostEqual(int firstDelay, int secondDelay) {
+        return ((firstDelay + 1) == secondDelay) || ((firstDelay - 1) == secondDelay) || (firstDelay == secondDelay);
     }
 }

@@ -23,6 +23,10 @@ public class Communication {
 
     public final static Character DATA_NUMBER_END = ')';
 
+    public final static Character DATA_STATIC_SIGN = 'x';
+
+    public final static Character DATA_STATIC_VALUE = 'v';
+
     public final static int BAUDRATE = SerialPort.BAUDRATE_115200;
 
     public final static int PORT = 14888;
