@@ -2,6 +2,7 @@ package com.robotcontrol.parameters.dynamic;
 
 import com.robotcontrol.calc.contouringControl.entities.path.ContourPath;
 import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
+import com.robotcontrol.util.progress.Progress;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -15,4 +16,10 @@ public class DynUtil {
     public static SteppersPath CURRENT_CONTOUR_STEPPER_PATH;
 
     public static Timeline timer;
+
+    public static Progress progress;
+
+    public static StringProperty CURRENT_ACTION = new SimpleStringProperty();
+
+    public static Timeline progressTimer;
 }

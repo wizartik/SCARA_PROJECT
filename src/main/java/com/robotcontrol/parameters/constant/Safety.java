@@ -15,7 +15,7 @@ public class Safety {
     /**
      * Maximum allowed operating distance for drawing.
      */
-    public final static double MAX_RADIUS_DRAWING = 100;
+    public final static double MAX_RADIUS_DRAWING = 10000;
 
     /**
      * Minimum allowed operating distance for drawing.
@@ -25,7 +25,7 @@ public class Safety {
     /**
      * Maximum allowed operating distance for pick and place.
      */
-    public final static double MAX_RADIUS_SELECTIVE = 100;
+    public final static double MAX_RADIUS_SELECTIVE = 10000;
 
     /**
      * Minimum allowed operating distance for pick and place.

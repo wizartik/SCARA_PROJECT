@@ -84,7 +84,6 @@ public class MovementController {
         }
 
         checkConnection();
-
         PositionalPath positionalPath = PositionalController.moveToPointPos(CURRENT_POSITION, finalPosition);
         SteppersPath steppersPath = PathConverter.convertToSteppersPath(positionalPath);
         sendByWifi(steppersPath);

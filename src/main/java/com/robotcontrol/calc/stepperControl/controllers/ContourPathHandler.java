@@ -14,6 +14,7 @@ import com.robotcontrol.calc.contouringControl.entities.path.ContourPath;
 import com.robotcontrol.calc.stepperControl.entities.Remaining;
 import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
 import com.robotcontrol.parameters.constant.PhysicalParameters;
+import com.robotcontrol.parameters.dynamic.DynUtil;
 import com.robotcontrol.parameters.dynamic.Motion;
 
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ class ContourPathHandler {
         }
 
         for (int i = 0; i < contourPath.getgCodeList().size(); i++) {
+            if (DynUtil.progress != null){
+                DynUtil.progress.setProgressOfConverting(i, contourPath.getgCodeList().size());
+            }
+
             GCode gCode = contourPath.getgCodeList().get(i);
             if (gCode instanceof MotionGCode) {
                 addPointsFromGCode((MotionGCode) gCode, lists, PhysicalParameters.REDUCTION_RATIO);

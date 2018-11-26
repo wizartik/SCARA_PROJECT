@@ -2,6 +2,8 @@ package com.robotcontrol.calc.contouringControl.controllers.data;
 
 import com.robotcontrol.calc.contouringControl.entities.GCode.GCode;
 import com.robotcontrol.exc.WrongInputData;
+import com.robotcontrol.parameters.dynamic.DynUtil;
+import com.robotcontrol.util.progress.CurrentAction;
 import org.magicwerk.brownies.collections.GapList;
 
 import java.util.List;
@@ -9,6 +11,10 @@ import java.util.List;
 class ListHandler {
 
     static List<GCode> makeGCodeList(List<String> source) throws WrongInputData {
+        if (DynUtil.progress != null){
+            DynUtil.progress.setCurrentAction(CurrentAction.Parsing);
+        }
+
         GapList<GCode> result = new GapList<>(source.size());
         makeData(source, result);
         result.trimToSize();
@@ -57,7 +63,11 @@ class ListHandler {
 
         GCode previousGCode = null;
 
-        for (String initialGCode : initialList) {
+        for (int i = 0; i < initialList.size(); i++) {
+            String initialGCode = initialList.get(i);
+            if (DynUtil.progress != null) {
+                DynUtil.progress.setProgressOfParsing(i, initialList.size());
+            }
             String line = clearGarbage(initialGCode);
             if (line != null && line.length() > 1) {
                 previousGCode = LineHandler.makeGCode(previousGCode, line);

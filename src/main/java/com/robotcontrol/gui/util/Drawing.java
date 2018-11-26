@@ -5,6 +5,8 @@ import com.robotcontrol.calc.contouringControl.entities.GCode.GCode;
 import com.robotcontrol.calc.contouringControl.entities.GCode.GCodeType;
 import com.robotcontrol.calc.contouringControl.entities.GCode.MotionGCode;
 import com.robotcontrol.parameters.dynamic.DynSafety;
+import com.robotcontrol.parameters.dynamic.DynUtil;
+import com.robotcontrol.util.progress.CurrentAction;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
@@ -20,7 +22,12 @@ public class Drawing {
 
         path.getElements().add(new MoveTo(xStart, yStart));
 
-        for (GCode gCode : gCodes) {
+        for (int i = 0; i < gCodes.size(); i++) {
+            if (DynUtil.progress != null){
+                DynUtil.progress.setProgressOfDrawing(i, gCodes.size());
+            }
+
+            GCode gCode = gCodes.get(i);
             if (gCode instanceof MotionGCode) {
                 double x = xCenter + multiplier * ((MotionGCode) gCode).getFinalPosition()[0];
                 double y = yCenter - multiplier * ((MotionGCode) gCode).getFinalPosition()[1];
@@ -44,6 +51,10 @@ public class Drawing {
     }
 
     public static void addPathToPane(Pane pane, List<GCode> gCodes){
+        if (DynUtil.progress != null){
+            DynUtil.progress.setCurrentAction(CurrentAction.DRAWING);
+        }
+
         pane.getChildren().clear();
         double xCenter = pane.getWidth() / 2;
         double yCenter = pane.getHeight() / 2;

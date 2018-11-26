@@ -2,9 +2,11 @@ package com.robotcontrol.movement;
 
 import com.robotcontrol.calc.DHParameters.SCARADH;
 import com.robotcontrol.gui.util.DialogHandler;
+import com.robotcontrol.parameters.dynamic.DynUtil;
 import com.robotcontrol.parameters.dynamic.Motion;
 import com.robotcontrol.parameters.dynamic.Position;
 import com.robotcontrol.util.math.Converter;
+import com.robotcontrol.util.progress.CurrentAction;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -52,6 +54,10 @@ public class ParametersController {
     public static void motorCrash(int number){
         DialogHandler.showMotorCrash(number);
         MOVING = false;
+    }
+
+    public static void setCurrentAction(CurrentAction action){
+        DynUtil.CURRENT_ACTION.set(action.toString());
     }
 
     private static double[] getPositionAfterCalibration(){

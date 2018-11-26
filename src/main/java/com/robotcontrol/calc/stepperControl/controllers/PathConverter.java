@@ -11,6 +11,8 @@ package com.robotcontrol.calc.stepperControl.controllers;
 import com.robotcontrol.calc.contouringControl.entities.path.ContourPath;
 import com.robotcontrol.calc.positionalControl.entities.PositionalPath;
 import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
+import com.robotcontrol.parameters.dynamic.DynUtil;
+import com.robotcontrol.util.progress.CurrentAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,10 @@ import java.util.List;
 public class PathConverter {
 
     public static SteppersPath convertToSteppersPath(ContourPath contourPath){
+        if (DynUtil.progress != null){
+            DynUtil.progress.setCurrentAction(CurrentAction.CONVERTING);
+        }
+
         SteppersPath steppersPath = ContourPathHandler.makeStepperPath(contourPath);
         trimList(steppersPath.getSteppersPoints());
         return steppersPath;

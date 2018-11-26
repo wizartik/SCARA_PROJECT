@@ -8,9 +8,11 @@ import com.robotcontrol.calc.contouringControl.entities.path.ContourPath;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.exc.ImpossibleToImplement;
 import com.robotcontrol.parameters.constant.ConstUtil;
+import com.robotcontrol.parameters.dynamic.DynUtil;
 import com.robotcontrol.util.Utility;
 import com.robotcontrol.util.math.Converter;
 import com.robotcontrol.util.math.Geometry;
+import com.robotcontrol.util.progress.CurrentAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,10 @@ import static com.robotcontrol.parameters.constant.Safety.MAX_VELOCITY_DIFFERENC
 public class PathController {
 
     public static ContourPath makePath(List<GCode> gCodes) throws BoundsViolation, ImpossibleToImplement {
+        if (DynUtil.progress != null){
+            DynUtil.progress.setCurrentAction(CurrentAction.CALCULATING);
+        }
+
         ContourPath path = new ContourPath();
         path.setgCodeList(gCodes);
 
@@ -286,6 +292,10 @@ public class PathController {
         long startTime = 0;
 
         for (int i = 0; i < path.getgCodeList().size(); i++) {
+            if (DynUtil.progress != null){
+                DynUtil.progress.setProgressOfCalc(i, path.getgCodeList().size());
+            }
+
             GCodeController.calcPath(path.getgCodeList().get(i), startTime);
             startTime = path.getgCodeList().get(i).getFinalTime();
         }
@@ -300,8 +310,11 @@ public class PathController {
     private static void processPath(ContourPath path)
             throws ImpossibleToImplement, BoundsViolation {
 
+        System.out.println("adjusting");
         adjustDistances(path);
+        System.out.println("initing");
         initializeGCodePath(path);
+        System.out.println("halts");
         adjustHalts(path.getgCodeList());
         calculateGCodes(path);
     }
