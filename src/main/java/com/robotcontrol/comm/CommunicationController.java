@@ -4,7 +4,6 @@ import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
 import com.robotcontrol.comm.wifi.WifiController;
 import com.robotcontrol.exc.NoConnection;
 import com.robotcontrol.util.CommUtil;
-import javafx.application.Platform;
 
 import java.io.IOException;
 
@@ -23,14 +22,6 @@ public class CommunicationController {
                 e.printStackTrace();
             }
         }).start();
-
-        Platform.runLater(() -> {
-            while (!CommUtil.isConnected()){
-                Thread.yield();
-            }
-            CommUtil.setStatusConnected();
-        });
-
     }
 
     public static void closeWiFiConnection() {

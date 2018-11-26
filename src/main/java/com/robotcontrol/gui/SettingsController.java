@@ -49,10 +49,12 @@ public class SettingsController {
 
     public void connect(ActionEvent actionEvent) {
         CommunicationController.createWiFiConnection();
+        SettingsUtil.setTimerToCheckConnection();
     }
 
     public void disconnect(ActionEvent actionEvent) {
         CommunicationController.closeWiFiConnection();
+        SettingsUtil.stopTimer();
     }
 
     public void switchToSelective() {

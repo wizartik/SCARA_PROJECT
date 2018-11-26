@@ -20,7 +20,10 @@ public class PositionalChecker {
 
     public static void checkPositionalPathAngular(double[] startAngles,
                                                   double[] finalAngles) throws BoundsViolation {
+
         checkPositionalPath(SCARADH.forwardKinematics(startAngles), SCARADH.forwardKinematics(finalAngles));
+        checkAngles(startAngles);
+        checkAngles(finalAngles);
     }
 
     public static void checkCoords(double[] coords) throws BoundsViolation {
@@ -46,6 +49,8 @@ public class PositionalChecker {
     }
 
     static void checkCollision(double[] startCoords, double[] finalCoords, String gCode) throws BoundsViolation {
+        String errorMessage = "G code intercepts minimum allowed radius and cannot be performed!";
+
         double rr = MIN_RADIUS * MIN_RADIUS;
 
         double x01 = startCoords[0];
@@ -55,20 +60,20 @@ public class PositionalChecker {
         double y02 = finalCoords[1];
 
         if ((x01) * (x01) + (y01) * (y01) <= rr) {
-            throw new BoundsViolation("G code intercepts minimum allowed radius and cannot be performed!", gCode);
+            throw new BoundsViolation(errorMessage, gCode);
         }
         if ((x02) * (x02) + (y02) * (y02) <= rr) {
-            throw new BoundsViolation("G code intercepts minimum allowed radius and cannot be performed!", gCode);
+            throw new BoundsViolation(errorMessage, gCode);
         }
 
         if (x01 == x02) {
             if ((y01 < 0 && y02 > 0 || y01 > 0 && y02 < 0) && abs(x01) <= MIN_RADIUS) {
-                throw new BoundsViolation("G code intercepts minimum allowed radius and cannot be performed!", gCode);
+                throw new BoundsViolation(errorMessage, gCode);
             }
         }
         if (y01 == y02) {
             if ((x01 < 0 && x02 > 0 || x01 > 0 && x02 < 0) && abs(y01) <= MIN_RADIUS){
-                throw new BoundsViolation("G code intercepts minimum allowed radius and cannot be performed!", gCode);
+                throw new BoundsViolation(errorMessage, gCode);
             }
         }
 
@@ -79,7 +84,7 @@ public class PositionalChecker {
 
         if (x01 < xp && x02 > xp || x02 < xp && x01 > xp)
             if ((xp) * (xp) + (yp) * (yp) <= rr){
-                throw new BoundsViolation("G code intercepts minimum allowed radius and cannot be performed!", gCode);
+                throw new BoundsViolation(errorMessage, gCode);
             }
     }
 
@@ -98,6 +103,15 @@ public class PositionalChecker {
         if (height < Safety.MIN_HEIGHT_COORD) {
             throw new BoundsViolation("G code tries to violate allowed " +
                     "bounds. Minimum height of working area is " + Safety.MIN_HEIGHT_COORD);
+        }
+    }
+
+    private static void checkAngles(double[] angles) throws BoundsViolation {
+        for (int i = 0; i < angles.length; i++) {
+            if (angles[i] > Safety.MAX_ANGLES[i] || angles[i] < Safety.MIN_ANGLES[i]) {
+                throw new BoundsViolation("Angle of motor " + (i + 1) + "is out of allowed bounds " + angles[i]
+                        + " allowed bounds are MAX = " + Safety.MAX_ANGLES[i] + " MIN = " + Safety.MIN_ANGLES[i]);
+            }
         }
     }
 }
