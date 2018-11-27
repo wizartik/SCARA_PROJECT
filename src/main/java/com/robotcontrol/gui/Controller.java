@@ -1,11 +1,15 @@
 package com.robotcontrol.gui;
 
+import com.jfoenix.controls.JFXButton;
 import com.robotcontrol.parameters.dynamic.Position;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -13,6 +17,11 @@ import java.util.Set;
 
 public class Controller {
 
+    private DropShadow shadow = new DropShadow(50, Color.web("#4059A9"));
+
+    public JFXButton gcodeButton;
+    public JFXButton positionalButton;
+    public JFXButton settingsButton;
     private Set gCode;
     private Set positional;
     private Set settings;
@@ -74,5 +83,29 @@ public class Controller {
         }
 
         content.getChildren().setAll(settings);
+    }
+
+    public void gcodeEntered(MouseEvent mouseEvent) {
+        gcodeButton.setEffect(shadow);
+    }
+
+    public void gcodeExited(MouseEvent mouseEvent) {
+        gcodeButton.setEffect(null);
+    }
+
+    public void positionalEntered(MouseEvent mouseEvent) {
+        positionalButton.setEffect(shadow);
+    }
+
+    public void positionalExited(MouseEvent mouseEvent) {
+        positionalButton.setEffect(null);
+    }
+
+    public void settingsEntered(MouseEvent mouseEvent) {
+        settingsButton.setEffect(shadow);
+    }
+
+    public void settingsExited(MouseEvent mouseEvent) {
+        settingsButton.setEffect(null);
     }
 }

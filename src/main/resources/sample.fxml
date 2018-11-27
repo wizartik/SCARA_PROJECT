@@ -15,15 +15,15 @@
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <JFXButton onAction="#changePaneToGCode" prefHeight="100.0" prefWidth="200.0" text="G-code">
+            <JFXButton fx:id="gcodeButton" onAction="#changePaneToGCode" onMouseEntered="#gcodeEntered" onMouseExited="#gcodeExited" prefHeight="100.0" prefWidth="200.0" text="G-code">
                <font>
                   <Font size="20.0" />
                </font></JFXButton>
-            <JFXButton onAction="#changePaneToPositional" prefHeight="100.0" prefWidth="200.0" text="Positional">
+            <JFXButton fx:id="positionalButton" onAction="#changePaneToPositional" onMouseEntered="#positionalEntered" onMouseExited="#positionalExited" prefHeight="100.0" prefWidth="200.0" text="Positional">
                <font>
                   <Font size="20.0" />
                </font></JFXButton>
-            <JFXButton onAction="#changePaneToSettings" prefHeight="100.0" prefWidth="200.0" text="Settings">
+            <JFXButton fx:id="settingsButton" onAction="#changePaneToSettings" onMouseEntered="#settingsEntered" onMouseExited="#settingsExited" prefHeight="100.0" prefWidth="200.0" text="Settings">
                <font>
                   <Font size="20.0" />
                </font></JFXButton>
