@@ -15,22 +15,22 @@ public class Safety {
     /**
      * Maximum allowed operating distance for drawing.
      */
-    public final static double MAX_RADIUS_DRAWING = 20;
+    public final static double MAX_RADIUS_DRAWING = 200;
 
     /**
      * Minimum allowed operating distance for drawing.
      */
-    public final static double MIN_RADIUS_DRAWING = 0;
+    public final static double MIN_RADIUS_DRAWING = 10;
 
     /**
      * Maximum allowed operating distance for pick and place.
      */
-    public final static double MAX_RADIUS_SELECTIVE = 20;
+    public final static double MAX_RADIUS_SELECTIVE = 200;
 
     /**
      * Minimum allowed operating distance for pick and place.
      */
-    public final static double MIN_RADIUS_SELECTIVE = 0;
+    public final static double MIN_RADIUS_SELECTIVE = 10;
 
     /**
      * Maximum angular velocity difference among 2 G codes utmost angular

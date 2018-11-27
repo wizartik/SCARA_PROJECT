@@ -10,8 +10,6 @@ import com.robotcontrol.parameters.constant.Safety;
 import com.robotcontrol.parameters.dynamic.DynSafety;
 import com.robotcontrol.util.math.Geometry;
 
-import java.util.Arrays;
-
 import static com.robotcontrol.calc.checks.PositionalChecker.checkCollision;
 
 public class GCodeChecker {
@@ -95,7 +93,7 @@ public class GCodeChecker {
         if (coords[0] >= DynSafety.MAX_RADIUS || coords[1] >= DynSafety.MAX_RADIUS){
             throw new BoundsViolation("G code tries to violate allowed " +
                     "bounds. Maximum radius of working area is " +
-                    DynSafety.MAX_RADIUS + " coordinates are " + Arrays.toString(coords), gCode);
+                    DynSafety.MAX_RADIUS + " coordinates are (X = " + coords[0] + "; Y = " + coords[1] + ")", gCode);
         }
     }
 

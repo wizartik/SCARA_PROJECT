@@ -32,7 +32,7 @@
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Label fx:id="action" text="Label" />
-                              <ProgressIndicator fx:id="calcIndicator" prefHeight="45.0" prefWidth="24.0" progress="0.0" />
+                              <ProgressIndicator fx:id="calcIndicator" progress="0.0" />
                            </children>
                         </VBox>
                      </children>

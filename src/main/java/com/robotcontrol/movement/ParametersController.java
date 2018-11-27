@@ -41,26 +41,32 @@ public class ParametersController {
         setCurrentCoods(getPositionAfterCalibration());
     }
 
-    public static void setCurrentCoods(double[] coords){
+    public static void setCurrentCoods(double[] coords) {
         CURRENT_POSITION = Arrays.copyOf(coords, coords.length);
         CURRENT_POSITION_STRING.set(getCurrentCoordsString());
     }
 
-    public static String getCurrentCoordsString(){
+    public static void setProgress(double progress) {
+        progress *= 100;
+        DecimalFormat decimalFormat = new DecimalFormat("##");
+        DynUtil.CURRENT_PROGRESS.set(decimalFormat.format(progress) + "%");
+    }
+
+    public static String getCurrentCoordsString() {
         DecimalFormat decimalFormat = new DecimalFormat("##.#");
         return "[" + decimalFormat.format(CURRENT_POSITION[0]) + "; " + decimalFormat.format(CURRENT_POSITION[1]) + "; " + decimalFormat.format(CURRENT_POSITION[2]) + "]";
     }
 
-    public static void motorCrash(int number){
+    public static void motorCrash(int number) {
         DialogHandler.showMotorCrash(number);
         MOVING = false;
     }
 
-    public static void setCurrentAction(CurrentAction action){
+    public static void setCurrentAction(CurrentAction action) {
         DynUtil.CURRENT_ACTION_STRING = action.toString();
     }
 
-    private static double[] getPositionAfterCalibration(){
+    private static double[] getPositionAfterCalibration() {
         return SCARADH.forwardKinematics(Converter.toRad(Position.ANGLES_AFTER_CALIBRATION));
     }
 }

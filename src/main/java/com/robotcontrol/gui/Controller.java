@@ -25,6 +25,15 @@ public class Controller {
 
     @FXML
     private void initialize() {
+        try {
+            gCode = Collections.singleton(FXMLLoader.load(getClass().getClassLoader().getResource("GcodePane.fxml")));
+            positional = Collections.singleton(FXMLLoader.load(getClass().getClassLoader().getResource("PositionalPane.fxml")));
+            settings = Collections.singleton(FXMLLoader.load(getClass().getClassLoader().getResource("SettingsPane.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         currentCoords.textProperty().bind(Position.CURRENT_POSITION_STRING);
         changePaneToGCode(null);
     }
