@@ -2,6 +2,7 @@ package com.robotcontrol.calc.contouringControl.controllers.data;
 
 import com.robotcontrol.calc.contouringControl.entities.GCode.GCode;
 import com.robotcontrol.exc.WrongInputData;
+import com.robotcontrol.movement.ParametersController;
 import com.robotcontrol.parameters.dynamic.DynUtil;
 import com.robotcontrol.util.progress.CurrentAction;
 import org.magicwerk.brownies.collections.GapList;
@@ -11,9 +12,7 @@ import java.util.List;
 class ListHandler {
 
     static List<GCode> makeGCodeList(List<String> source) throws WrongInputData {
-        if (DynUtil.progress != null){
-            DynUtil.progress.setCurrentAction(CurrentAction.Parsing);
-        }
+        ParametersController.setCurrentAction(CurrentAction.Parsing);
 
         GapList<GCode> result = new GapList<>(source.size());
         makeData(source, result);

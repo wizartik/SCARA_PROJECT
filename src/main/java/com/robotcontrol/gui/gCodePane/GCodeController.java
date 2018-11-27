@@ -6,8 +6,10 @@ import com.robotcontrol.exc.*;
 import com.robotcontrol.gui.util.Drawing;
 import com.robotcontrol.gui.util.ErrorHandler;
 import com.robotcontrol.movement.MovementController;
+import com.robotcontrol.movement.ParametersController;
 import com.robotcontrol.parameters.dynamic.DynUtil;
 import com.robotcontrol.parameters.dynamic.Files;
+import com.robotcontrol.util.progress.CurrentAction;
 import com.robotcontrol.util.progress.Progress;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -22,10 +24,8 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.*;
 
 import static com.robotcontrol.util.FilesHandler.checkFile;
 
@@ -68,80 +68,20 @@ public class GCodeController {
     }
 
     public void fileCalc() {
-        try {
-            ExecutorService exec = Executors.newFixedThreadPool(2);
-            startProgressWatching();
-            System.out.println("here");
-            List<Callable<Integer>> tasks = new ArrayList<>(2);
-            tasks.add(() -> {
-                try {
-                    CalculateController.calculateContourPath(Files.CURRENT_FILE);
-                } catch (WrongExtension wrongExtension) {
-                    ErrorHandler.showWrongExtension(wrongExtension);
-                } catch (BoundsViolation boundsViolation) {
-                    ErrorHandler.showBoundViolation(boundsViolation);
-                } catch (WrongInputData wrongInputData) {
-                    ErrorHandler.showWrongInputData(wrongInputData);
-                } catch (IOException e) {
-                    ErrorHandler.showException(e);
-                } catch (ImpossibleToImplement impossibleToImplement) {
-                    ErrorHandler.showImpossibleToImplement(impossibleToImplement);
-                }
-                return null;
-            });
-            tasks.add(() -> {
-                drawPath();
-                return null;
-            });
-            tasks.add(() -> {
-                finishProgressWatching();
-                return null;
-            });
-            exec.invokeAll(tasks);
+        Thread calcThread = getFileCalcThread();
+        Thread finishThread = getFinishThread(calcThread);
 
-//            try {
-//                futures.get(0).get();
-//            } catch (ExecutionException ex) {
-//                ex.getCause().printStackTrace();
-//            }
-        } catch (InterruptedException e) {
-            ErrorHandler.showException(e);
-        }
+        startCalculation(calcThread, finishThread);
     }
 
     public void areaCalc() {
+        Thread calcThread = getAreaCalcThread();
+        Thread finishThread = getFinishThread(calcThread);
 
-        try {
-            ExecutorService exec = Executors.newFixedThreadPool(2);
-            startProgressWatching();
-            List<Callable<Integer>> tasks = new ArrayList<>(2);
-            tasks.add(() -> {
-                try {
-                    CalculateController.calculateContourPathByList(stringToList(gCodeArea.getText()));
-                } catch (BoundsViolation boundsViolation) {
-                    ErrorHandler.showBoundViolation(boundsViolation);
-                } catch (WrongInputData wrongInputData) {
-                    ErrorHandler.showWrongInputData(wrongInputData);
-                } catch (ImpossibleToImplement impossibleToImplement) {
-                    ErrorHandler.showImpossibleToImplement(impossibleToImplement);
-                }
-                return 1;
-            });
-            tasks.add(() -> {
-                drawPath();
-                return 1;
-            });
-            tasks.add(() -> {
-                finishProgressWatching();
-                return 1;
-            });
-            exec.invokeAll(tasks);
-        } catch (InterruptedException e) {
-            ErrorHandler.showException(e);
-        }
+        startCalculation(calcThread, finishThread);
     }
 
-    public void go(){
+    public void go() {
         try {
             MovementController.getInstance().moveByGCode();
         } catch (NoConnection noConnection) {
@@ -151,8 +91,8 @@ public class GCodeController {
         }
     }
 
-    private void drawPath(){
-        if (DynUtil.CURRENT_CONTOUR_PATH != null && !DynUtil.CURRENT_CONTOUR_PATH.getgCodeList().isEmpty()){
+    private void drawPath() {
+        if (DynUtil.CURRENT_CONTOUR_PATH != null && !DynUtil.CURRENT_CONTOUR_PATH.getgCodeList().isEmpty()) {
             Drawing.addPathToPane(drawingPane, DynUtil.CURRENT_CONTOUR_PATH.getgCodeList());
         }
     }
@@ -161,27 +101,118 @@ public class GCodeController {
         return Arrays.asList(string.split("\n"));
     }
 
-    private void startProgressWatching(){
+    private void startProgressWatching() {
         DynUtil.progress = new Progress();
-        if (DynUtil.progressTimer == null) {
-            DynUtil.progressTimer = new Timeline(new KeyFrame(
-                    Duration.millis(100),
-                    ae -> checkProgress()));
-            DynUtil.progressTimer.setCycleCount(Animation.INDEFINITE);
+        if (DynUtil.progressTimeline == null) {
+            createProgressTimeline();
         }
-        DynUtil.progressTimer.play();
+        DynUtil.progressTimeline.play();
     }
 
-    private void finishProgressWatching(){
-        if (DynUtil.progressTimer != null) {
-            DynUtil.progressTimer.stop();
-        }
+    private void createProgressTimeline(){
+        DynUtil.progressTimeline = new Timeline(new KeyFrame(
+                Duration.millis(100),
+                ae -> checkProgress()));
+        DynUtil.progressTimeline.setCycleCount(Animation.INDEFINITE);
+    }
 
+    private void finishProgressWatching() {
+        ParametersController.setCurrentAction(CurrentAction.FINISHED);
         calcIndicator.setProgress(1);
+        DynUtil.progressTimeline.pause();
     }
 
-    private void checkProgress(){
-        System.out.println(DynUtil.progress.getGeneralProgress());
+    private void checkProgress() {
         calcIndicator.setProgress(DynUtil.progress.getGeneralProgress());
+        DynUtil.CURRENT_ACTION.set(DynUtil.CURRENT_ACTION_STRING);
+    }
+
+    private void startDrawing() {
+        createDrawingTimer();
+        DynUtil.drawingTimeline.play();
+    }
+
+    private void createDrawingTimer(){
+        DynUtil.drawingTimeline = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                ae -> draw()));
+        DynUtil.drawingTimeline.setCycleCount(60);
+    }
+
+    private void draw() {
+        if (DynUtil.progress.getGeneralProgress() >= 1 && DynUtil.drawingTimeline != null) {
+            drawPath();
+            DynUtil.drawingTimeline.stop();
+        }
+    }
+
+    private void waitForException() {
+        createExceptionTimeline();
+        DynUtil.exceptionTimeline.play();
+    }
+
+    private void createExceptionTimeline(){
+        DynUtil.exceptionTimeline = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                ae -> checkException()));
+        DynUtil.exceptionTimeline.setCycleCount(60);
+    }
+
+    private void checkException() {
+        if (DynUtil.producedException != null) {
+            Exception ex = DynUtil.producedException;
+            if (ex instanceof WrongExtension) {
+                ErrorHandler.showWrongExtension((WrongExtension) ex);
+            } else if (ex instanceof BoundsViolation) {
+                ErrorHandler.showBoundViolation((BoundsViolation) ex);
+            } else if (ex instanceof WrongInputData) {
+                ErrorHandler.showWrongInputData((WrongInputData) ex);
+            } else if (ex instanceof ImpossibleToImplement) {
+                ErrorHandler.showImpossibleToImplement((ImpossibleToImplement) ex);
+            } else {
+                ErrorHandler.showException(ex);
+            }
+            ParametersController.setCurrentAction(CurrentAction.ERROR);
+            DynUtil.producedException = null;
+        }
+    }
+
+    private Thread getFileCalcThread() {
+        return new Thread(() -> {
+            try {
+                CalculateController.calculateContourPath(Files.CURRENT_FILE);
+            } catch (Exception ex) {
+                DynUtil.producedException = ex;
+            }
+        });
+    }
+
+    private Thread getAreaCalcThread() {
+        return new Thread(() -> {
+            try {
+                CalculateController.calculateContourPathByList(stringToList(gCodeArea.getText()));
+            } catch (Exception ex) {
+                DynUtil.producedException = ex;
+            }
+        });
+    }
+
+    private Thread getFinishThread(Thread calcThread) {
+        return new Thread(() -> {
+            try {
+                calcThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            finishProgressWatching();
+        });
+    }
+
+    private void startCalculation(Thread calcThread, Thread finishThread) {
+        startProgressWatching();
+        waitForException();
+        calcThread.start();
+        startDrawing();
+        finishThread.start();
     }
 }

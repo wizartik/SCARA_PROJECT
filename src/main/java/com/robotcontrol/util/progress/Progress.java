@@ -7,7 +7,9 @@ public class Progress {
 
     private double progressOfConverting = 0;
 
-    private double progressOfDrawing = 0;
+    private double parsingCoef = 0.05;
+    private double calcCoef = 0.90;
+    private double convertingCoef = 0.05;
 
     private CurrentAction currentAction;
 
@@ -16,7 +18,7 @@ public class Progress {
     }
 
     public void setProgressOfParsing(int current, int size) {
-        this.progressOfParsing = ((double) size) / (current + 1);
+        this.progressOfParsing = ((double) current + 1) / (size);
     }
 
     public double getProgressOfCalc() {
@@ -24,7 +26,7 @@ public class Progress {
     }
 
     public void setProgressOfCalc(int current, int size) {
-        this.progressOfCalc = ((double) size) / (current + 1);
+        this.progressOfCalc = ((double) current + 1) / (size);
     }
 
     public double getProgressOfConverting() {
@@ -32,15 +34,7 @@ public class Progress {
     }
 
     public void setProgressOfConverting(int current, int size) {
-        this.progressOfConverting = ((double) size) / (current + 1);
-    }
-
-    public double getProgressOfDrawing() {
-        return progressOfDrawing;
-    }
-
-    public void setProgressOfDrawing(int current, int size) {
-        this.progressOfDrawing = ((double) size) / (current + 1);
+        this.progressOfConverting = ((double) current + 1) / (size);
     }
 
     public CurrentAction getCurrentAction() {
@@ -52,7 +46,6 @@ public class Progress {
     }
 
     public double getGeneralProgress(){
-//        System.out.println("progressOfParsing = " + progressOfParsing + " progressOfCalc = " + progressOfCalc + " progressOfConverting = " + progressOfConverting + " progressOfDrawing = " + progressOfDrawing);
-        return (progressOfParsing * 0.15) + (progressOfCalc * 0.5) + (progressOfConverting * 0.2) + (progressOfDrawing * 0.15);
+        return (progressOfParsing * parsingCoef) + (progressOfCalc * calcCoef) + (progressOfConverting * convertingCoef);
     }
 }

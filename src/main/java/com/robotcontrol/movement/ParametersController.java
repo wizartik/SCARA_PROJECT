@@ -57,7 +57,7 @@ public class ParametersController {
     }
 
     public static void setCurrentAction(CurrentAction action){
-        DynUtil.CURRENT_ACTION.set(action.toString());
+        DynUtil.CURRENT_ACTION_STRING = action.toString();
     }
 
     private static double[] getPositionAfterCalibration(){

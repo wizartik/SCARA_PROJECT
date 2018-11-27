@@ -89,7 +89,7 @@ public class ErrorHandler {
 
         alert.getDialogPane().setExpandableContent(expContent);
         alert.getDialogPane().setMinSize(600, 500);
-        alert.showAndWait();
+        alert.show();
     }
 
     private static String getExceprionText(Exception e){

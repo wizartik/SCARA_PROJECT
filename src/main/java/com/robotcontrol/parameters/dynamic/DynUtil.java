@@ -21,5 +21,13 @@ public class DynUtil {
 
     public static StringProperty CURRENT_ACTION = new SimpleStringProperty();
 
-    public static Timeline progressTimer;
+    public static String CURRENT_ACTION_STRING;
+
+    public static Timeline progressTimeline;
+
+    public static Timeline drawingTimeline;
+
+    public static Timeline exceptionTimeline;
+
+    public static Exception producedException;
 }

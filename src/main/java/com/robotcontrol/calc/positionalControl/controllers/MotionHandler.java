@@ -29,7 +29,6 @@ class MotionHandler {
         for (int i = 0; i < singleJointPaths.length; i++) {
             singleJointPaths[i] = makeSingleJointPath(startAngles[i],
                     finalAngles[i], angVelocity, angAcceleration);
-            System.out.println(singleJointPaths[i].getJointPoints().size());
         }
 
         return new PositionalPath(singleJointPaths);
