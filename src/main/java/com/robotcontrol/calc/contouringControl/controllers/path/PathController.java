@@ -290,7 +290,7 @@ public class PathController {
         long startTime = 0;
 
         for (int i = 0; i < path.getgCodeList().size(); i++) {
-            if (DynUtil.progress != null){
+            if (DynUtil.progress != null) {
                 DynUtil.progress.setProgressOfCalc(i, path.getgCodeList().size());
             }
 
@@ -305,12 +305,11 @@ public class PathController {
      * @throws ImpossibleToImplement if one of G codes is impossible to
      *                               implement.
      */
-    private static void processPath(ContourPath path)
-            throws ImpossibleToImplement, BoundsViolation {
-
+    private static void processPath(ContourPath path) throws ImpossibleToImplement, BoundsViolation {
         adjustDistances(path);
         initializeGCodePath(path);
         adjustHalts(path.getgCodeList());
+
         calculateGCodes(path);
     }
 }

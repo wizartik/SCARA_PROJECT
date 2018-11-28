@@ -7,9 +7,9 @@ public class Progress {
 
     private double progressOfConverting = 0;
 
-    private double parsingCoef = 0.05;
-    private double calcCoef = 0.90;
-    private double convertingCoef = 0.05;
+    private double parsingCoef = 0.02;
+    private double calcCoef = 0.58;
+    private double convertingCoef = 0.4;
 
     private CurrentAction currentAction;
 

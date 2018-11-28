@@ -57,9 +57,9 @@ public class PositionalController {
     private void initialize() throws IOException {
         ObservableList<String> elements = FXCollections.observableArrayList("radians", "degrees");
         comboBox.setItems(elements);
-        comboBox.getSelectionModel().selectFirst();
+        comboBox.getSelectionModel().select(1);
         tComboBox.setItems(elements);
-        tComboBox.getSelectionModel().selectFirst();
+        tComboBox.getSelectionModel().select(1);
         movementController = MovementController.getInstance();
     }
 

@@ -8,7 +8,7 @@ import java.io.IOException;
 public class GCodeContent extends AnchorPane {
 
     public GCodeContent(){
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("GcodePane.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/GcodePane.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);

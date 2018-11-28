@@ -33,9 +33,8 @@ public class GCodeController {
     }
 
     private static void makeEmptyPath(MotionGCode gCode) {
-        int pointsNumber = (int) (Physics.pointsNumber(gCode.getDistance(), gCode.getVelocity()));
+        int pointsNumber = (int) ((int) (Physics.pointsNumber(gCode.getDistance(), gCode.getVelocity())) * 1.2);
         GapList<Point> path = new GapList<>(pointsNumber);
-
         gCode.setgCodePath(path);
     }
 

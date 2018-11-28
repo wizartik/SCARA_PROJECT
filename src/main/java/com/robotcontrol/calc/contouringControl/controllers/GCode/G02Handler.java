@@ -219,7 +219,7 @@ class G02Handler {
             double[] nextPosition = new double[]{nextX, nextY, nextZ};
 
             long currentTime = pathStartTime + t;
-            Point point = Utility.makePoint(currentPosition, currentTime);
+            Point point = Utility.makePoint(currentPosition, currentTime, true);
             gCode.getgCodePath().add(point);
             System.arraycopy(nextPosition, 0, currentPosition, 0, nextPosition.length);
 
@@ -287,7 +287,7 @@ class G02Handler {
 
             long currentTime = pathStartTime + t;
 
-            Point point = Utility.makePoint(currentPosition, currentTime);
+            Point point = Utility.makePoint(currentPosition, currentTime, true);
 
             gCode.getgCodePath().add(point);
 

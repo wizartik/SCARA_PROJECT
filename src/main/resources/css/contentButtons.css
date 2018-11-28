@@ -1,0 +1,20 @@
+.button {
+    -fx-background-color: #29648a;
+    -fx-text-fill: #c5c6c7;
+}
+
+.button:hover {
+    -fx-background-color: #2e9cca;
+}
+
+.label {
+    -fx-font: 22px Cambria;
+}
+
+#action {
+    -fx-font: 12px Cambria;
+}
+VBox {
+    -fx-spacing: 5;
+    -fx-padding: 10 3 3 3;
+}

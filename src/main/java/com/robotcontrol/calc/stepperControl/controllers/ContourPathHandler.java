@@ -13,9 +13,11 @@ import com.robotcontrol.calc.contouringControl.entities.GCode.MotionGCode;
 import com.robotcontrol.calc.contouringControl.entities.path.ContourPath;
 import com.robotcontrol.calc.stepperControl.entities.Remaining;
 import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
+import com.robotcontrol.movement.ParametersController;
 import com.robotcontrol.parameters.constant.PhysicalParameters;
 import com.robotcontrol.parameters.dynamic.DynUtil;
 import com.robotcontrol.parameters.dynamic.Motion;
+import com.robotcontrol.util.progress.CurrentAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ import static com.robotcontrol.calc.stepperControl.controllers.StepsHandler.addS
 class ContourPathHandler {
 
     static SteppersPath makeStepperPath(ContourPath contourPath){
+
+        ParametersController.setCurrentAction(CurrentAction.CONVERTING);
         List<List<Integer>> lists = new ArrayList<>(3);
 
         for (int i = 0; i < 3; i++) {

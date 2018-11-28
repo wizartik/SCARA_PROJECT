@@ -117,8 +117,13 @@ public class GCodeController {
     }
 
     private void finishProgressWatching() {
-        ParametersController.setCurrentAction(CurrentAction.FINISHED);
         calcIndicator.setProgress(1);
+        ParametersController.setCurrentAction(CurrentAction.FINISHED);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         DynUtil.progressTimeline.pause();
     }
 

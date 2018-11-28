@@ -14,9 +14,9 @@
    <children>
       <VBox prefWidth="850.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <HBox prefHeight="300.0" prefWidth="850.0">
+            <HBox alignment="CENTER" prefHeight="200.0" prefWidth="850.0" stylesheets="@../css/contentButtons.css">
                <children>
-                  <VBox>
+                  <VBox alignment="CENTER">
                      <children>
                         <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="350.0" text="Cartesian position" textAlignment="CENTER">
                            <font>
@@ -25,21 +25,18 @@
                         </Label>
                         <HBox alignment="CENTER" prefHeight="59.0">
                            <children>
-                              <Label text="X" />
                               <JFXTextField fx:id="posX" promptText="X" />
-                              <Label text="Y" />
                               <JFXTextField fx:id="posY" promptText="Y" />
-                              <Label text="Z" />
                               <JFXTextField fx:id="posZ" promptText="Z" />
                            </children>
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <JFXButton onAction="#positionalGo" prefHeight="26.0" prefWidth="301.0" text="GO!" />
+                        <JFXButton buttonType="RAISED" onAction="#positionalGo" prefHeight="26.0" prefWidth="301.0" text="GO!" />
                      </children>
                   </VBox>
-                  <VBox style="-fx-background-color: #E8E8E8;">
+                  <VBox alignment="CENTER">
                      <children>
                         <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="350.0" text="Angular position" textAlignment="CENTER">
                            <font>
@@ -48,11 +45,8 @@
                         </Label>
                         <HBox alignment="CENTER" prefHeight="59.0">
                            <children>
-                              <Label text="1" />
                               <JFXTextField fx:id="ang1" promptText="angle1" />
-                              <Label text="2" />
                               <JFXTextField fx:id="ang2" promptText="angle2" />
-                              <Label text="3" />
                               <JFXTextField fx:id="ang3" promptText="angle2" />
                               <JFXComboBox fx:id="comboBox" prefWidth="150.0" />
                            </children>
@@ -60,14 +54,14 @@
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <JFXButton onAction="#angularGo" prefHeight="26.0" prefWidth="301.0" text="GO!" />
+                        <JFXButton buttonType="RAISED" onAction="#angularGo" prefHeight="26.0" prefWidth="301.0" text="GO!" />
                      </children>
                   </VBox>
                </children>
             </HBox>
-            <HBox layoutX="10.0" layoutY="10.0" prefHeight="150.0" prefWidth="850.0">
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="850.0" stylesheets="@../css/contentButtons.css">
                <children>
-                  <VBox>
+                  <VBox alignment="CENTER">
                      <children>
                         <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="350.0" text="Travel by position" textAlignment="CENTER">
                            <font>
@@ -76,21 +70,18 @@
                         </Label>
                         <HBox alignment="CENTER" prefHeight="59.0">
                            <children>
-                              <Label text="X" />
                               <JFXTextField fx:id="tPosX" promptText="X" />
-                              <Label text="Y" />
                               <JFXTextField fx:id="tPosY" promptText="Y" />
-                              <Label text="Z" />
                               <JFXTextField fx:id="tPosZ" promptText="Z" />
                            </children>
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <JFXButton onAction="#travelPosGo" prefHeight="26.0" prefWidth="301.0" text="GO!" />
+                        <JFXButton buttonType="RAISED" onAction="#travelPosGo" prefHeight="26.0" prefWidth="301.0" text="GO!" />
                      </children>
                   </VBox>
-                  <VBox prefHeight="300.0" style="-fx-background-color: #E8E8E8;">
+                  <VBox alignment="CENTER" prefHeight="300.0">
                      <children>
                         <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="350.0" text="Travel by angles" textAlignment="CENTER">
                            <font>
@@ -99,11 +90,8 @@
                         </Label>
                         <HBox alignment="CENTER" prefHeight="59.0">
                            <children>
-                              <Label text="1" />
                               <JFXTextField fx:id="tAng1" promptText="angle1" />
-                              <Label text="2" />
                               <JFXTextField fx:id="tAng2" promptText="angle2" />
-                              <Label text="3" />
                               <JFXTextField fx:id="tAng3" promptText="angle2" />
                               <JFXComboBox fx:id="tComboBox" prefWidth="150.0" />
                            </children>
@@ -111,21 +99,21 @@
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <JFXButton onAction="#travelAngGo" prefHeight="26.0" prefWidth="301.0" text="GO!" />
+                        <JFXButton buttonType="RAISED" onAction="#travelAngGo" prefHeight="26.0" prefWidth="301.0" text="GO!" />
                      </children>
                   </VBox>
                </children>
             </HBox>
-            <HBox prefWidth="850.0">
+            <HBox alignment="CENTER" prefHeight="200.0" prefWidth="850.0" stylesheets="@../css/contentButtons.css">
                <children>
-                  <VBox>
+                  <VBox alignment="CENTER">
                      <children>
                         <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="350.0" text="Go to home coords" textAlignment="CENTER">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <JFXButton onAction="#goHome" prefHeight="26.0" prefWidth="301.0" text="Go to home!" />
+                        <JFXButton buttonType="RAISED" onAction="#goHome" prefHeight="26.0" prefWidth="301.0" text="Go to home!" />
                      </children>
                   </VBox>
                </children>

@@ -14,8 +14,8 @@ public class Utility {
      * @param time           current time in us.
      * @return new initialized point.
      */
-    public static Point makePoint(double[] position, long time) {
-        double[] coords = Arrays.copyOf(position, position.length);
+    public static Point makePoint(double[] position, long time, boolean createNewArray) {
+        double[] coords = createNewArray ? Arrays.copyOf(position, position.length) : position;
 
         return new Point(coords, time);
     }

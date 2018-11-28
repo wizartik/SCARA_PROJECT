@@ -222,7 +222,7 @@ class G03Handler {
             double[] nextPosition = new double[]{nextX, nextY, nextZ};
 
             long currentTime = pathStartTime + t;
-            Point point = Utility.makePoint(currentPosition, currentTime);
+            Point point = Utility.makePoint(currentPosition, currentTime, true);
             gCode.getgCodePath().add(point);
             System.arraycopy(nextPosition, 0, currentPosition, 0, nextPosition.length);
 
@@ -296,7 +296,7 @@ class G03Handler {
 
             long currentTime = pathStartTime + t;
 
-            Point point = Utility.makePoint(currentPosition, currentTime);
+            Point point = Utility.makePoint(currentPosition, currentTime, true);
             gCode.getgCodePath().add(point);
 
             //to calculate last point which has different time gap and arc angle
