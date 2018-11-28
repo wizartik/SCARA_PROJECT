@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -14,9 +15,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/sample.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("SCARA arm control");
         Scene scene = new Scene(root, 1000, 600);
         primaryStage.setScene(scene);
+
+        primaryStage.getIcons().add(new Image(("images/icon.png")));
 
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
