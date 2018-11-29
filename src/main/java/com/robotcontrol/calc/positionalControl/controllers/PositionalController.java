@@ -20,7 +20,7 @@ public class PositionalController {
                                                 double[] finalAngles) throws BoundsViolation {
         PositionalChecker.checkPositionalPathAngular(startAngles, finalAngles);
         return MotionHandler.makePath(startAngles, finalAngles,
-                Motion.ANG_VELOCITY, Motion.ANG_ACCELERATION);
+                Motion.ANG_VELOCITIES, Motion.ANG_ACCELERATIONS);
     }
 
     public static PositionalPath moveToPointPos(double[] startPosition,
@@ -28,7 +28,7 @@ public class PositionalController {
         PositionalChecker.checkPositionalPath(startPosition, finalPosition);
         return MotionHandler.makePath(SCARADH.inverseKinematics(startPosition),
                 SCARADH.inverseKinematics(finalPosition),
-                Motion.ANG_VELOCITY, Motion.ANG_ACCELERATION);
+                Motion.ANG_VELOCITIES, Motion.ANG_ACCELERATIONS);
     }
 
 }

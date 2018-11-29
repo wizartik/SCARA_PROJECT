@@ -23,12 +23,12 @@ import static com.robotcontrol.parameters.constant.Motion.TIME_GAP;
 class MotionHandler {
 
     static PositionalPath makePath(double[] startAngles, double[] finalAngles,
-                                   double angVelocity, double angAcceleration) {
+                                   double[] angVelocity, double[] angAcceleration) {
         SingleJointPath[] singleJointPaths = new SingleJointPath[startAngles.length];
 
         for (int i = 0; i < singleJointPaths.length; i++) {
             singleJointPaths[i] = makeSingleJointPath(startAngles[i],
-                    finalAngles[i], angVelocity, angAcceleration);
+                    finalAngles[i], angVelocity[i], angAcceleration[i]);
         }
 
         return new PositionalPath(singleJointPaths);

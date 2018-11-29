@@ -27,11 +27,11 @@ public class Motion {
      */
     public final static double NORMAL_VELOCITY = 1;
 
-    public final static double NORMAL_ANG_VELOCITY = 1;
+    public final static double[] NORMAL_ANG_VELOCITIES = {1, 1, 5};
 
-    public final static double MAX_ANG_VELOCITY = 2;
+    public final static double[] MAX_ANG_VELOCITIES = {2, 2, 10};
 
-    public final static double NORMAL_ANG_ACCELERATION = 10;
+    public final static double[] NORMAL_ANG_ACCELERATIONS = {10, 10, 15};
 
     public final static double MAX_ANG_ACCELERATION = 20;
 
