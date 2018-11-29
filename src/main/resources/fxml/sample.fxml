@@ -22,7 +22,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <JFXButton fx:id="gcodeButton" buttonType="RAISED" onAction="#changePaneToGCode" prefHeight="100.0" prefWidth="150.0" text="G-code" textFill="#c5c6c7">
+                  <JFXButton fx:id="gcodeButton" buttonType="RAISED" onAction="#changePaneToGCode" prefHeight="100.0" prefWidth="150.0" style="-fx-background-image: images/1.jpeg;" text="G-code" textFill="#c5c6c7">
                      <font>
                         <Font size="20.0" />
                      </font>

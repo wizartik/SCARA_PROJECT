@@ -2,12 +2,13 @@ package com.robotcontrol.gui;
 
 import com.jfoenix.controls.JFXButton;
 import com.robotcontrol.parameters.dynamic.Position;
-import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -22,8 +23,6 @@ public class Controller {
     private Set gCode;
     private Set positional;
     private Set settings;
-
-    public static final PseudoClass PSEUDO_CLASS_FOO = PseudoClass.getPseudoClass("foo");
 
     @FXML
     AnchorPane content;
@@ -41,8 +40,22 @@ public class Controller {
             e.printStackTrace();
         }
 
+        setButtonImages();
+
         currentCoords.textProperty().bind(Position.CURRENT_POSITION_STRING);
         changePaneToGCode(null);
+    }
+
+    private void setButtonImages() {
+        ImageView gCodeImage = new ImageView(new Image("images/gCode.png"));
+        gcodeButton.setGraphic(gCodeImage);
+
+        ImageView positionalImage = new ImageView(new Image("images/positional.png"));
+        positionalButton.setGraphic(positionalImage);
+
+        ImageView settingsImage = new ImageView(new Image("images/settings.png"));
+        settingsButton.setGraphic(settingsImage);
+
     }
 
     @FXML
@@ -84,7 +97,7 @@ public class Controller {
         content.getChildren().setAll(settings);
     }
 
-    private void selected(Button button){
+    private void selected(Button button) {
         gcodeButton.getStylesheets().removeAll("css/selected.css");
         positionalButton.getStylesheets().removeAll("css/selected.css");
         settingsButton.getStylesheets().removeAll("css/selected.css");

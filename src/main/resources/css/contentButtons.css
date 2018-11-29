@@ -14,6 +14,7 @@
 #action {
     -fx-font: 12px Cambria;
 }
+
 VBox {
     -fx-spacing: 5;
     -fx-padding: 10 3 3 3;
