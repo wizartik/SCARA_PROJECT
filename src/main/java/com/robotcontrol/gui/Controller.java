@@ -43,7 +43,7 @@ public class Controller {
         setButtonImages();
 
         currentCoords.textProperty().bind(Position.CURRENT_POSITION_STRING);
-        changePaneToGCode(null);
+        changePaneToPositional(null);
     }
 
     private void setButtonImages() {

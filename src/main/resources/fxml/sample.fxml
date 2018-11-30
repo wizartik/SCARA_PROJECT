@@ -17,12 +17,12 @@
          <children>
             <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="152.0" style="-fx-background-color: #1f2833;" stylesheets="@../css/menuButtons.css">
                <children>
-                  <Label fx:id="currentCoords" contentDisplay="CENTER" prefHeight="50.0" prefWidth="200.0" text="coords" textAlignment="CENTER" textFill="#c5c6c7">
+                  <Label fx:id="currentCoords" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="200.0" text="coords" textAlignment="CENTER" textFill="#c5c6c7">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <JFXButton fx:id="gcodeButton" buttonType="RAISED" onAction="#changePaneToGCode" prefHeight="100.0" prefWidth="150.0" style="-fx-background-image: images/1.jpeg;" text="G-code" textFill="#c5c6c7">
+                  <JFXButton fx:id="gcodeButton" buttonType="RAISED" onAction="#changePaneToGCode" prefHeight="100.0" prefWidth="150.0" text="G-code" textFill="#c5c6c7">
                      <font>
                         <Font size="20.0" />
                      </font>

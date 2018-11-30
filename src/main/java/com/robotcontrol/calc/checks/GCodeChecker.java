@@ -98,7 +98,7 @@ public class GCodeChecker {
     }
 
     /**
-     * Checks height to be not bigger and not less than allowed by working area (uses only z coordinate).
+     * Checks height to be not bigger and not less than allowed one by working area (uses only z coordinate).
      *
      * @param height height of the point to be checked.
      * @param gCode G-code to be added to exception message if exception is thrown.

@@ -14,8 +14,8 @@ import javafx.scene.shape.*;
 import java.util.List;
 
 public class Drawing {
-    public static Path createPath(double xCenter, double yCenter, double multiplier, List<GCode> gCodes) {
-        Path path = new Path();
+    public static Path createPath(double xCenter, double yCenter, double multiplier, List<GCode> gCodes, Path path) {
+//        Path path = new Path();
 
         double xStart = xCenter + multiplier * gCodes.get(0).getStartPosition()[0];
         double yStart = yCenter - multiplier * gCodes.get(0).getStartPosition()[1];
@@ -23,7 +23,6 @@ public class Drawing {
         path.getElements().add(new MoveTo(xStart, yStart));
 
         for (int i = 0; i < gCodes.size(); i++) {
-
             GCode gCode = gCodes.get(i);
             if (gCode instanceof MotionGCode) {
                 double x = xCenter + multiplier * ((MotionGCode) gCode).getFinalPosition()[0];
@@ -57,7 +56,9 @@ public class Drawing {
         double multiplier = calculateMultiplier(pane);
 
         addSafetyLinesToPane(pane);
-        pane.getChildren().add(createPath(xCenter, yCenter, multiplier, gCodes));
+        Path path = new Path();
+        pane.getChildren().add(path);
+        createPath(xCenter, yCenter, multiplier, gCodes, path);
     }
 
     private static void addSafetyLinesToPane(Pane pane){

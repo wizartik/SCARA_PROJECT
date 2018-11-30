@@ -49,7 +49,7 @@ public class PositionalChecker {
     }
 
     static void checkCollision(double[] startCoords, double[] finalCoords, String gCode) throws BoundsViolation {
-        String errorMessage = "G code intercepts minimum allowed radius and cannot be performed!";
+        String errorMessage = "G code intersects minimum allowed radius and cannot be performed!";
 
         double rr = MIN_RADIUS * MIN_RADIUS;
 
