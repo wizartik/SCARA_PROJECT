@@ -13,6 +13,7 @@ import com.robotcontrol.parameters.dynamic.DynUtil;
 import com.robotcontrol.parameters.dynamic.Position;
 import com.robotcontrol.util.CommUtil;
 import com.robotcontrol.util.SettingsUtil;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -42,6 +43,8 @@ public class SettingsController {
     public JFXTextField posY;
     @FXML
     public JFXTextField posZ;
+
+    private Timeline timeline;
 
     private MovementController movementController;
 
@@ -96,15 +99,17 @@ public class SettingsController {
 
     private void startSpinner(){
         spinner.setVisible(true);
-        Timeline timeline = new Timeline(new KeyFrame(
+        timeline = new Timeline(new KeyFrame(
                 Duration.millis(500),
                 ae -> checkConnection()));
+        timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
     private void checkConnection(){
         if (CommUtil.isConnected()){
             spinner.setVisible(false);
+            timeline.stop();
         }
     }
 }

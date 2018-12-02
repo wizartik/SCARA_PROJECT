@@ -13,6 +13,7 @@ public class DataReceiverResolver implements DataReceiverListener {
     }
 
     private void resolveData(String data) {
+        System.out.println("received: " + data);
         switch (data) {
             case MESSAGE_MOVEMENT_FINISHED:
                 ParametersController.finishedMovement();

@@ -56,7 +56,7 @@ public class SettingsUtil {
     public static void setTimerToCheckConnection() {
         if (DynUtil.timer == null) {
             DynUtil.timer = new Timeline(new KeyFrame(
-                    Duration.millis(2500),
+                    Duration.millis(500),
                     ae -> checkConnection()));
             DynUtil.timer.setCycleCount(Animation.INDEFINITE);
         }

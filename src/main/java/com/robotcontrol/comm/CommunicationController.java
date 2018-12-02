@@ -3,6 +3,7 @@ package com.robotcontrol.comm;
 import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
 import com.robotcontrol.comm.wifi.WifiController;
 import com.robotcontrol.exc.NoConnection;
+import com.robotcontrol.parameters.constant.Communication;
 import com.robotcontrol.util.CommUtil;
 
 import java.io.IOException;
@@ -45,6 +46,10 @@ public class CommunicationController {
     public static void sendString(String string) throws NoConnection, IOException {
         CommUtil.checkConnection();
         WIFI_CONTROLLER.sendString(string);
+    }
+
+    public static void sendCallibration() throws IOException, NoConnection {
+        CommunicationController.sendString(Communication.MESSAGE_CALIBRATION);
     }
 
 

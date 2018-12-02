@@ -105,7 +105,7 @@ public class MovementController {
     }
 
     public void startCalibrating() throws IOException, NoConnection {
-        CommunicationController.sendString("calibrate");
+        CommunicationController.sendCallibration();
         ParametersController.startedCalibration();
     }
 

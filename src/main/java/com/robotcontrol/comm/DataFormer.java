@@ -43,9 +43,9 @@ public class DataFormer {
 
         data.append(MOVEMENT_HEADER).append(stepper);
         appendDataNumberInfo(data, steppersPath, stepper);
-        data.append(SEPARATOR);
+//        data.append(SEPARATOR);
         appendData(data, steppersPath, stepper);
-        data.append(MOVEMENT_FOOTER);
+//        data.append(MOVEMENT_FOOTER);
 
         data.append('\n');
 
@@ -81,6 +81,7 @@ public class DataFormer {
                     data.append(staticPartNumber);
                     data.append(DATA_STATIC_VALUE);
                     data.append(value);
+                    data.append(DATA_STATIC_END);
                     data.append(SEPARATOR);
 
                     staticPart = false;

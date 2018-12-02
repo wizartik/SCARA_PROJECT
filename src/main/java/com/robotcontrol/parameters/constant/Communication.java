@@ -11,7 +11,7 @@ package com.robotcontrol.parameters.constant;
 import jssc.SerialPort;
 
 public class Communication {
-    public final static String MOVEMENT_HEADER = "movement";
+    public final static String MOVEMENT_HEADER = "mo";
 
     public final static String MOVEMENT_FOOTER = "end";
 
@@ -20,16 +20,19 @@ public class Communication {
     public final static Character END_LINE_SYMBOL = ';';
 
     public final static Character DATA_NUMBER_START = '(';
-
     public final static Character DATA_NUMBER_END = ')';
 
     public final static Character DATA_STATIC_SIGN = 'x';
 
     public final static Character DATA_STATIC_VALUE = 'v';
 
+    public final static Character DATA_STATIC_END = 'e';
+
     public final static String MESSAGE_MOVEMENT_FINISHED = "finished";
 
     public final static String MESSAGE_CONNECTED = "connected";
+
+    public final static String MESSAGE_CALIBRATION = "ca";
 
     public final static String MESSAGE_CALIBRATION_FINISHED = "finished calibration";
 

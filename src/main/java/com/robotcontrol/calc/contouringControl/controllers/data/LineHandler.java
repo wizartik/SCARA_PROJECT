@@ -40,9 +40,10 @@ class LineHandler {
         double startRadius = Geometry.linearLength(container.getStartPosition(), container.getCenterPosition());
         double finalRadius = Geometry.linearLength(container.getFinalPosition(), container.getCenterPosition());
 
-        boolean wrongRadius = Math.abs(startRadius - finalRadius) > 10e-5;
+        boolean wrongRadius = Math.abs(startRadius - finalRadius) > 10e-4;
 
         if (circular && (zeroRadius || wrongRadius)) {
+            System.out.println(startRadius - finalRadius);
             throw new WrongInputData("This circular G code " +
                     " has no correct data for radius or center definition.",
                     container.getLine());
