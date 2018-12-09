@@ -64,7 +64,9 @@ class MotionHandler {
 
         int pointsNumber = (int) Physics.pointsNumber(fullLength, angVelocity);
 
-        SingleJointPath path = new SingleJointPath(new ArrayList<SingleJointPoint>(pointsNumber));
+        System.out.println(pointsNumber);
+
+        SingleJointPath path = new SingleJointPath(new ArrayList<>(pointsNumber));
 
         //first dynamic part
         path.getJointPoints().addAll(makeDynamicPath(startAngle, 0,
