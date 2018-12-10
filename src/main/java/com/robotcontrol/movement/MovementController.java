@@ -87,6 +87,9 @@ public class MovementController {
             return;
         }
 
+        System.out.println("current: " + Arrays.toString(CURRENT_POSITION));
+        System.out.println("final  : " + Arrays.toString(finalPosition));
+
         checkConnection();
         PositionalPath positionalPath = PositionalController.moveToPointPos(CURRENT_POSITION, finalPosition);
         SteppersPath steppersPath = PathConverter.convertToSteppersPath(positionalPath);
