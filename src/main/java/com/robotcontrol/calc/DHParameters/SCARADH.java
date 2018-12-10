@@ -57,7 +57,14 @@ public class SCARADH {
 
         double cT2 = (pow(x, 2) + pow(y, 2) - pow(FIRST_LINK_LENGTH, 2) - pow(SECOND_LINK_LENGTH, 2))
                 / (2 * FIRST_LINK_LENGTH * SECOND_LINK_LENGTH);
-        double sT2 = sqrt(1 - pow(cT2, 2));
+
+        double sT2;
+
+        if (abs(cT2) >= 1) {
+            sT2 = 0;
+        } else {
+            sT2 = sqrt(1 - pow(cT2, 2));
+        }
 
         if (DIRECTION) {
             sT2 = -sT2;
@@ -69,7 +76,12 @@ public class SCARADH {
         double cT1 = (x * (FIRST_LINK_LENGTH + SECOND_LINK_LENGTH * cT2) + y * SECOND_LINK_LENGTH * sT2)
                 / (pow(x, 2) + pow(y, 2));
 
-        double sT1 = sqrt(1 - pow(cT1, 2));
+        double sT1;
+        if (abs(cT1) >= 1) {
+            sT1 = 0;
+        } else {
+            sT1 = sqrt(1 - pow(cT1, 2));
+        }
 
         if (!DIRECTION) {
             sT1 = -sT1;

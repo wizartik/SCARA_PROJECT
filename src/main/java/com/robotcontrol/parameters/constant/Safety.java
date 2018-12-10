@@ -39,8 +39,8 @@ public class Safety {
      */
     public final static double MAX_VELOCITY_DIFFERENCE = 0.3;
 
-    public final static double[] MAX_ANGLES = {3, Double.MAX_VALUE, 100};
+    public final static double[] MAX_ANGLES = {Double.MAX_VALUE, 3, 100};
 
-    public final static double[] MIN_ANGLES = {-3, -Double.MAX_VALUE, 0};
+    public final static double[] MIN_ANGLES = {-Double.MAX_VALUE, -3, 0};
 
 }

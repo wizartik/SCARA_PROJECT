@@ -10,7 +10,7 @@ public class Position {
     /**
      * Coordinates of the home position.
      */
-    public static double[] HOME_COORDS = {10, 10, 10};
+    public static double[] HOME_COORDS = {15, 15, 10};
 
     public static double[] DESIRED_POSITION = HOME_COORDS;
 

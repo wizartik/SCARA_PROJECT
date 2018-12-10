@@ -69,6 +69,10 @@ public class MovementController {
         checkConnection();
 
         double[] currentAngles = SCARADH.inverseKinematics(CURRENT_POSITION);
+
+        System.out.println("current angles: " + Arrays.toString(currentAngles));
+        System.out.println("final   angles: " + Arrays.toString(finalAngles));
+
         PositionalPath positionalPath = PositionalController.moveToPointAng(currentAngles, finalAngles);
         SteppersPath steppersPath = PathConverter.convertToSteppersPath(positionalPath);
 

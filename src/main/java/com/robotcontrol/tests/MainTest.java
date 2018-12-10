@@ -5,6 +5,8 @@ import com.robotcontrol.exc.BoundsViolation;
 
 import java.util.Arrays;
 
+import static com.robotcontrol.parameters.dynamic.Position.CURRENT_POSITION;
+
 public class MainTest {
     public static void main(String[] args) throws BoundsViolation {
 //        double[] initial = {0, 0, Math.random() * 10};
@@ -24,20 +26,20 @@ public class MainTest {
 //            System.out.println("result =" + Arrays.toString(forward));
 //            System.out.println();
 //        }
-
-        for (int i = 0; i < 50; i++) {
-            double[] initCoords = new double[] {Math.random()*100,Math.random()*100,Math.random()*100};
-
-            double[] resultAngl = SCARADH.inverseKinematics(initCoords);
-            double[] resultCoords = SCARADH.forwardKinematics(resultAngl);
-            double[] secondAngl = SCARADH.inverseKinematics(resultCoords);
-
-            System.out.println("init coords   =" + Arrays.toString(initCoords));
-            System.out.println("result coords =" + Arrays.toString(resultCoords));
-            System.out.println("result angles =" + Arrays.toString(resultAngl));
-            System.out.println("second angles =" + Arrays.toString(secondAngl));
-            System.out.println();
-        }
+//
+//        for (int i = 0; i < 50; i++) {
+//            double[] initCoords = new double[] {Math.random()*100,Math.random()*100,Math.random()*100};
+//
+//            double[] resultAngl = SCARADH.inverseKinematics(initCoords);
+//            double[] resultCoords = SCARADH.forwardKinematics(resultAngl);
+//            double[] secondAngl = SCARADH.inverseKinematics(resultCoords);
+//
+//            System.out.println("init coords   =" + Arrays.toString(initCoords));
+//            System.out.println("result coords =" + Arrays.toString(resultCoords));
+//            System.out.println("result angles =" + Arrays.toString(resultAngl));
+//            System.out.println("second angles =" + Arrays.toString(secondAngl));
+//            System.out.println();
+//        }
 
 //        PositionalPath positionalPath = PositionalController.moveToPointPos(CURRENT_POSITION, new double[]{10,10,12});
 //        SteppersPath steppersPath = PathConverter.convertToSteppersPath(positionalPath);
@@ -50,5 +52,9 @@ public class MainTest {
 //        }
 //
 //        System.out.println(total);
+
+
+        System.out.println(Arrays.toString(CURRENT_POSITION));
+        System.out.println(Arrays.toString(SCARADH.inverseKinematics(CURRENT_POSITION)));
     }
 }
