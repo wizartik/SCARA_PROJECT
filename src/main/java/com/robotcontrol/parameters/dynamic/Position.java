@@ -1,11 +1,10 @@
 package com.robotcontrol.parameters.dynamic;
 
+import com.robotcontrol.calc.DHParameters.SCARADH;
 import com.robotcontrol.movement.ParametersController;
 import com.robotcontrol.util.SettingsUtil;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
-import java.util.Arrays;
 
 public class Position {
     /**
@@ -25,7 +24,7 @@ public class Position {
     /**
      * Current position of the working body.
      */
-    public static double[] CURRENT_POSITION = Arrays.copyOf(HOME_COORDS, HOME_COORDS.length);
+    public static double[] CURRENT_POSITION = SCARADH.forwardKinematics(new double[]{0,0,10});
 
     public static StringProperty CURRENT_POSITION_STRING = new SimpleStringProperty(ParametersController.getCurrentCoordsString());
 
