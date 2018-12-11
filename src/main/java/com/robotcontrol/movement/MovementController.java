@@ -1,6 +1,5 @@
 package com.robotcontrol.movement;
 
-import com.robotcontrol.calc.DHParameters.SCARADH;
 import com.robotcontrol.calc.contouringControl.entities.GCode.GCode;
 import com.robotcontrol.calc.contouringControl.entities.GCode.MotionGCode;
 import com.robotcontrol.calc.positionalControl.controllers.PositionalController;
@@ -8,7 +7,8 @@ import com.robotcontrol.calc.positionalControl.entities.PositionalPath;
 import com.robotcontrol.calc.stepperControl.controllers.PathConverter;
 import com.robotcontrol.calc.stepperControl.entities.SteppersPath;
 import com.robotcontrol.comm.CommunicationController;
-import com.robotcontrol.exc.*;
+import com.robotcontrol.exc.BoundsViolation;
+import com.robotcontrol.exc.NoConnection;
 import com.robotcontrol.gui.util.DialogHandler;
 
 import java.io.IOException;
@@ -17,8 +17,7 @@ import java.util.List;
 
 import static com.robotcontrol.parameters.dynamic.DynUtil.CURRENT_CONTOUR_PATH;
 import static com.robotcontrol.parameters.dynamic.DynUtil.CURRENT_CONTOUR_STEPPER_PATH;
-import static com.robotcontrol.parameters.dynamic.Position.CURRENT_POSITION;
-import static com.robotcontrol.parameters.dynamic.Position.HOME_COORDS;
+import static com.robotcontrol.parameters.dynamic.Position.*;
 import static com.robotcontrol.util.CommUtil.checkConnection;
 
 public class MovementController {
@@ -68,7 +67,7 @@ public class MovementController {
 
         checkConnection();
 
-        double[] currentAngles = SCARADH.inverseKinematics(CURRENT_POSITION);
+        double[] currentAngles = CURRENT_ANGLES;
 
         System.out.println("current angles: " + Arrays.toString(currentAngles));
         System.out.println("final   angles: " + Arrays.toString(finalAngles));
@@ -78,8 +77,7 @@ public class MovementController {
 
         sendByWifi(steppersPath);
 
-        double[] finalPosition = SCARADH.forwardKinematics(finalAngles);
-        ParametersController.startedMovement(finalPosition);
+        ParametersController.startedAngMovement(finalAngles);
     }
 
     public void moveToPointPos(double[] finalPosition) throws BoundsViolation, IOException, NoConnection {
@@ -105,7 +103,7 @@ public class MovementController {
     }
 
     public void travelByAng(double[] differences) throws BoundsViolation, IOException, NoConnection {
-        double[] currentAngles = SCARADH.inverseKinematics(CURRENT_POSITION);
+        double[] currentAngles = Arrays.copyOf(CURRENT_ANGLES, CURRENT_ANGLES.length);
         double[] finalAngles = new double[differences.length];
         Arrays.setAll(finalAngles, i -> currentAngles[i] + differences[i]);
         moveToPointAng(finalAngles);

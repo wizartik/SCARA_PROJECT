@@ -12,6 +12,8 @@ import com.robotcontrol.calc.DHParameters.SCARADH;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.parameters.constant.Safety;
 
+import java.util.Arrays;
+
 import static com.robotcontrol.parameters.dynamic.DynSafety.MIN_RADIUS;
 import static com.robotcontrol.parameters.dynamic.Position.HOME_COORDS;
 import static java.lang.Math.abs;
@@ -33,10 +35,13 @@ public class PositionalChecker {
     public static void checkPositionalPath(double[] startPosition,
                                            double[] finalPosition) throws BoundsViolation {
 
+        System.out.println("start position: " + Arrays.toString(startPosition));
+        System.out.println("final position: " + Arrays.toString(finalPosition));
+
         double[] startCoords = new double[]{startPosition[0],
-                finalPosition[1],
+                startPosition[1],
                 0};
-        double[] finalCoords = new double[]{startCoords[0],
+        double[] finalCoords = new double[]{finalPosition[0],
                 finalPosition[1],
                 0};
 

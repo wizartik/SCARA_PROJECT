@@ -12,7 +12,6 @@ public class Position {
      */
     public static double[] HOME_COORDS = {15, 15, 10};
 
-    public static double[] DESIRED_POSITION = HOME_COORDS;
 
     public static StringProperty HOME_COORDS_STRING = new SimpleStringProperty(SettingsUtil.makeHomeCoordsString());
 
@@ -25,6 +24,12 @@ public class Position {
      * Current position of the working body.
      */
     public static double[] CURRENT_POSITION = SCARADH.forwardKinematics(new double[]{0,0,10});
+
+    public static double[] DESIRED_POSITION = CURRENT_POSITION;
+
+    public static double[] CURRENT_ANGLES = SCARADH.inverseKinematics(CURRENT_POSITION);
+
+    public static double[] DESIRED_ANGLES = CURRENT_ANGLES;
 
     public static StringProperty CURRENT_POSITION_STRING = new SimpleStringProperty(ParametersController.getCurrentCoordsString());
 
