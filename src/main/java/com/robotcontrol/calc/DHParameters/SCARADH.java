@@ -1,5 +1,7 @@
 package com.robotcontrol.calc.DHParameters;
 
+import com.robotcontrol.parameters.dynamic.Position;
+
 import static com.robotcontrol.parameters.constant.PhysicalParameters.INCREMENT_PER_REVOLUTION;
 import static com.robotcontrol.parameters.dynamic.Links.DIRECTION;
 import static com.robotcontrol.parameters.dynamic.Links.FIRST_LINK_LENGTH;
@@ -65,6 +67,9 @@ public class SCARADH {
         } else {
             sT2 = sqrt(1 - pow(cT2, 2));
         }
+
+        //todo test
+        DIRECTION = Position.CURRENT_ANGLES[1] <= 0;
 
         if (DIRECTION) {
             sT2 = -sT2;
