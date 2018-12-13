@@ -55,6 +55,12 @@
                   </VBox>
                   <JFXButton buttonType="RAISED" onAction="#go" prefHeight="26.0" prefWidth="84.0" text="Go!" />
                </children>
+               <opaqueInsets>
+                  <Insets bottom="5.0" left="5.0" right="5.0" />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets left="5.0" top="5.0" />
+               </HBox.margin>
             </VBox>
             <Pane fx:id="drawingPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="583.0" style="-fx-background-color: #f2f2f2;" />
          </children>

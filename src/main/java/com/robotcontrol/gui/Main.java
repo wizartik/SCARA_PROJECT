@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 public class Main extends Application {
@@ -20,9 +21,8 @@ public class Main extends Application {
         primaryStage.setScene(scene);
 
         primaryStage.getIcons().add(new Image(("images/icon.png")));
-
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-
             @Override
             public void handle(WindowEvent t) {
                 com.sun.javafx.application.PlatformImpl.tkExit();

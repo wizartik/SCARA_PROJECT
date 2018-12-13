@@ -84,11 +84,11 @@ public class PositionalController {
     public void angularGo(ActionEvent actionEvent) {
         double[] angles = getAngularArray();
 
-        if (comboBox.getValue().equalsIgnoreCase("degrees")) {
-            angles = Converter.toRad(angles);
-        }
-
         if (angles != null) {
+            if (comboBox.getValue().equalsIgnoreCase("degrees")) {
+                angles = Converter.toRad(angles);
+            }
+
             try {
                 movementController.moveToPointAng(angles);
             } catch (BoundsViolation boundsViolation) {

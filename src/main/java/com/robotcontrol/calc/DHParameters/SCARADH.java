@@ -68,8 +68,13 @@ public class SCARADH {
             sT2 = sqrt(1 - pow(cT2, 2));
         }
 
-        //todo test
-        DIRECTION = Position.CURRENT_ANGLES[1] <= 0;
+
+        if (Position.CURRENT_ANGLES == null) {
+            DIRECTION = true;
+        } else {
+            DIRECTION = Position.CURRENT_ANGLES[1] <= 0;
+
+        }
 
         if (DIRECTION) {
             sT2 = -sT2;

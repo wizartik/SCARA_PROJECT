@@ -2,13 +2,16 @@ package com.robotcontrol.gui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSpinner;
+import com.robotcontrol.gui.util.Delta;
 import com.robotcontrol.movement.ParametersController;
+import com.robotcontrol.parameters.dynamic.DynUtil;
 import com.robotcontrol.parameters.dynamic.Motion;
 import com.robotcontrol.util.CommUtil;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +19,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -28,9 +33,13 @@ import static com.robotcontrol.parameters.dynamic.Position.CURRENT_POSITION_STRI
 
 public class Controller {
 
+    @FXML
     public JFXButton gcodeButton;
     public JFXButton positionalButton;
     public JFXButton settingsButton;
+    public JFXButton closeButton;
+    public JFXButton minimizeButton;
+    public Label mode;
     private Set gCode;
     private Set positional;
     private Set settings;
@@ -52,6 +61,8 @@ public class Controller {
 
     private Timeline timeline;
 
+    private Delta dragDelta = new Delta();
+
     FadeTransition fadeTransition;
 
     @FXML
@@ -71,6 +82,7 @@ public class Controller {
 
         currentCoords.textProperty().bind(CURRENT_POSITION_STRING);
         currentAngles.textProperty().bind(CURRENT_ANGLES_STRING);
+        mode.textProperty().bind(DynUtil.CURRENT_MODE_STRING);
 
         setWifiImage();
         startConnection();
@@ -144,6 +156,14 @@ public class Controller {
         ImageView settingsImage = new ImageView(new Image("images/settings.png"));
         settingsButton.setGraphic(settingsImage);
 
+        ImageView closeImage = new ImageView(new Image("images/close.png"));
+        closeButton.setGraphic(closeImage);
+
+        ImageView minimizeImage = new ImageView(new Image("images/minimize.png"));
+        minimizeButton.setGraphic(minimizeImage);
+
+
+
     }
 
     @FXML
@@ -191,5 +211,27 @@ public class Controller {
         settingsButton.getStylesheets().removeAll("css/selected.css");
 
         button.getStylesheets().add("css/selected.css");
+    }
+
+    public void hBoxMouseDragged(MouseEvent mouseEvent) {
+        Stage stage = (Stage) settingsButton.getScene().getWindow();
+        stage.setX(mouseEvent.getScreenX() + dragDelta.getX());
+        stage.setY(mouseEvent.getScreenY() + dragDelta.getY());
+    }
+
+    public void hBoxMousePressed(MouseEvent mouseEvent) {
+        Stage stage = (Stage) settingsButton.getScene().getWindow();
+        dragDelta.setX(stage.getX() - mouseEvent.getScreenX());
+        dragDelta.setY(stage.getY() - mouseEvent.getScreenY());
+    }
+
+    public void close() {
+        com.sun.javafx.application.PlatformImpl.tkExit();
+        Platform.exit();
+    }
+
+    public void minimize() {
+        Stage stage = (Stage) settingsButton.getScene().getWindow();
+        stage.setIconified(true);
     }
 }

@@ -40,8 +40,13 @@
       </HBox>
    </left>
    <top>
-      <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1000.0" style="-fx-background-color: #1f2833;" BorderPane.alignment="CENTER">
+      <HBox fx:id="hBox" alignment="CENTER_RIGHT" onMouseDragged="#hBoxMouseDragged" onMousePressed="#hBoxMousePressed" prefHeight="35.0" prefWidth="1000.0" style="-fx-background-color: #1f2833;" BorderPane.alignment="CENTER">
          <children>
+            <Label fx:id="mode" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="151.0" text="mode" textAlignment="CENTER" textFill="#c5c6c7">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
             <Label fx:id="currentCoords" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="200.0" text="coords" textAlignment="CENTER" textFill="#c5c6c7">
                <font>
                   <Font size="16.0" />
@@ -64,6 +69,12 @@
             </Label>
             <JFXSpinner fx:id="connectionSpinner" prefHeight="22.0" prefWidth="27.0" />
             <ImageView fx:id="wifiImage" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
+            <HBox alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="113.0">
+               <children>
+                  <JFXButton fx:id="minimizeButton" buttonType="RAISED" onMouseClicked="#minimize" />
+                  <JFXButton fx:id="closeButton" buttonType="RAISED" onMouseClicked="#close" />
+               </children>
+            </HBox>
          </children>
       </HBox>
    </top>
