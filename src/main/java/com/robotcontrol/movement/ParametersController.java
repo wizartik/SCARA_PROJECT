@@ -79,14 +79,14 @@ public class ParametersController {
 
     public static String getCurrentCoordsString() {
         DecimalFormat decimalFormat = new DecimalFormat("##.##");
-        return "[" + decimalFormat.format(DISPLAYED_CURRENT_COORDS[0]) + "; "
+        return "coords: [" + decimalFormat.format(DISPLAYED_CURRENT_COORDS[0]) + "; "
                 + decimalFormat.format(DISPLAYED_CURRENT_COORDS[1]) + "; "
                 + decimalFormat.format(DISPLAYED_CURRENT_COORDS[2]) + "]";
     }
 
     public static String getCurrentAnglesString() {
         DecimalFormat decimalFormat = new DecimalFormat("##.##");
-        return "[" + decimalFormat.format(DISPLAYED_CURRENT_ANGLES[0]) + "; "
+        return "angles: [" + decimalFormat.format(DISPLAYED_CURRENT_ANGLES[0]) + "; "
                 + decimalFormat.format(DISPLAYED_CURRENT_ANGLES[1]) + "; "
                 + decimalFormat.format(DISPLAYED_CURRENT_ANGLES[2]) + "]";
     }

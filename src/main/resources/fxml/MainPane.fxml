@@ -42,17 +42,7 @@
    <top>
       <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1000.0" style="-fx-background-color: #1f2833;" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="currentCoords1" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="103.0" text="coords:" textAlignment="CENTER" textFill="#c5c6c7">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
             <Label fx:id="currentCoords" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="200.0" text="coords" textAlignment="CENTER" textFill="#c5c6c7">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="currentCoords11" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="103.0" text="angles:" textAlignment="CENTER" textFill="#c5c6c7">
                <font>
                   <Font size="16.0" />
                </font>
