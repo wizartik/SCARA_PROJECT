@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="1000" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.robotcontrol.gui.Controller">
+   <center>
+      <AnchorPane fx:id="content" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2;" BorderPane.alignment="CENTER" />
+   </center>
+   <left>
+      <HBox prefHeight="600.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="152.0" style="-fx-background-color: #1f2833;" stylesheets="@../css/menuButtons.css">
+               <children>
+                  <JFXButton fx:id="gcodeButton" buttonType="RAISED" onAction="#changePaneToGCode" prefHeight="100.0" prefWidth="150.0" text="G-code" textFill="#c5c6c7">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="positionalButton" buttonType="RAISED" onAction="#changePaneToPositional" prefHeight="100.0" prefWidth="150.0" text="Positional" textFill="#c5c6c7">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="settingsButton" buttonType="RAISED" onAction="#changePaneToSettings" prefHeight="100.0" prefWidth="150.0" text="Settings" textFill="#c5c6c7">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </left>
+   <top>
+      <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1000.0" style="-fx-background-color: #1f2833;" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="currentCoords1" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="103.0" text="coords:" textAlignment="CENTER" textFill="#c5c6c7">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="currentCoords" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="200.0" text="coords" textAlignment="CENTER" textFill="#c5c6c7">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="currentCoords11" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="103.0" text="angles:" textAlignment="CENTER" textFill="#c5c6c7">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="currentAngles" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="200.0" text="angles" textAlignment="CENTER" textFill="#c5c6c7">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="movement" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="145.0" text="not moving" textAlignment="CENTER" textFill="#c5c6c7">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="currentAngles11" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="118.0" text="connection:" textAlignment="CENTER" textFill="#c5c6c7">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <JFXSpinner fx:id="connectionSpinner" prefHeight="22.0" prefWidth="27.0" />
+            <ImageView fx:id="wifiImage" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </HBox>
+   </top>
+</BorderPane>

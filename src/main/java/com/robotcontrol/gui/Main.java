@@ -14,7 +14,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/MainPane.fxml"));
         primaryStage.setTitle("SCARA arm control");
         Scene scene = new Scene(root, 1000, 600);
         primaryStage.setScene(scene);

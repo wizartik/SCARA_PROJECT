@@ -40,6 +40,10 @@ public class Communication {
     public final static String MESSAGE_CRASH2 = "pizdec2";
     public final static String MESSAGE_CRASH3 = "pizdec3";
 
+    public final static Character UPDATE_FIRST = 'q';
+    public final static Character UPDATE_SECOND = 'w';
+    public final static Character UPDATE_THIRD = 'e';
+
     public final static int BAUDRATE = SerialPort.BAUDRATE_115200;
 
     public final static int PORT = 14888;

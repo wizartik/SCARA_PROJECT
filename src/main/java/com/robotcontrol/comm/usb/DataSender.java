@@ -6,7 +6,7 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package com.robotcontrol.comm.serialPort;
+package com.robotcontrol.comm.usb;
 
 import jssc.SerialPortException;
 

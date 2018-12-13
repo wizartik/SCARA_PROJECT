@@ -6,6 +6,8 @@ import com.robotcontrol.util.SettingsUtil;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.Arrays;
+
 public class Position {
     /**
      * Coordinates of the home position.
@@ -31,6 +33,12 @@ public class Position {
 
     public static double[] DESIRED_ANGLES = CURRENT_ANGLES;
 
+    public static double[] DISPLAYED_CURRENT_COORDS = Arrays.copyOf(CURRENT_POSITION, CURRENT_POSITION.length);
+
+    public static double[] DISPLAYED_CURRENT_ANGLES = Arrays.copyOf(CURRENT_ANGLES, CURRENT_ANGLES.length);
+
     public static StringProperty CURRENT_POSITION_STRING = new SimpleStringProperty(ParametersController.getCurrentCoordsString());
+
+    public static StringProperty CURRENT_ANGLES_STRING = new SimpleStringProperty(ParametersController.getCurrentCoordsString());
 
 }

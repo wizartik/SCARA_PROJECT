@@ -33,6 +33,25 @@ public class DataReceiverResolver implements DataReceiverListener {
             case MESSAGE_CRASH3:
                 ParametersController.motorCrash(3);
                 break;
+            default:
+                if (data.startsWith(String.valueOf(UPDATE_FIRST))){
+                    parseUpdateCoords(data);
+                }
+                break;
         }
+    }
+
+
+
+    private void parseUpdateCoords(String data){
+        int qIndex = 0;
+        int wIndex = data.indexOf(UPDATE_SECOND);
+        int eIndex = data.indexOf(UPDATE_THIRD);
+
+        int first = Integer.valueOf(data.substring(qIndex + 1, wIndex));
+        int second = Integer.valueOf(data.substring(wIndex + 1, eIndex));
+        int third = Integer.valueOf(data.substring(eIndex + 1));
+
+        ParametersController.updateCurrentCoords(first, second, third);
     }
 }

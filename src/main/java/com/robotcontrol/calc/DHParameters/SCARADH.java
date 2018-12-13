@@ -71,7 +71,9 @@ public class SCARADH {
         }
         double T2 = atan2(sT2, cT2);
 
-        T2 = normalizeAngle(T2);
+        if (abs(T2) > PI) {
+            T2 = normalizeAngle(T2);
+        }
 
         double cT1 = (x * (FIRST_LINK_LENGTH + SECOND_LINK_LENGTH * cT2) + y * SECOND_LINK_LENGTH * sT2)
                 / (pow(x, 2) + pow(y, 2));
@@ -86,9 +88,12 @@ public class SCARADH {
         if (!DIRECTION) {
             sT1 = -sT1;
         }
+
         double T1 = atan2(sT1, cT1);
 
-        T1 = normalizeAngle(T1);
+        if (abs(T1) > PI) {
+            T1 = normalizeAngle(T1);
+        }
 
         double T3 = z / (INCREMENT_PER_REVOLUTION / Math.toRadians(360));
 
