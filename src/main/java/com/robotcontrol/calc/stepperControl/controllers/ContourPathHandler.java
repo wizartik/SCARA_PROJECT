@@ -58,17 +58,21 @@ class ContourPathHandler {
         double previousAngle1 = gCode.getgCodePath().get(0).getAngles()[0];
         double angleReminder1 = 0;
         int timeRemainder1 = 0;
-        long previousTime1 = 0;
+        long previousTime1 = gCode.getStartTime();
+//        long previousTime1 = 0;
 
         double previousAngle2 = gCode.getgCodePath().get(0).getAngles()[1];
         double angleReminder2 = 0;
         int timeRemainder2 = 0;
-        long previousTime2 = 0;
+        long previousTime2 = gCode.getStartTime();
+//        long previousTime2 = 0;
 
         double previousAngle3 = gCode.getgCodePath().get(0).getAngles()[2];
         double angleReminder3 = 0;
         int timeRemainder3 = 0;
-        long previousTime3 = 0;
+        long previousTime3 = gCode.getStartTime();;
+//        long previousTime3 = 0;
+
         for (int i = 1; i < gCode.getgCodePath().size(); i++) {
 
             double currentAngle1 = gCode.getgCodePath().get(i).getAngles()[0];

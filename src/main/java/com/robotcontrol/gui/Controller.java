@@ -2,6 +2,7 @@ package com.robotcontrol.gui;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSpinner;
+import com.robotcontrol.comm.CommunicationController;
 import com.robotcontrol.gui.util.Delta;
 import com.robotcontrol.movement.ParametersController;
 import com.robotcontrol.parameters.dynamic.DynUtil;
@@ -93,6 +94,7 @@ public class Controller {
 
     private void startConnection() {
         connectionSpinner.setVisible(true);
+        CommunicationController.createWiFiConnection();
         startSpinner();
     }
 

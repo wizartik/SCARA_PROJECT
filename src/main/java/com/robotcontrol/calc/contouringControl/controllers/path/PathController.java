@@ -25,12 +25,15 @@ public class PathController {
     public static ContourPath makePath(List<GCode> gCodes) throws BoundsViolation, ImpossibleToImplement {
         ParametersController.setCurrentAction(CurrentAction.CALCULATING);
         ContourPath path = new ContourPath();
+
+        System.out.println("make path " + gCodes);
         path.setgCodeList(gCodes);
 
         processPath(path);
 
+        System.out.println("make path" + path);
+        System.out.println(path.getgCodeList().size());
         path.setFullTime(path.getgCodeList().get(path.getgCodeList().size() - 1).getFinalTime());
-
         return path;
     }
 
@@ -55,7 +58,9 @@ public class PathController {
             }
         }
 
+        System.out.println(path.getgCodeList().size());
         //initialize velocities
+
         path.getgCodeList().get(path.getgCodeList().size() - 1).setNextVelocity(0);
         path.getgCodeList().get(path.getgCodeList().size() - 1).setPreviousVelocity(previousVelocity);
         GCodeController.initialize(path.getgCodeList().get(path.getgCodeList().size() - 1));
@@ -75,6 +80,9 @@ public class PathController {
         double[] startCoords;
         double[] finalCoords;
 
+        System.out.println(((MotionGCode) path.getgCodeList().get(0)).getDistance());
+        System.out.println(ConstUtil.MIN_LENGTH);
+
         for (int i = 0; i < path.getgCodeList().size(); i++) {
             if (path.getgCodeList().get(i) instanceof MotionGCode) {
                 if (adjust) {
@@ -91,6 +99,7 @@ public class PathController {
                         adjust = false;
                     }
                 } else if (((MotionGCode) path.getgCodeList().get(i)).getDistance() >= ConstUtil.MIN_LENGTH) {
+                    System.out.println("add");
                     addGCode(path.getgCodeList().get(i), newGCodes, path);
                 } else {
                     index = i;
@@ -101,6 +110,7 @@ public class PathController {
             }
         }
         newGCodes.trimToSize();
+        System.out.println("new:   " + newGCodes);
         path.setgCodeList(newGCodes);
     }
 
@@ -306,9 +316,13 @@ public class PathController {
      *                               implement.
      */
     private static void processPath(ContourPath path) throws ImpossibleToImplement, BoundsViolation {
+        System.out.println(path.getgCodeList().size());
         adjustDistances(path);
+        System.out.println("adjustDistances");
         initializeGCodePath(path);
+        System.out.println("initializeGCodePath");
         adjustHalts(path.getgCodeList());
+        System.out.println("adjustHalts");
 
         calculateGCodes(path);
     }

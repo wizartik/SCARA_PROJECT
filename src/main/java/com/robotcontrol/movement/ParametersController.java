@@ -47,7 +47,7 @@ public class ParametersController {
 
     public static void finishedCalibration() {
         MOVING = false;
-        setCurrentCoods(getPositionAfterCalibration());
+        setCurrentAngles(Converter.toRad(Position.ANGLES_AFTER_CALIBRATION));
     }
 
     public static void setCurrentCoods(double[] coords) {
@@ -101,11 +101,18 @@ public class ParametersController {
     }
 
     public static void updateCurrentCoords(int first, int second, int third) {
-        double firstChange = ((double) first) / Motion.MICROSTEPS[0] / PhysicalParameters.REDUCTION_RATIO[0] * Math.toRadians(PhysicalParameters.STEP);
-        double secondChange = ((double) second) / Motion.MICROSTEPS[0] / PhysicalParameters.REDUCTION_RATIO[0] * Math.toRadians(PhysicalParameters.STEP);
-        double thirdChange = ((double) third) / Motion.MICROSTEPS[0] / PhysicalParameters.REDUCTION_RATIO[0] * Math.toRadians(PhysicalParameters.STEP);
+        double firstChange = ((double) first) / Motion.MICROSTEPS[0]
+                / PhysicalParameters.REDUCTION_RATIO[0] * Math.toRadians(PhysicalParameters.STEP);
 
-        DISPLAYED_CURRENT_ANGLES = new double[]{CURRENT_ANGLES[0] + firstChange, CURRENT_ANGLES[1] + secondChange, CURRENT_ANGLES[2] + thirdChange};
+        double secondChange = ((double) second) / Motion.MICROSTEPS[1]
+                / PhysicalParameters.REDUCTION_RATIO[1] * Math.toRadians(PhysicalParameters.STEP);
+
+        double thirdChange = ((double) third) / Motion.MICROSTEPS[2]
+                / PhysicalParameters.REDUCTION_RATIO[2] * Math.toRadians(PhysicalParameters.STEP);
+
+        DISPLAYED_CURRENT_ANGLES = new double[]{CURRENT_ANGLES[0] + firstChange,
+                CURRENT_ANGLES[1] + secondChange,
+                CURRENT_ANGLES[2] + thirdChange};
         DISPLAYED_CURRENT_COORDS = SCARADH.forwardKinematics(DISPLAYED_CURRENT_ANGLES);
     }
 

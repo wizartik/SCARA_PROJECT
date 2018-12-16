@@ -5,7 +5,7 @@ public class Safety {
     /**
      * Maximum allowed height working body can lift.
      */
-    public final static double MAX_HEIGHT_COORD = 30;
+    public final static double MAX_HEIGHT_COORD = 20;
 
     /**
      * Minimum allowed height working body can lift.

@@ -34,11 +34,11 @@ public class WifiController {
         dataSender.sendString(string);
     }
 
-    public void stopListening(){
+    public void stopListening() {
         dataReceiver.setListening(false);
     }
 
-    public boolean isConnected(){
+    public boolean isConnected() {
         return server != null && server.getServer() != null && server.getServer().isBound() && server.getSocket() != null && server.getSocket().isConnected();
     }
 

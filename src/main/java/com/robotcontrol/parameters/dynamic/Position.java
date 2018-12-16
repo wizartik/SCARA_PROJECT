@@ -20,7 +20,7 @@ public class Position {
     /**
      * In degrees.
      */
-    public static double[] ANGLES_AFTER_CALIBRATION = {0, -100, 0};
+    public static double[] ANGLES_AFTER_CALIBRATION = {0, -143.98, 0};
 
     /**
      * Current position of the working body.

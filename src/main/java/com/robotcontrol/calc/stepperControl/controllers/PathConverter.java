@@ -15,6 +15,7 @@ import com.robotcontrol.parameters.dynamic.DynUtil;
 import com.robotcontrol.util.progress.CurrentAction;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PathConverter {
@@ -26,6 +27,20 @@ public class PathConverter {
 
         SteppersPath steppersPath = ContourPathHandler.makeStepperPath(contourPath);
         trimList(steppersPath.getSteppersPoints());
+
+        long q = 0;
+        long w = 0;
+        for (int i = 0; i < steppersPath.getSteppersPoints().size(); i++) {
+            q += Math.abs(steppersPath.getSteppersPoints().get(i).getStepsDelays()[0]);
+            w += Math.abs(steppersPath.getSteppersPoints().get(i).getStepsDelays()[1]);
+            System.out.println(Arrays.toString(steppersPath.getSteppersPoints().get(i).getStepsDelays()));
+        }
+
+        System.out.println("qwe " + contourPath.getFullTime());
+        System.out.println(q);
+        System.out.println(w);
+
+
         return steppersPath;
     }
 

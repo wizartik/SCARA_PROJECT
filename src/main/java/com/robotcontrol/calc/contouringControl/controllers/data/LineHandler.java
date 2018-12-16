@@ -59,6 +59,8 @@ class LineHandler {
 
     private static GCode containerToGCode(Container container) {
 
+        System.out.println(container);
+
         if (container.getgCodeType() == GCodeType.G00
                 || container.getgCodeType() == GCodeType.G01) {
             return containerToLinearGCode(container);

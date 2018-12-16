@@ -17,6 +17,9 @@ class ListHandler {
         GapList<GCode> result = new GapList<>(source.size());
         makeData(source, result);
         result.trimToSize();
+
+        System.out.println(result);
+
         if (result.size() == 0) {
             throw new WrongInputData("Current G code path does not" +
                     " contain any GCode command.", "There are no" +
@@ -70,7 +73,7 @@ class ListHandler {
             String line = clearGarbage(initialGCode);
             if (line != null && line.length() > 1) {
                 previousGCode = LineHandler.makeGCode(previousGCode, line);
-
+                System.out.println("   " + previousGCode);
                 if (previousGCode != null) {
                     result.add(previousGCode);
                 }

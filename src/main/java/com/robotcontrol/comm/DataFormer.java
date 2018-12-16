@@ -41,6 +41,10 @@ public class DataFormer {
     public String makeDataForOneStepper(SteppersPath steppersPath, int stepper) {
         StringBuilder data = new StringBuilder(steppersPath.getSteppersPoints().size());
 
+        for (int i = 0; i < steppersPath.getSteppersPoints().size(); i++) {
+            System.out.print(steppersPath.getSteppersPoints().get(i).getStepsDelays()[1] + ", ");
+        }
+
         data.append(MOVEMENT_HEADER).append(stepper);
         appendDataNumberInfo(data, steppersPath, stepper);
 //        data.append(SEPARATOR);
