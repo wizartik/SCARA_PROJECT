@@ -12,6 +12,10 @@ public class DialogHandler {
         alert.showAndWait();
     }
 
+    public static void cantCalculateWhileBusy(){
+        showDialog("Robot is busy!", "Movement is in process, wait till the end!", "");
+    }
+
     public static void recalculatePath(){
         showDialog("Please recalculate path!", "Some coordinates changed, recalculate the path!", "");
     }

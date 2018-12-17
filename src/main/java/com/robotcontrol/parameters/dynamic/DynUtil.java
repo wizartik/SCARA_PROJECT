@@ -7,13 +7,21 @@ import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.List;
+
 public class DynUtil {
 
     public static StringProperty CURRENT_MODE_STRING = new SimpleStringProperty("current: selective");
 
     public static ContourPath CURRENT_CONTOUR_PATH;
 
+    public static List<ContourPath> FRACTIONAL_CONTOUR_PATH;
+
     public static SteppersPath CURRENT_CONTOUR_STEPPER_PATH;
+
+    public static List<SteppersPath> FRACTIONAL_CONTOUR_STEPPER_PATH;
+
+    public static volatile Boolean FORBID_CALCULATION;
 
     public static Timeline timer;
 

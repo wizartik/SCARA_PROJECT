@@ -21,7 +21,6 @@ public class DataController {
     public static List<GCode> convertToGCode(File sourceFile)
             throws IOException, WrongExtension, WrongInputData, BoundsViolation {
         ArrayList<String> source = FilesHandler.gCodeFileToList(sourceFile);
-
         return ListHandler.makeGCodeList(source);
     }
 

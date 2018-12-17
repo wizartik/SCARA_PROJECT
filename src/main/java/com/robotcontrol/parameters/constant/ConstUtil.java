@@ -26,4 +26,7 @@ public class ConstUtil {
     public final static double MIN_LENGTH = Math.pow(MAX_VELOCITY, 2)
             / (2 * MAX_ACCELERATION);
 
+
+    public final static double MAX_SINGLE_LENGTH = 10;
+
 }

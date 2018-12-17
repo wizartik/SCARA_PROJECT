@@ -3,6 +3,7 @@ package com.robotcontrol.gui.gCodePane;
 import com.jfoenix.controls.JFXTextArea;
 import com.robotcontrol.calc.CalculateController;
 import com.robotcontrol.exc.*;
+import com.robotcontrol.gui.util.DialogHandler;
 import com.robotcontrol.gui.util.Drawing;
 import com.robotcontrol.gui.util.ErrorHandler;
 import com.robotcontrol.movement.MovementController;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.robotcontrol.parameters.dynamic.DynUtil.FORBID_CALCULATION;
 import static com.robotcontrol.util.FilesHandler.checkFile;
 
 public class GCodeController {
@@ -214,6 +216,11 @@ public class GCodeController {
     }
 
     private void startCalculation(Thread calcThread, Thread finishThread) {
+        if (FORBID_CALCULATION){
+            DialogHandler.cantCalculateWhileBusy();
+            return;
+        }
+
         startProgressWatching();
         waitForException();
         calcThread.start();

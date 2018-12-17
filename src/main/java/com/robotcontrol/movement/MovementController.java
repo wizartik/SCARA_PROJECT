@@ -10,13 +10,15 @@ import com.robotcontrol.comm.CommunicationController;
 import com.robotcontrol.exc.BoundsViolation;
 import com.robotcontrol.exc.NoConnection;
 import com.robotcontrol.gui.util.DialogHandler;
+import com.robotcontrol.parameters.dynamic.DynUtil;
+import com.robotcontrol.parameters.dynamic.Motion;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import static com.robotcontrol.parameters.dynamic.DynUtil.CURRENT_CONTOUR_PATH;
-import static com.robotcontrol.parameters.dynamic.DynUtil.CURRENT_CONTOUR_STEPPER_PATH;
+import static com.robotcontrol.parameters.dynamic.DynUtil.*;
 import static com.robotcontrol.parameters.dynamic.Position.*;
 import static com.robotcontrol.util.CommUtil.checkConnection;
 
@@ -59,6 +61,21 @@ public class MovementController {
             DialogHandler.nothingToProcess();
         }
     }
+
+    public void moveByGCodeNew() throws NoConnection, IOException {
+        if (ParametersController.isMoving()) {
+            return;
+        }
+
+        checkConnection();
+
+        if ((FRACTIONAL_CONTOUR_STEPPER_PATH != null) && (FRACTIONAL_CONTOUR_PATH != null)) {
+            startMovingThread();
+        } else {
+            DialogHandler.nothingToProcess();
+        }
+    }
+
 
     public void moveToPointAng(double[] finalAngles) throws BoundsViolation, IOException, NoConnection {
         if (ParametersController.isMoving()) {
@@ -139,5 +156,37 @@ public class MovementController {
         }
 
         return finalPosition;
+    }
+
+    private void startMovingThread() {
+        createMovingThread().start();
+    }
+
+    private Thread createMovingThread() {
+        return new Thread(() -> {
+            DynUtil.FORBID_CALCULATION = true;
+            int i = 0;
+
+            while (i < FRACTIONAL_CONTOUR_PATH.size()) {
+                if (!Motion.MOVING) {
+                    try {
+                        sendByWifi(FRACTIONAL_CONTOUR_STEPPER_PATH.get(i));
+                        ParametersController.startedMovement(getFinalPosition(FRACTIONAL_CONTOUR_PATH.get(i).getgCodeList()));
+                        i++;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (NoConnection noConnection) {
+                        noConnection.printStackTrace();
+                    }
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(50);
+                    } catch (InterruptedException ignored) {
+                    }
+                } else {
+                    Thread.yield();
+                }
+            }
+            DynUtil.FORBID_CALCULATION = false;
+        });
     }
 }

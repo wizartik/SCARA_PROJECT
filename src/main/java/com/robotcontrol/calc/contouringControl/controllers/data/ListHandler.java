@@ -65,6 +65,7 @@ class ListHandler {
 
         GCode previousGCode = null;
 
+
         for (int i = 0; i < initialList.size(); i++) {
             String initialGCode = initialList.get(i);
             if (DynUtil.progress != null) {
